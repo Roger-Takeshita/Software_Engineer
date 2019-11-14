@@ -1,29 +1,90 @@
+/* !WEb DESIGN WEBSITE */
+
 body {
    font-size: 18px;
-   font-family: Arial;
+   font-family: 'Open Sans', sans-serif;
 }
-footer {
-   text-align: center;
-   padding: 18px 0;
+
+h1, h2 {
+   text-transform: uppercase;
+   border-bottom: 4px solid #000;
+   display: inline-block;
+   font-weight: 800;
 }
+
+h1 {
+  font-size: 32px;
+}
+
+h2 {
+   font-size: 24px;
+   padding: 13px 0;
+   color: #fffebb;
+   border-bottom: 4px solid #fffebb;
+}
+
 img {
    display: block;
    margin: 0 auto;
+   width: 490px;
 }
-h1, h2 {
-   text-transform: uppercase;
-   border-bottom: 4px solid black;
-   display: inline-block;
-}
-h1 {
-   font-size: 36px;
-}
-h2 {
-   font-size: 27px;
-   padding: 14px;
-}
+
+
 ul {
    list-style: none;
    margin: 0;
    padding: 0;
+}
+
+li {
+   float: left;
+   width: 50%;
+   height: 96px;
+   outline: 3px solid #222222;
+   text-align: center;
+   line-height: 96px;
+   color: black;
+   background: white;
+}
+
+nav {
+	font-size: 24px;
+ 	float: right;
+}
+
+nav a {
+	text-decoration: none;
+  	color: black;
+	margin: 30px;
+	display: inline-block;
+}
+
+section {
+   background: #222222;
+   color: white;
+   overflow: auto;
+}
+
+footer {
+   text-align: center;
+   padding: 16px 0;
+   clear: both;
+}
+
+div {
+   font-size: 20px;
+   width: 46%;
+   padding: 2%;
+   display: inline-block;
+}
+.about {
+   float: left;
+}
+.services {
+   float: right;
+}
+.hero {
+   width: 100%;
+   display: block;
+   margin: 0;
 }
