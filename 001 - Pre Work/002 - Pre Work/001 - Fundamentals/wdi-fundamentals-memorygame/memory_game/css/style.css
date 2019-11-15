@@ -37,6 +37,9 @@ p {
    height: 0;
    font-size: 0;
 }
+.links {
+   color: blue;
+}
 a {
    font-family: "Raleway", sans-serif;
    color: #ffffff;
