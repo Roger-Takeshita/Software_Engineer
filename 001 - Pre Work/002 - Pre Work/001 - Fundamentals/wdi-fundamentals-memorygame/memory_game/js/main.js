@@ -25,12 +25,12 @@ var cards = [
 var cardsInPlay = [];
 
 function createBoard () {
-   var elementExits = document.querySelector('.p-msg');
+   var elementExits = document.querySelector('.div-msg');
    var divImgElement = document.createElement('div');
    
    cardsInPlay = [];
    if (elementExits != null) {
-      document.querySelector('.p-msg').remove();
+      document.querySelector('.div-msg').remove();
    }
    divImgElement.setAttribute('class', 'div-image');
    document.getElementById('game-board').appendChild(divImgElement);
@@ -49,26 +49,36 @@ function removeBoard() {
    document.querySelector('.div-image').remove();
 }
 
-function displayMsg(string) {
-   var msgElement = document.createElement('p');
+function displayMsg(string, flag) {
+   var msgDivElement = document.createElement('div');
 
    removeBoard();
-   msgElement.setAttribute('class', 'p-msg');
-   msgElement.textContent = string;
-   document.getElementById('game-board').appendChild(msgElement);
+   msgDivElement.setAttribute('class', 'div-msg');
+   var msgPElement = document.createElement('p');
+   if (flag) {
+      msgPElement.setAttribute('id','msg-ok')
+   } else {
+      msgPElement.setAttribute('id','msg-nok')
+   }
+   msgPElement.textContent = string;
+   document.getElementById('game-board').appendChild(msgDivElement);
+   document.querySelector('.div-msg').appendChild(msgPElement);
 }
 
 function checkForMatch () {
    var msg;
+   var msgFlag = false;
    if (cardsInPlay[0] === cardsInPlay[1]) {
       msg = "You found a match!";
+      msgFlag = true; 
       scoreCount += 1;
    } else {
       msg = "Sorry try again!";
+      msgFlag = false;
    }
 
    console.log(msg);
-   displayMsg(msg);
+   displayMsg(msg, msgFlag);
    updateScore();
 
    // setInterval(function(){ alert("Hello"); }, 4000);

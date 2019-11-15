@@ -87,6 +87,18 @@ footer {
    color: #F15B31;
    font-weight: 700;
 }
-.p-msg {
-   height: 323px;
+.div-msg {
+   height: 283px;
+}
+#msg-ok, #msg-nok {
+   line-height: 200px;
+   font-size: 60px;
+}
+
+#msg-ok {
+   color: green;
+}
+
+#msg-nok {
+   color: red;
 }
