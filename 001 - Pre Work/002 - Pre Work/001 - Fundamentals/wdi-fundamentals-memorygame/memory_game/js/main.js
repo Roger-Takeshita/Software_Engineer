@@ -1,3 +1,4 @@
+var scoreCount = 0;
 var cards = [
    {
       rank: "queen",
@@ -24,23 +25,57 @@ var cards = [
 var cardsInPlay = [];
 
 function createBoard () {
+   var elementExits = document.querySelector('.p-msg');
+   var divImgElement = document.createElement('div');
+   
+   cardsInPlay = [];
+   if (elementExits != null) {
+      document.querySelector('.p-msg').remove();
+   }
+   divImgElement.setAttribute('class', 'div-image');
+   document.getElementById('game-board').appendChild(divImgElement);
+
    for (let i=0 ; i<=3 ; i++) {
       var cardElement = document.createElement('img');
 
       cardElement.setAttribute('src', 'images/back.png');  // this method inserts an atribute .setAttribute('attributeName','attributeValue')
       cardElement.setAttribute('data-id',i);
       cardElement.addEventListener('click',flipCard);
-
-      document.getElementById('game-board').appendChild(cardElement)
+      document.querySelector('.div-image').appendChild(cardElement);
    }
 }
 
+function removeBoard() {
+   document.querySelector('.div-image').remove();
+}
+
+function displayMsg(string) {
+   var msgElement = document.createElement('p');
+
+   removeBoard();
+   msgElement.setAttribute('class', 'p-msg');
+   msgElement.textContent = string;
+   document.getElementById('game-board').appendChild(msgElement);
+}
+
 function checkForMatch () {
+   var msg;
    if (cardsInPlay[0] === cardsInPlay[1]) {
-      console.log("You found a match!");
+      msg = "You found a match!";
+      scoreCount += 1;
    } else {
-      console.log("Sorry try again");
+      msg = "Sorry try again!";
    }
+
+   console.log(msg);
+   displayMsg(msg);
+   updateScore();
+
+   // setInterval(function(){ alert("Hello"); }, 4000);
+   var timer = setInterval(function(){ 
+      createBoard();
+      clearInterval(timer);
+   }, 2500);  
 }
 
 function flipCard () {
@@ -55,4 +90,9 @@ function flipCard () {
       checkForMatch();
    }
 }
+
+function updateScore() {
+   document.querySelector('.score').textContent = "Your Score: " + scoreCount;
+}
+
 createBoard();

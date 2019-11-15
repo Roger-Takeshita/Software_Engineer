@@ -51,7 +51,7 @@ a {
    border-bottom: 2px solid transparent;
 }
 a:hover {
-   border-color: white;
+   border-color: gray;
 }
 body {
    text-align: center;
@@ -86,4 +86,7 @@ footer {
 .name {
    color: #F15B31;
    font-weight: 700;
+}
+.p-msg {
+   height: 323px;
 }
