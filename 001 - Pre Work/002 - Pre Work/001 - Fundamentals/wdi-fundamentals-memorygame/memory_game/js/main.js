@@ -97,7 +97,11 @@ function flipCard () {
    cardsInPlay.push(cards[cardId].rank)
    this.setAttribute('src',cards[cardId].cardImage);
    if (cardsInPlay.length === 2) {
-      checkForMatch();
+      var timer2 = setInterval(function(){ 
+         checkForMatch();
+         clearInterval(timer2);
+      }, 2500);
+      // checkForMatch();
    }
 }
 
