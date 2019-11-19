@@ -3,6 +3,13 @@
 # Links
 * [Homebrew](https://brew.sh/)
 * [VSCode](https://code.visualstudio.com/)
+* [iTerm2](https://iterm2.com/)
+* [iTerm2 Configuration](https://www.freecodecamp.org/news/how-to-configure-your-macos-terminal-with-zsh-like-a-pro-c0ab3f3c1156/)
+* [iTerm2 Themes](https://iterm2colorschemes.com/)
+* [Zshell](https://ohmyz.sh/)
+* [Zshell Agnoster Theme - Discussion](https://gist.github.com/agnoster/3712874)
+* [Zshell Agnoster Theme - Extra Config](https://github.com/agnoster/agnoster-zsh-theme/issues/39)
+* [Zshell Dracula Theme](https://draculatheme.com/zsh/)
 * [imgur](https://imgur.com)
 
 # <h1 id="summary">Summary</h1>
