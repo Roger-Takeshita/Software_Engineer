@@ -30,7 +30,7 @@
 
 [Go Back To Summary](#summary)
 
-## **Setup**
+### **Setup**
 
 * On terminal, type:
 
@@ -55,7 +55,7 @@
 [Go Back To Summary](#summary)
 
 
-## **Setup**
+### **Setup**
 
 ```bash
 ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
@@ -69,7 +69,7 @@ ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/
 
 * If brew doctor says `Your system is ready to brew`, then everything worked properly.
 
-## **Update Homebrew**
+### **Update Homebrew**
 
 * In the future, run brew update to get the latest Homebrew formulas, and brew upgrade to update to the latest versions of installed applications.
 
@@ -81,9 +81,9 @@ ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/
 
 [Go Back To Summary](#summary)
 
-## **MAC**
+### **MAC**
 
-### **Setup**
+#### **Setup**
 
    ```
    brew cask install visual-studio-code
@@ -104,7 +104,7 @@ ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/
 
 Create shortcuts for terminal Bash or Zshel.
 
-## **Zshell**
+### **Zshell**
 
 * Open terminal, type:
 
@@ -127,7 +127,7 @@ Create shortcuts for terminal Bash or Zshel.
       source ~/.zshrc
    ```
 
-## **Bash**
+### **Bash**
 
 * Open terminal, type:
 
@@ -154,7 +154,7 @@ Create shortcuts for terminal Bash or Zshel.
 
 [Go Back To Summary](#summary)
 
-## **Setup**
+### **Setup**
 
 * On terminal, type:
 
@@ -250,7 +250,7 @@ Create shortcuts for terminal Bash or Zshel.
 
 Node is a JavaScript engine for the backend. We use it to power our web servers and connect to our databases.
 
-## **Setup**
+### **Setup**
 
 * On terminal, type:
 
@@ -275,7 +275,7 @@ Node is a JavaScript engine for the backend. We use it to power our web servers 
 
 [Go Back To Summary](#summary)
 
-## **Setup**
+### **Setup**
 
 * Install the PostgreSQL database mangement system (DBMS) using Homebrew with this command:
 
@@ -302,7 +302,7 @@ Node is a JavaScript engine for the backend. We use it to power our web servers 
 
 This is a custom [Homebrew](https://brew.sh) tap for official MongoDB software.
 
-## **Setup**
+### **Setup**
 
 * You can add the custom tap in a MacOS terminal session using:
 
@@ -310,7 +310,7 @@ This is a custom [Homebrew](https://brew.sh) tap for official MongoDB software.
       brew tap mongodb/brew
    ```
 
-## **Installing Formulae**
+### **Installing Formulae**
 
 Once the tap has been added locally, you can install individual software packages with:
 
@@ -320,7 +320,7 @@ Once the tap has been added locally, you can install individual software package
       brew install mongodb-community
    ```
 
-## **Default Paths for the mongodb-community Formula**
+### **Default Paths for the mongodb-community Formula**
 
 In addition to installing the MongoDB server and tool binaries, the `mongodb-community` formula creates:
 
@@ -328,9 +328,9 @@ In addition to installing the MongoDB server and tool binaries, the `mongodb-com
 * a log directory path: `/usr/local/var/log/mongodb`
 * a data directory path: `/usr/local/var/mongodb`
 
-## **Starting the mongodb-community Server**
+### **Starting the mongodb-community Server**
 
-### **Run `mongod` as a service**
+#### **Run `mongod` as a service**
 
 * To have `launchd` start `mongod` immediately and also restart at login, use:
 
@@ -344,7 +344,7 @@ In addition to installing the MongoDB server and tool binaries, the `mongodb-com
       brew services stop mongodb-community
    ```
 
-### **Start `mongod` manually**
+#### **Start `mongod` manually**
 
 * If you don't want or need a background MongoDB service you can run:
 
@@ -359,7 +359,7 @@ In addition to installing the MongoDB server and tool binaries, the `mongodb-com
       mongo admin --eval "db.shutdownServer()"
    ```
 
-## **Additional Information**
+### **Additional Information**
 
 * This tap was created using the Homebrew documentation on [How to Create and Maintain a tap](https://github.com/Homebrew/brew/blob/master/docs/How-to-Create-and-Maintain-a-Tap.md).
 * You can find additional information in the [Homebrew project README](https://github.com/Homebrew/brew#homebrew).
@@ -370,7 +370,7 @@ In addition to installing the MongoDB server and tool binaries, the `mongodb-com
 
 Brew is also used to install Python 3. (Python 2 is already installed on your Mac.)
 
-## **Setup**
+### **Setup**
 * Install Python using Homebrew with this command:
 
    ```
@@ -395,7 +395,7 @@ Brew is also used to install Python 3. (Python 2 is already installed on your Ma
 
 We will use pip3 to install Django, a robust web framework for Python. We will be installing the latest version (2.x.x):
 
-## **Setup**
+### **Setup**
 
 * On terminal, type:
 
@@ -424,7 +424,7 @@ We will use pip3 to install Django, a robust web framework for Python. We will b
 
 * It should say (at least) `2.1.4`.
 
-## **Making a New Django Project**
+### **Making a New Django Project**
 
 * You should create a directory where you can put all of your work. Run:
 
@@ -448,7 +448,7 @@ We will use pip3 to install Django, a robust web framework for Python. We will b
 
 * This step will probably take a few minutes the first time you create a new Django project. The next time, it'll run much faster.
 
-## **Running a Django project**
+### **Running a Django project**
 
 * Next, go into your new project directory
 
@@ -466,7 +466,7 @@ We will use pip3 to install Django, a robust web framework for Python. We will b
 * You can type `ctrl + c` into your terminal to stop the Django application.
 * In this course, you're going to be running the `python manage.py runserver` and `ctrl + c` commands very, very often, so go ahead and memorize them now!
 
-## **Editing a Django project**
+### **Editing a Django project**
 
 * Finally, you can open up the project files in VS Code with the following command:
 
@@ -478,7 +478,7 @@ We will use pip3 to install Django, a robust web framework for Python. We will b
 * Poke around the project files as much as you like. Soon we'll be learning all about what makes a Django app tick. Isn't it exciting?
 * Now, close the editor and continue to the next step.
 
-## **Delete the new Django project**
+### **Delete the new Django project**
 
 * To keep your work directory clean, let's delete the new project you just created.
 * You are currently in your project directory. Check that by running:
