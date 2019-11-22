@@ -1,0 +1,27 @@
+body {
+   font-family: "Lucida Grande";
+   background-color: #dddddd;
+}
+h1 {
+   text-align: center;
+}
+
+p {
+   font-size: 24px;
+}
+#para2 {
+   color: red;
+   font-size: 36px;
+}
+
+.red-text {
+   color: purple;
+}
+
+p.red-text {
+   color: red;
+}
+
+div#div1 > p {
+   color: blue;
+}
