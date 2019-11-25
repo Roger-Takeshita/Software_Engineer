@@ -33,9 +33,9 @@ function render () {
          let countTime = 0;
          let lastMsgFlag = true;
          let countdownNewGame = 3;
-         var counter = setInterval(function(){ 
-            if (countTime > 5 && lastMsgFlag) {    // TODO: Fix this loop, it is not counting till 5.
-               lastMsgFlag = false;
+         var counter = setInterval(function(){
+            if (lastMsgFlag) { 
+               if (countTime > 3) lastMsgFlag = false;
             } else {
                newMessageElement.innerHTML = `<p id="new-message"><span style="color:red">${countdownNewGame}</span></p>`; 
                countdownNewGame -= 1;
@@ -94,7 +94,7 @@ function checkWinner () {
 
 function play () {
    let boardPositionElement = event.target.id;
-   console.log(boardPositionElement);
+   // console.log(boardPositionElement);
    if (boardPositionElement !== "board") {
       let row = boardPositionElement[1];
       let column = boardPositionElement[3];
