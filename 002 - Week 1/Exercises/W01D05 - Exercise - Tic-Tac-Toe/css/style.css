@@ -1,0 +1,103 @@
+.top-page {
+   text-align: center;
+   display: block;
+   justify-content: center;
+   align-items: center;
+   height: 200px;
+}
+
+h1 {
+   font-family: 'Press Start 2P', cursive;
+   font-size: 50px;
+   height: 60px;
+}
+
+#msg {
+   height: 100px;
+   font-family: 'Press Start 2P', cursive;
+   font-size: 12px;
+}
+
+#new-message {
+   font-size: 30px;
+   text-align: center;
+   display: flex;
+   justify-content: center;
+   align-items: center;
+}
+
+#symbols {
+   text-align: center;
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   justify-items: center;
+}
+
+#board {
+   display: grid;
+   grid-template-columns: repeat(3, 13vmin);
+   grid-template-rows: repeat(3, 13vmin);
+   grid-column-gap: 1vmin;
+   grid-row-gap: 1vmin;
+}
+
+#board-symbol {
+   display: grid;
+   grid-template-columns: repeat(2, 8vmin);
+   grid-template-rows: 8vmin;
+   grid-column-gap: 1vmin;
+   grid-row-gap: 1vmin;
+   font-family: 'Press Start 2P', cursive;
+   font-size: 25px;
+}
+
+.middle-page{
+   text-align: center;
+   display: flex;
+   justify-content: center;
+   align-items: center;
+}
+
+.block {
+   font-size: 80px;
+}
+
+.block, #symbol1, #symbol2 {
+   border: 2px solid black;
+   text-align: center;
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   justify-items: center;
+   font-family: 'Kavoon', cursive;
+}
+
+#symbol1, #symbol2 {
+   border: 2px dashed black;
+   font-size: 25px;
+}
+
+#board-symbol div:hover {
+   cursor: pointer;
+   color: red;
+   border: 2px solid red;
+}
+
+#board div:hover {
+   cursor: pointer;
+   color: red;
+}
+
+.row2 {
+   border-top: none;
+}
+.row0 {
+   border-bottom: none;
+}
+.column0 {
+   border-left: none;
+}
+.column2 {
+   border-right: none;
+}
