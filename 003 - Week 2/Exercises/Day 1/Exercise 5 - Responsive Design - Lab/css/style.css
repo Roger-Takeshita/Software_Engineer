@@ -1,0 +1,245 @@
+body {
+   margin: auto;
+   width: 400px;
+   text-align: center;
+   background-color: brown;
+   font-family: 'Acme', sans-serif;
+   grid-template-columns: 1fr 1fr;
+   grid-template-columns: auto auto auto ;
+   grid-template-areas: 
+   "header header"
+   "main main"
+   "footer footer";
+}
+header {
+   height: 92px;
+   width: 150px;
+   display: block;
+   text-align: left;
+   grid-area: header;
+   font-size: 20px;
+}
+nav {
+   height: 30px;
+   visibility: hidden;
+   display: flex;
+   flex-grow: 1;
+   flex-direction: column;
+   z-index: 1;
+   margin: 0 0 0 20px;
+}
+nav a {
+   text-decoration: none;
+   color: black;
+}
+nav img {
+   display: none;
+}
+nav div:first-child {
+   visibility: visible;
+}
+#menu-bar-logo img {
+   margin: 0 0 0 10px;
+   height: 60px;
+   width: 60px;
+}
+#menu-bar div:hover {
+   background-color: grey;
+}
+nav:hover {
+   visibility: visible;
+}
+#menu-bar-logo a {
+   text-decoration: none;
+   color: black;
+}
+main {
+   grid-area: main;
+   display: grid;
+   grid-template-columns: 1fr;
+   grid-template-rows: auto auto;
+   grid-template-areas: 
+      "posts"
+      "extra-info";
+      /* "post1 post2"
+      "post3 post4"
+      "post5 post6"
+      "extra extra"; */
+}
+.posts {
+   grid-area: posts;
+   display: grid;
+   grid-template-columns: 1fr;
+   grid-template-rows: 250px 250px 250px 250px 250px 250px;
+   grid-template-areas:
+      "post1"
+      "post2"
+      "post3"
+      "post4"
+      "post5" 
+      "post6";
+}
+.post {
+   grid-area: post;
+   color: white;
+   border: 1px solid red;
+   display: grid;
+   grid-template-columns: 1fr;
+   grid-template-rows: 60px auto 30px 30px;
+   grid-template-areas: 
+      "post";
+   z-index: -1;
+}
+.post-name {
+   font-size: 25px;
+   text-align: left;
+   margin: 25px 0 0 15px;
+}
+.post-name span {
+   font-size: 15px;
+   font-style: italic;
+   color: grey;
+}
+.post-msg1 {
+   font-size: 30px;
+   justify-content: center;
+   display: flex;
+}
+.post-msg2 {
+   text-align: left;
+   margin: 0 0 0 15px;
+}
+.post-btn {
+   text-align: left;
+   margin: 0 0 0 15px;
+}
+#post1 {
+   grid-area: post1;
+   flex-grow: 1;
+}
+#post2 {
+   grid-area: post2;
+}
+#post3 {
+   grid-area: post3;
+}
+#post4 {
+   grid-area: post4;
+}
+#post5 {
+   grid-area: post5;
+}
+#post6 {
+   grid-area: post6;
+}
+#extra-info {
+   grid-area: extra-info;
+}
+#extra-info {
+   height: 300px;
+   background-color: white;
+   align-items: center;
+   justify-content: center;
+   display: flex;
+}
+#extra-info img {
+   height: 30px;
+   width: 200px;
+}
+footer {
+   grid-area: footer;
+   height: 60px;
+   background-color: #8f1d1d;
+   align-items: center;
+   justify-content: center;
+   display: flex;
+   color: white;
+   font-size: 15px;
+}
+
+@media only screen and (min-width: 800px) {
+   body{
+      width: 800px;
+   }
+   .posts {
+      grid-area: posts;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: 250px 250px 250px;
+      grid-template-areas:
+         "post1 post2"
+         "post3 post4"
+         "post5 post6";
+   }
+   header {
+      height: 65px;
+      width: auto;
+      display: flex;
+      flex-grow: 1;
+      grid-area: header;
+      font-size: 20px;
+   }
+   #menu-bar {
+      flex-grow: 1;
+   }
+   nav {
+      height: 30px;
+      visibility: visible;
+      flex-grow: 1;
+      flex-direction: row;
+   }
+   nav div {
+      display: flex;
+      margin: 20px 10px 10px 10px;
+   }
+   nav > div:first-child {
+      display:none;
+      visibility: hidden;
+   }
+   nav > div:last-child {
+      margin-left: auto;
+   }
+   nav div:hover {
+      color: yellow;    //TODO: fix menu hover
+      background-color: grey;
+   }
+   #extra-info img {
+      height: 50px;
+      width: 400px;
+   }
+}
+
+@media only screen and (min-width: 1200px) {
+   body{
+      width: 1200px;
+   }
+   .posts {
+      grid-area: posts;
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      grid-template-rows: 250px 250px;
+      grid-template-areas:
+         "post1 post2 post3"
+         "post4 post5 post6";
+   }
+   header {
+      height: 65px;
+      width: auto;
+      display: flex;
+      flex-grow: 1;
+      grid-area: header;
+      font-size: 20px;
+   }
+   nav img {
+      display: inline;
+      height: 30px;
+      width: 30px;
+   }
+   #menu-bar div:hover {
+      background-color: yellow;  //TODO: fix menu hover
+   }
+   #extra-info img {
+      height: 90px;
+      width: 900px;
+   }
+}
