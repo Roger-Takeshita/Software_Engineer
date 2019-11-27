@@ -1,0 +1,56 @@
+* {
+   box-sizing: border-box;
+}
+ 
+body {
+   display: grid;
+   height: 100vh;
+   margin: 0;
+   font-family: Helvetica;
+   display: grid;
+   grid-template-columns: 1fr 4fr;     /*? 1fr - one fraction of the total size*/
+   grid-template-rows: 50px 1fr 30px;
+   grid-gap: 5px;
+}
+
+section {
+   display: flex;
+}
+
+nav {
+   display: flex;
+   background-color: #a2cbb6;
+   height: 50px;
+}
+
+nav div {
+   color: black;
+   font-size: 20px;
+   margin: 10px;
+}
+
+nav > div:last-child {
+   margin-left: auto;
+}
+
+aside {
+   background-color: #a2b4da;
+}
+
+main {
+   background-color: #f3dba8;
+}
+
+footer {
+   background-color: #a2cbb6;
+}
+
+.flex-ctr {
+   display: flex;
+   justify-content: center;
+   align-items: center;
+}
+
+nav, footer {
+   grid-column: 1 / 3;
+}
