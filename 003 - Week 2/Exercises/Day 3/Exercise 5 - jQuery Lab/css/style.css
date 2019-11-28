@@ -1,0 +1,84 @@
+body {
+   width: 100vw;
+   height: 100vh;
+   display: grid;
+   text-align: center;
+   justify-content: center; 
+   font-family: Arial, Helvetica, sans-serif;
+   grid-template-columns: 1fr;
+   grid-template-rows:auto auto auto;
+   grid-template-areas: 
+      "header"
+      "main"
+      "footer";
+}
+header {
+   grid-area: header;
+   height: 100px;
+   margin: auto;
+}
+main {
+   grid-area: main;
+   margin: 0 auto;
+}
+footer {
+   grid-area: footer;
+   margin: auto;
+}
+#rectangle {
+   grid-area: rectangle;
+   width: 400px;
+}
+#title {
+   background-color: #94c47d;
+   color: white;
+   height: 40px;
+   margin: auto;
+   line-height: 40px;
+   font-weight: bolder;
+}
+#new-skill {
+   grid-area: new-skill;
+   display: flex;
+}
+.btn-delete {
+   grid-area: btn-delete;
+   width: 25px;
+   height: 25px;
+   margin: auto 5px;
+   color: white;
+   font-size: 15px;
+   font-weight: bolder;
+   background-color: #e16666;
+}
+.btn-delete:hover {
+   background-color: red;
+}
+div p {
+   color: orange;
+   flex-grow: 1;
+   text-align: left;
+}
+.skills {
+   min-height: 100px;
+}
+#skill {
+   grid-area: skill;
+}
+.btn-submit {
+   grid-area: button-submit;
+   width: 90px;
+   height: 30px;
+   border: 2px solid #94c47d;
+   color: #94c47d;;
+   font-weight: bolder;
+}
+.btn-submit:hover {
+   background-color: green;
+   color: white;
+ }
+input {
+   width: 290px;
+   height: 25px;
+   border: 2px solid #94c47d;
+}
