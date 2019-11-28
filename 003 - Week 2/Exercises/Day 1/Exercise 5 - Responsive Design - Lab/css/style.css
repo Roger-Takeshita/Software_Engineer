@@ -49,10 +49,6 @@ nav div:first-child {
 nav:hover {
    visibility: visible;
 }
-#menu-bar-logo a {
-   text-decoration: none;
-   color: black;
-}
 main {
    grid-area: main;
    display: grid;
@@ -61,10 +57,6 @@ main {
    grid-template-areas: 
       "posts"
       "extra-info";
-      /* "post1 post2"
-      "post3 post4"
-      "post5 post6"
-      "extra extra"; */
 }
 .posts {
    grid-area: posts;
@@ -82,7 +74,6 @@ main {
 .post {
    grid-area: post;
    color: white;
-   border: 1px solid red;
    display: grid;
    grid-template-columns: 1fr;
    grid-template-rows: 60px auto 30px 30px;
@@ -115,7 +106,6 @@ main {
 }
 #post1 {
    grid-area: post1;
-   flex-grow: 1;
 }
 #post2 {
    grid-area: post2;
@@ -132,10 +122,14 @@ main {
 #post6 {
    grid-area: post6;
 }
-#extra-info {
-   grid-area: extra-info;
+#post1, #post3, #post5 {
+   background-color: #a63839;
+}
+#post2, #post4, #post6 {
+   background-color: brown;
 }
 #extra-info {
+   grid-area: extra-info;
    height: 300px;
    background-color: white;
    align-items: center;
@@ -183,14 +177,16 @@ footer {
       flex-grow: 1;
    }
    nav {
-      height: 30px;
+      height:65px;
       visibility: visible;
       flex-grow: 1;
       flex-direction: row;
    }
    nav div {
       display: flex;
-      margin: 20px 10px 10px 10px;
+      margin: 0px 10px 0px 10px;
+      align-content: center;
+      align-items: center;
    }
    nav > div:first-child {
       display:none;
@@ -199,9 +195,11 @@ footer {
    nav > div:last-child {
       margin-left: auto;
    }
-   nav div:hover {
-      color: yellow;    //TODO: fix menu hover
-      background-color: grey;
+   #post1, #post4, #post5 {
+      background-color: #a63839;
+   }
+   #post2, #post3, #post6 {
+      background-color: brown;
    }
    #extra-info img {
       height: 50px;
@@ -235,8 +233,11 @@ footer {
       height: 30px;
       width: 30px;
    }
-   #menu-bar div:hover {
-      background-color: yellow;  //TODO: fix menu hover
+   #post1, #post3, #post5 {
+      background-color: #a63839;
+   }
+   #post2, #post4, #post6 {
+      background-color: brown;
    }
    #extra-info img {
       height: 90px;
