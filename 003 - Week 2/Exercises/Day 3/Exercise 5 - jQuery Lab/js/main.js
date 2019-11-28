@@ -1,8 +1,15 @@
+let $input = $("input")
+
 $(".btn-submit").on("click", submit);
 
 $("body").on("keypress", function(key) {
-   if (key.keyCode === 13) {
-      submit();
+   if (!$input.is(":focus")) {
+      console.log("input is not focused")
+      $input.focus();
+   } else {
+      if (key.keyCode === 13) {
+         submit();
+      }
    }
 });
 
