@@ -1,0 +1,109 @@
+* {
+   box-sizing: border-box;
+}
+
+body {
+   margin: 0;
+   font-family: Helvetica;
+   display: grid;
+   text-align: center;
+   align-content: center;
+   align-items: center;
+   margin: 50px auto;
+   justify-content: center;
+   background-color: #0f5f5f;
+   width: 300px;
+   grid-template-columns: 1fr;
+   grid-template-rows: auto auto auto auto auto auto;
+   grid-template-areas: 
+      "pic"
+      "name"
+      "review"
+      "job"
+      "price-info"
+      "contact";
+
+}
+#photo {
+   height: 150px;
+   widows: 150px;
+   margin: 10px 0 auto;
+   border-radius: 50%;
+   border: 10px solid#6acb89;
+}
+#star {
+   height: 20px;
+   width: 20px;
+}
+#pic {
+   grid-area: pic;
+   height: 170px;
+   background-color: white;
+}
+#name {
+   grid-area: name;
+   height: 50px;
+   line-height: 50px;
+   font-size: 30px;
+   background-color: white;
+}
+#review {
+   grid-area: review;
+   height: 30px;
+   bottom: 0px;
+   background-color: #dcdada;
+}
+#job {
+   grid-area: job;
+   height: 35px;
+   font-size: 16px;
+   /* margin: 0 auto ; */
+   top: 0;
+   background-color: #dcdada;
+}
+#job-description {
+   grid-area: job-description;
+   display: none;
+}
+#price-info {
+   grid-area: price-info;
+   height: 70px;
+   line-height: 5px;
+   background-color: white;
+   justify-content: center;
+   text-align: center;
+   align-content: center;
+}
+span {
+   font-size: 20px;
+   font-weight: bolder;
+}
+#call-btn {
+   grid-area: call-btn;
+   flex-grow: 1;
+   line-height: 50px;
+   font-size: 20px;
+   font-weight: bolder;
+   background-color: #6cd86c;
+   color: darkgreen;
+}
+#msg-btn {
+   grid-area: msg-btn;
+   flex-grow: 1;
+   line-height: 50px;
+   font-size: 20px;
+   font-weight: bolder;
+   color: darkgreen;
+}
+#contact {
+   background-color: lightgreen;
+   grid-area: contact;
+   height: 50px;
+   display: flex;
+   text-align: center;
+   justify-content: center;
+   grid-template-columns: 1fr 1fr;
+   grid-template-rows: 1fr;
+   grid-template-areas: 
+      "call-btn msg-btn";
+}
