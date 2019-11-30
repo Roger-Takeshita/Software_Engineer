@@ -1,0 +1,76 @@
+body {
+   height: 100vh;
+   width: 100vw;
+   display: grid;
+   text-align: center;
+   vertical-align: center;
+   font-family: 'Press Start 2P', cursive;
+}
+main {
+   grid-template-columns: 1fr;
+   grid-template-rows: auto auto auto;
+   grid-template-areas: 
+      "top-board"
+      "board"
+      "bottom-board";
+}
+#top-board {
+   grid-area: top-board;
+   height: 60px;
+}
+#board {
+   grid-area: board;
+   display: grid;
+   text-align: center;
+   justify-content: center;
+   grid-template-columns: repeat(15, 35px);
+   grid-template-rows: repeat(15, 35px);
+   grid-column-gap: 1px;
+   grid-row-gap: 1px;
+
+}
+.cell {
+   background-color: grey;
+   height: 30px;
+   width: 30px;
+   border-left: 5px solid darkgrey;
+   border-bottom: 5px solid darkgrey;
+   border-right: 5px solid white;
+   border-top: 5px solid white;
+}
+.flagged {
+   background-image: url('../images/flag.png');
+   background-size: cover;
+   background-color: lightgray;
+}
+.clicked {
+   background-color: lightgrey;
+}
+#bottom-board {
+   grid-area: bottom-board;
+   text-align: center;
+   justify-content: center;
+}
+footer {
+   display: flex;
+   text-align: center;
+   align-content: center;
+   align-items: center;
+   justify-content: center;
+   bottom: 0;
+   height: 50px;
+   line-height: 50px;
+   font-family: 'Fredoka One', cursive;
+}
+footer a {
+   text-decoration: none;
+   color: black;
+}
+footer span {
+   font-family: 'Dancing Script', cursive;
+   font-size: 15px;
+}
+footer img {
+   height: 20px;
+   width: 20px;
+}
