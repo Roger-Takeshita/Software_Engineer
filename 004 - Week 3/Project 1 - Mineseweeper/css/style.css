@@ -46,6 +46,34 @@ main {
 .clicked {
    background-color: lightgrey;
 }
+div.clicked.b {
+   background-image: url('../images/explosion.png');
+   background-size: cover;
+   background-color: lightgray;
+   font-size: 0;
+}
+div.clicked.n {
+   background-color: lightgray;
+   font-size: 0;
+}
+div.clicked.one {
+   color: green;
+}
+div.clicked.two {
+   color: blue;
+}
+div.clicked.three {
+   color: yellow;
+}
+div.clicked.four {
+   color: darkorchid;
+}
+div.clicked.five {
+   color: orange;
+}
+div.clicked.six {
+   color: red;
+}
 #bottom-board {
    grid-area: bottom-board;
    text-align: center;
