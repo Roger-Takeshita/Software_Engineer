@@ -1,38 +1,86 @@
 body {
    height: 100vh;
-   width: 100vw;
-   display: grid;
-   text-align: center;
-   vertical-align: center;
+   /* width: 100vw; */
    font-family: 'Press Start 2P', cursive;
+   text-align: center;
+   align-content: center;
+   justify-items: center;
+   justify-content: center;
 }
 main {
    grid-template-columns: 1fr;
+   grid-template-rows: 1fr;
+   grid-template-areas: 
+      "complete-board";
+}
+#complete-board {
+   grid-template-columns: auto;
    grid-template-rows: auto auto auto;
    grid-template-areas: 
       "top-board"
       "board"
       "bottom-board";
+   background-color: grey;
+   border-radius: 30px;
+   border: 3px solid lightgrey;
+   padding: 30px;
 }
 #top-board {
    grid-area: top-board;
    height: 60px;
+   background-color: lightgrey;
+   border-radius: 15px;
+   font-family: 'Segment7Standard';
+   font-weight: normal;
+   font-style: italic;
+   display: flex;
+   margin: 0 0 15px 0;
+   grid-template-columns: 1fr 1fr 1fr;
+   grid-template-rows: auto;
+   grid-template-areas:
+      "timer start-btn num-bombs";
+}
+#timer {
+   grid-area: timer;
+   flex-grow: 1;
+}
+#timer p, #num-bombs p {
+   color: red;
+   line-height: 30px;
+}
+#start-btn {
+   grid-area: start-btn;
+   width: 60px;
+   margin: 5px;
+   border-radius: 10px;
+}
+#num-bombs {
+   grid-area: num-bombs;
+   flex-grow: 1;
 }
 #board {
    grid-area: board;
-   display: grid;
    text-align: center;
+   align-content: center;
+   justify-items: center;
    justify-content: center;
+   display: grid;
    grid-template-columns: repeat(15, 35px);
    grid-template-rows: repeat(15, 35px);
    grid-column-gap: 1px;
    grid-row-gap: 1px;
 
 }
+#bottom-board {
+   grid-area: bottom-board;
+   /* height: 30px;
+   background-color: yellow; */
+}
 .cell {
    background-color: grey;
    height: 30px;
    width: 30px;
+   line-height: 30px;
    border-left: 5px solid darkgrey;
    border-bottom: 5px solid darkgrey;
    border-right: 5px solid white;
@@ -73,11 +121,6 @@ div.clicked.five {
 }
 div.clicked.six {
    color: red;
-}
-#bottom-board {
-   grid-area: bottom-board;
-   text-align: center;
-   justify-content: center;
 }
 footer {
    display: flex;

@@ -1,4 +1,6 @@
 let board = [];
+let timer;
+let bombs = 0;
 
 class Board {
    constructor (rows, columns) {
@@ -18,7 +20,7 @@ class Board {
       $("#board").html(boardHTML);
    }
    dropBombs () {
-      let numBombs = Math.floor(this.columns*this.rows*0.30);
+      let numBombs = bombs = Math.floor(this.columns*this.rows*0.20);
       while (numBombs > 0) {
          let randRow = Math.floor(Math.random() * this.rows);
          let randColumn = Math.floor(Math.random() * this.columns);
@@ -83,35 +85,91 @@ class Board {
 
 function checkPosition (row, column) {
    let rowColumn = board[row][column];
+   if (rowColumn === "b") {
+      clearInterval(timer);
+   }
    $(`#r${row}c${column}`).html(rowColumn)
-   // switch ($rowColumn) {
-   //    case "b":
-   //          $(`#r${row}c${column}`).html("b")
-   //       break
-   //    default :
-   //          $(`#r${row}c${column}`).html("b")
-   //       break;
+   // if (rowColumn === "n") {
+   //    for (let i = row-1 ; i <= row+1 ; i++) {
+   //       if (i === -1 || i === this.rows) continue
+   //       for (let j = column-1 ; j <= column+1 ; j++) {
+   //          if (j === -1 || j === this.columns) continue
+   //          if (board[i][j] === "b") {
+   //             sum += 1;
+   //          }
+   //       }
+   //    }
    // }
 }
-
 
 let newBoard = new Board(15, 15);
 newBoard.create()
 console.table(board);
+
+$("#start-btn").click(function () {
+   console.log("entrou");
+   let sec = 0;
+   let min = 0;
+   let hour = 0;
+   if (bombs < 10) {
+      $("#num-bombs p").html(`00${bombs}`);
+   } else if (bombs < 100) {
+      $("#num-bombs p").html(`0${bombs}`);
+   } else {
+      $("#num-bombs p").html(bombs);
+   }
+   timer = setInterval(() => {
+      sec += 1;
+      if (sec<10) {
+         $("#second").text(`0${sec}`);
+      } else {
+         $("#second").text(sec);
+      }
+      if (sec === 59){
+         sec = 0;
+         min += 1;
+         if (min<10) {
+            $("#minute").text(`0${min}`);
+         } else {
+            $("#minute").text(min);
+         }
+      }
+      if (min === 59) {
+         min = 0;
+         hour += 1;
+         if (hour<10) {
+            $("#hour").text(`0${hour}`);
+         } else {
+            if (hour > 23) {
+               hour = 0;
+            }
+            $("#hour").text(hour);
+         }
+      }
+   }, 1000);
+});
 
 $(".cell").contextmenu(function(event) {
    event.preventDefault();
    if (!this.classList.contains("clicked")) {
       if (this.classList.contains("flagged")) {
          this.classList.remove('flagged')
+         bombs += 1;
       } else {
          this.classList.add('flagged')
-         // $(`#${this.id}`).html('<img class="flag" src="images/flag.png">');
+         bombs -= 1;
       }
       console.log(this.id);
       console.log(this);
    }
-})
+   if (bombs < 10) {
+      $("#num-bombs p").html(`00${bombs}`);
+   } else if (bombs < 100) {
+      $("#num-bombs p").html(`0${bombs}`);
+   } else {
+      $("#num-bombs p").html(bombs);
+   }
+});
 
 $("#board").on("click", ".cell", function() {
    let clickedRow, clickedColumn;
