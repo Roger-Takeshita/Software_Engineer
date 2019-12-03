@@ -95,7 +95,14 @@ function checkPosition (row, column) {
       $("#start-btn").removeClass("playing");
       $("#start-btn").addClass("lose");
    }
-   $(`#r${row}c${column}`).html(rowColumn)
+   console.log(rowColumn);
+   if (rowColumn != "c" && rowColumn != "n") {
+      $(`#r${row}c${column}`).html(rowColumn)
+      board[row][column] = "c"; 
+   } else {
+      checkEmptySpots(row,column);
+   }
+   console.table(board);
    // if (rowColumn === "n") {
    //    for (let i = row-1 ; i <= row+1 ; i++) {
    //       if (i === -1 || i === this.rows) continue
@@ -108,45 +115,127 @@ function checkPosition (row, column) {
    //    }
    // }
 }
-
+let recursiveCheck = [];
 function checkEmptySpots (row, column) {
+   let reCheckRow, reCheckColumn;
    for (let i = 1 ; i <= 4 ; i++) {
       switch (i) {
          case 1:  //! Left
-            if (column >= 0) {
-               if (board[row][column-1] === "n") {
-                  checkEmptySpots(row, column-1);
-               }
+            if (column >= 0 && column < board[0].length) {
+               if (column-1 >= 0 && board[row][column-1] != "c") {
+                  let $cell = $(`#r${row}c${column-1}`);
+                  if (board[row][column-1] === "n") {
+                     $cell.html(board[row][column-1]);
+                     $cell.addClass("clicked");
+                     board[row][column-1] = "c";
+                     recursiveCheck.push(`r${row}c${column}`);
+                     checkEmptySpots(row, column-1);
+                  } else {
+                     $cell.html(board[row][column-1]);
+                     $cell.addClass("clicked");
+                     board[row][column-1] = "c";
+
+                     // $cell.html(board[row+1][column-1]);
+                     // $cell.addClass("clicked");
+                     // board[row+1][column-1] = "c";
+
+                     // $cell.html(board[row-1][column-1]);
+                     // $cell.addClass("clicked");
+                     // board[row-1][column-1] = "c";
+                  }
+               }   
             }
             break
          case 2:  //! Up
-            if (row >= 0) {
-               if (board[row+1][column] === "n") {
-                  checkEmptySpots(row+1, column);
-               }
+            if (row >= 0 &&  row < board.length) {
+               if (row+1 < board.length && board[row+1][column] != "c") {
+                  let $cell = $(`#r${row+1}c${column}`);
+                  if (board[row+1][column] === "n") {
+                     $cell.html(board[row+1][column]);
+                     $cell.addClass("clicked");
+                     board[row+1][column] = "c";
+                     recursiveCheck.push(`r${row}c${column}`);
+                     checkEmptySpots(row+1, column);
+                  } else {
+                     $cell.html(board[row+1][column]);
+                     $cell.addClass("clicked");
+                     board[row+1][column] = "c";
+
+                     // $cell.html(board[row+1][column+1]);
+                     // $cell.addClass("clicked");
+                     // board[row+1][column+1] = "c";
+
+                     // $cell.html(board[row+1][column-1]);
+                     // $cell.addClass("clicked");
+                     // board[row+1][column-1] = "c";
+                  }
+               } 
             }
             break
          case 3:  //! Right
-            if (column < board[0].length) {
-               if (board[row+1][column] === "n") {
-                  checkEmptySpots(row, column+1);
+            if (column >= 0 && column < board[0].length) {
+               if (column+1 < board[0].length && board[row][column+1] != "c") {
+                  let $cell = $(`#r${row}c${column+1}`);
+                  if (board[row][column+1] === "n") {
+                     $cell.html(board[row][column+1]);
+                     $cell.addClass("clicked");
+                     board[row][column+1] = "c";
+                     recursiveCheck.push(`r${row}c${column}`);
+                     checkEmptySpots(row, column+1);
+                  } else {
+                     $cell.html(board[row][column+1]);
+                     $cell.addClass("clicked");
+                     board[row][column+1] = "c";
+
+                     // $cell.html(board[row+1][column+1]);
+                     // $cell.addClass("clicked");
+                     // board[row+1][column+1] = "c";
+
+                     // $cell.html(board[row-1][column+1]);
+                     // $cell.addClass("clicked");
+                     // board[row-1][column+1] = "c";
+                  }
                }
             }
             break;
          case 4:  //! Down
-            if (row < board.length) {
-               if (board[row+1][column] === "n") {
-                  checkEmptySpots(row-1, column);
+            if (row >= 0 && row < board.length) {
+               if (row-1 >= 0 && board[row-1][column] != "c") {
+                  let $cell = $(`#r${row-1}c${column}`);
+                  if (board[row-1][column] === "n") {
+                     $cell.html(board[row-1][column])
+                     $cell.addClass("clicked");
+                     board[row-1][column] = "c";
+                     recursiveCheck.push(`r${row}c${column}`);
+                     checkEmptySpots(row-1, column);
+                  } else {
+                     $cell.html(board[row-1][column]);
+                     $cell.addClass("clicked");
+                     board[row-1][column] = "c";
+
+                     // $cell.html(board[row-1][column+1]);
+                     // $cell.addClass("clicked");
+                     // board[row-1][column+1] = "c";
+
+                     // $cell.html(board[row-1][column-1]);
+                     // $cell.addClass("clicked");
+                     // board[row-1][column-1] = "c";
+                  }
                }
             }
             break;
          default:
+               reCheckRow = parseInt(recursiveCheck[recursiveCheck.length].slice(1,recursiveCheck[recursiveCheck.length].indexOf("c")));
+               reCheckColumn = parseInt(recursiveCheck[recursiveCheck.length].slice(recursiveCheck[recursiveCheck.length].indexOf("c")+1,recursiveCheck[recursiveCheck.length].length));
+               recursiveCheck.pop();
+               checkEmptySpots(reCheckRow, reCheckColumn);
             break;
       }
+      // console.table(board);
    }
 }
 
-let newBoard = new Board(10, 10);
+let newBoard = new Board(20, 20);
 newBoard.create()
 console.table(board);
 
@@ -224,8 +313,8 @@ $("#board").on("click", ".cell", function() {
    let clickedRow, clickedColumn;
    if (!this.classList.contains("flagged")) {
       this.classList.add('clicked')
-      clickedRow = this.id.slice(1,this.id.indexOf("c"));
-      clickedColumn = this.id.slice(this.id.indexOf("c")+1,this.id.length);
+      clickedRow = parseInt(this.id.slice(1,this.id.indexOf("c")));
+      clickedColumn = parseInt(this.id.slice(this.id.indexOf("c")+1,this.id.length));
       checkPosition(clickedRow, clickedColumn);
       // console.log(this.id);
       // console.log(this);

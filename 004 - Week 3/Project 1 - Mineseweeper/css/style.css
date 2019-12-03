@@ -203,7 +203,7 @@ input {
    background-color: lightgray;
 }
 .clicked {
-   background-color: grey;
+   /* background-color: grey; */
    border: 1px solid darkgrey;
 }
 .clicked:hover {
