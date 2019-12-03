@@ -17,10 +17,15 @@ class Board {
             boardHTML += `<div class="cell" id="r${i}c${j}"></div>`;
          }
       }
-      $("#board").html(boardHTML);
+      let $board = $('#board')
+      $board.html(boardHTML);
+      $board.css({
+         'grid-template-columns': `repeat(${this.columns}, 35px)`,
+         'grid-template-rows': `repeat(${this.rows}, 35px)`
+      })
    }
    dropBombs () {
-      let numBombs = bombs = Math.floor(this.columns*this.rows*0.20);
+      let numBombs = bombs = Math.floor(this.columns*this.rows*0.15);
       while (numBombs > 0) {
          let randRow = Math.floor(Math.random() * this.rows);
          let randColumn = Math.floor(Math.random() * this.columns);
@@ -87,6 +92,8 @@ function checkPosition (row, column) {
    let rowColumn = board[row][column];
    if (rowColumn === "b") {
       clearInterval(timer);
+      $("#start-btn").removeClass("playing");
+      $("#start-btn").addClass("lose");
    }
    $(`#r${row}c${column}`).html(rowColumn)
    // if (rowColumn === "n") {
@@ -102,72 +109,114 @@ function checkPosition (row, column) {
    // }
 }
 
-let newBoard = new Board(15, 15);
+function checkEmptySpots (row, column) {
+   for (let i = 1 ; i <= 4 ; i++) {
+      switch (i) {
+         case 1:  //! Left
+            if (column >= 0) {
+               if (board[row][column-1] === "n") {
+                  checkEmptySpots(row, column-1);
+               }
+            }
+            break
+         case 2:  //! Up
+            if (row >= 0) {
+               if (board[row+1][column] === "n") {
+                  checkEmptySpots(row+1, column);
+               }
+            }
+            break
+         case 3:  //! Right
+            if (column < board[0].length) {
+               if (board[row+1][column] === "n") {
+                  checkEmptySpots(row, column+1);
+               }
+            }
+            break;
+         case 4:  //! Down
+            if (row < board.length) {
+               if (board[row+1][column] === "n") {
+                  checkEmptySpots(row-1, column);
+               }
+            }
+            break;
+         default:
+            break;
+      }
+   }
+}
+
+let newBoard = new Board(10, 10);
 newBoard.create()
 console.table(board);
 
 $("#start-btn").click(function () {
-   console.log("entrou");
-   let sec = 0;
-   let min = 0;
-   let hour = 0;
-   if (bombs < 10) {
-      $("#num-bombs p").html(`00${bombs}`);
-   } else if (bombs < 100) {
-      $("#num-bombs p").html(`0${bombs}`);
-   } else {
-      $("#num-bombs p").html(bombs);
-   }
-   timer = setInterval(() => {
-      sec += 1;
-      if (sec<10) {
-         $("#second").text(`0${sec}`);
+   if (timer === undefined) {
+      let sec = 0;
+      let min = 0;
+      let hour = 0;
+      $("#start-btn").removeClass("start");
+      $("#start-btn").addClass("playing");
+      if (bombs < 10) {
+         $("#num-bombs p").html(`00${bombs}`);
+      } else if (bombs < 100) {
+         $("#num-bombs p").html(`0${bombs}`);
       } else {
-         $("#second").text(sec);
+         $("#num-bombs p").html(bombs);
       }
-      if (sec === 59){
-         sec = 0;
-         min += 1;
-         if (min<10) {
-            $("#minute").text(`0${min}`);
+      timer = setInterval(() => {
+         sec += 1;
+         if (sec<10) {
+            $("#second").text(`0${sec}`);
          } else {
-            $("#minute").text(min);
+            $("#second").text(sec);
          }
-      }
-      if (min === 59) {
-         min = 0;
-         hour += 1;
-         if (hour<10) {
-            $("#hour").text(`0${hour}`);
-         } else {
-            if (hour > 23) {
-               hour = 0;
+         if (sec === 59){
+            sec = 0;
+            min += 1;
+            if (min<10) {
+               $("#minute").text(`0${min}`);
+            } else {
+               $("#minute").text(min);
             }
-            $("#hour").text(hour);
          }
-      }
-   }, 1000);
+         if (min === 59) {
+            min = 0;
+            hour += 1;
+            if (hour<10) {
+               $("#hour").text(`0${hour}`);
+            } else {
+               if (hour > 23) {
+                  hour = 0;
+               }
+               $("#hour").text(hour);
+            }
+         }
+      }, 1000);
+   }
 });
 
 $(".cell").contextmenu(function(event) {
    event.preventDefault();
-   if (!this.classList.contains("clicked")) {
-      if (this.classList.contains("flagged")) {
-         this.classList.remove('flagged')
-         bombs += 1;
-      } else {
-         this.classList.add('flagged')
-         bombs -= 1;
+   if (bombs > 0) {
+      if (!this.classList.contains("clicked")) {
+         if (this.classList.contains("flagged")) {
+            this.classList.remove('flagged')
+            bombs += 1;
+         } else {
+            this.classList.add('flagged')
+            bombs -= 1;
+         }
+         // console.log(this.id);
+         // console.log(this);
       }
-      console.log(this.id);
-      console.log(this);
-   }
-   if (bombs < 10) {
-      $("#num-bombs p").html(`00${bombs}`);
-   } else if (bombs < 100) {
-      $("#num-bombs p").html(`0${bombs}`);
-   } else {
-      $("#num-bombs p").html(bombs);
+      if (bombs < 10) {
+         $("#num-bombs p").html(`00${bombs}`);
+      } else if (bombs < 100) {
+         $("#num-bombs p").html(`0${bombs}`);
+      } else {
+         $("#num-bombs p").html(bombs);
+      }
    }
 });
 
@@ -175,11 +224,11 @@ $("#board").on("click", ".cell", function() {
    let clickedRow, clickedColumn;
    if (!this.classList.contains("flagged")) {
       this.classList.add('clicked')
-      console.log(this.id);
       clickedRow = this.id.slice(1,this.id.indexOf("c"));
       clickedColumn = this.id.slice(this.id.indexOf("c")+1,this.id.length);
       checkPosition(clickedRow, clickedColumn);
-      console.log(this);
+      // console.log(this.id);
+      // console.log(this);
       // console.log(clickedRow,clickedColumn);
    }
 });

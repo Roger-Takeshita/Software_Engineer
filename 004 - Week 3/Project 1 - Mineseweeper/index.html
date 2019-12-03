@@ -18,9 +18,24 @@
    </header>
    <main>
       <div id="complete-board">
+         <div id="settings">
+            <div id="columns">
+               <input type="columns">
+               <p>&nbsp;Columns&nbsp;</p>
+            </div>
+            <div id="rows">
+               <input type="rows">
+               <p>&nbsp;Rows&nbsp;&nbsp;&nbsp;&nbsp;</p>
+            </div>
+            <div id="settings-btn">
+               <button id="settings-button">Set Settings</button>
+            </div>
+         </div>
          <div id="top-board">
             <div id="timer"><p><span id="hour">00</span>:<span id="minute">00</span>:<span id="second">00</span></p></div>
-            <button id="start-btn">Start</button>
+            <div>
+               <button class="start" id="start-btn"></button>
+            </div>
             <div id="num-bombs"><p>000</p></div>
          </div>
          <div id="board"></div>
