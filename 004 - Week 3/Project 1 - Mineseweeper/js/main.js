@@ -1,6 +1,7 @@
 let board = [];
 let timer;
 let bombs = 0;
+let recursiveCheck = [];
 
 class Board {
    constructor (rows, columns) {
@@ -105,10 +106,11 @@ function checkPosition (row, column) {
    }
 }
 
-let recursiveCheck = [];
+
 function checkEmptySpots (row, column) {
    let checkRow, checkColumn;
    let direction = "";
+   let cellDom;
    for (let i = 1 ; i <= 4 ; i++) {
       switch (i) {
          case 1:  //! Left
@@ -117,17 +119,19 @@ function checkEmptySpots (row, column) {
                checkColumn = column;
             } else {
                checkColumn = column - 1;
+               if (board[checkRow][checkColumn] === "c") continue;
             }
             direction = "left";
             break
-         case 2:  //! Down
-            if (row === board.length-1) {
+         case 2:  //! Top
+            checkColumn = column;
+            if (row === 0) {
                checkRow = row;
             } else {
-               checkRow = row + 1;
+               checkRow = row - 1;
+               if (board[checkRow][checkColumn] === "c") continue;
             }
-            checkColumn = column;
-            direction = "bottom";
+            direction = "top"
             break
          case 3:  //! Right
             checkRow = row;
@@ -135,19 +139,53 @@ function checkEmptySpots (row, column) {
                checkColumn = column;
             } else {
                checkColumn = column + 1;
+               if (board[checkRow][checkColumn] === "c") continue;
             }
             direction = "right";
             break;
-         case 4:  //! Up
-            if (row === 0) {
+         case 4:  //! Bottom
+            checkColumn = column;
+            if (row === board.length-1) {
                checkRow = row;
             } else {
-               checkRow = row - 1;
+               checkRow = row + 1;
+               // if (board[checkRow][checkColumn] === "c") continue;
             }
-            checkColumn = column;
-            direction = "top"
+            direction = "bottom";
             break;
          default:
+            /* let rowCorner, columnCorner;
+            for (let i = 1 ; i <= 4 ; i++) {
+               switch (i) {
+                  case 1:              //! Top Left Corner
+                     rowCorner = row+1;
+                     columnCorner = column-1;
+                     break;
+                  case 2:              //! Top Right Corner
+                     rowCorner = row+1;
+                     columnCorner = column+1;
+                     break;
+                  case 3:              //! Bottom Right Corner
+                     rowCorner = row-1;
+                     columnCorner = column+1;
+                     break;
+                  case 4:              //! Bottom Left Corner
+                     rowCorner = row-1;
+                     columnCorner = column-1;
+                     break;
+               }
+               if (board[rowCorner][columnCorner] != "c") {
+                  let rowColumnCorner = `#r${rowCorner}c${columnCorner}`;
+                  $(rowColumnCorner).html(board[rowCorner][columnCorner]);
+                  $(rowColumnCorner).addClass("clicked");
+                  if (board[rowCorner][columnCorner] === "n") {
+                     board[rowCorner][columnCorner] = "c";
+                     recursiveCheck.push(rowColumnCorner);
+                     checkEmptySpots(checkRow, checkColumn);
+                  }
+                  board[rowCorner][columnCorner] = "c";
+               }
+            } */
             let reCheckRow = parseInt(recursiveCheck[recursiveCheck.length].slice(1,recursiveCheck[recursiveCheck.length].indexOf("c")));
             let reCheckColumn = parseInt(recursiveCheck[recursiveCheck.length].slice(recursiveCheck[recursiveCheck.length].indexOf("c")+1,recursiveCheck[recursiveCheck.length].length));
             recursiveCheck.pop();
@@ -155,17 +193,17 @@ function checkEmptySpots (row, column) {
             break;
       }
       if (board[checkRow][checkColumn] != "c") {
-         let $cell = $(`#r${checkRow}c${checkColumn}`);
+         cellDom = `#r${checkRow}c${checkColumn}`;
          if (board[checkRow][checkColumn] === "n") {
-            $cell.html(board[checkRow][checkColumn]);
+            $(cellDom).html(board[checkRow][checkColumn]);
                        board[checkRow][checkColumn] = "c";
-            $cell.addClass("clicked");
-            recursiveCheck.push(`r${checkRow}c${checkColumn}`);
+            $(cellDom).addClass("clicked");
+            recursiveCheck.push(cellDom);
             checkEmptySpots(checkRow, checkColumn);
          } else {
-            $cell.html(board[checkRow][checkColumn]);
+            $(cellDom).html(board[checkRow][checkColumn]);
                         board[checkRow][checkColumn] = "c";
-            $cell.addClass("clicked");
+            $(cellDom).addClass("clicked");
             if (checkRow === 0 || checkRow === board.length-1 || checkColumn === 0 || checkColumn === board[0].length-1) {
                if (checkColumn === 0 && board[checkRow][checkColumn+1] != "c") {
                   $(`#r${checkRow}c${checkColumn+1}`).html(board[checkRow][checkColumn+1]);
@@ -186,20 +224,22 @@ function checkEmptySpots (row, column) {
                }
             } else {
                if (direction === "left" || direction === "right") {
-                  if (board[checkRow+1][checkColumn] === "n") {
+                  if (board[checkRow+1][checkColumn] === "n") {               //! Right
                      $(`#r${checkRow+1}c${checkColumn}`).html(board[checkRow+1][checkColumn]);
                                                               board[checkRow+1][checkColumn] = "c";
                      $(`#r${checkRow+1}c${checkColumn}`).addClass("clicked");
+                     recursiveCheck.push(`r${checkRow+1}c${checkColumn}`);
                      checkEmptySpots(checkRow+1, checkColumn);
                   } else if (board[checkRow+1][checkColumn] != "c") {
                      $(`#r${checkRow+1}c${checkColumn}`).html(board[checkRow+1][checkColumn]);
                                                               board[checkRow+1][checkColumn] = "c";
                      $(`#r${checkRow+1}c${checkColumn}`).addClass("clicked");
                   }
-                  if (board[checkRow-1][checkColumn] === "n") {
+                  if (board[checkRow-1][checkColumn] === "n") {               //! Left
                      $(`#r${checkRow-1}c${checkColumn}`).html(board[checkRow-1][checkColumn]);
                                                               board[checkRow-1][checkColumn] = "c";
                      $(`#r${checkRow-1}c${checkColumn}`).addClass("clicked");
+                     recursiveCheck.push(`r${checkRow-1}c${checkColumn}`);
                      checkEmptySpots(checkRow-1, checkColumn);
                   } else if (board[checkRow-1][checkColumn] != "c") {
                      $(`#r${checkRow-1}c${checkColumn}`).html(board[checkRow-1][checkColumn]);
@@ -208,20 +248,22 @@ function checkEmptySpots (row, column) {
                   }
                }
                if (direction === "top" || direction === "bottom") {
-                  if (board[checkRow][checkColumn+1] === "n") {
+                  if (board[checkRow][checkColumn+1] === "n") {               //! Bottom
                      $(`#r${checkRow}c${checkColumn+1}`).html(board[checkRow][checkColumn+1]);
                                                               board[checkRow][checkColumn+1] = "c";
                      $(`#r${checkRow}c${checkColumn+1}`).addClass("clicked");
+                     recursiveCheck.push(`r${checkRow}c${checkColumn+1}`);
                      checkEmptySpots(checkRow, checkColumn+1);
                   } else if (board[checkRow][checkColumn+1] != "c") {
                      $(`#r${checkRow}c${checkColumn+1}`).html(board[checkRow][checkColumn+1]);
                                                               board[checkRow][checkColumn+1] = "c";
                      $(`#r${checkRow}c${checkColumn+1}`).addClass("clicked");
                   }
-                  if (board[checkRow][checkColumn-1] === "n") {
+                  if (board[checkRow][checkColumn-1] === "n") {               //! Top
                      $(`#r${checkRow}c${checkColumn-1}`).html(board[checkRow][checkColumn-1]);
                                                               board[checkRow][checkColumn-1] = "c";
                      $(`#r${checkRow}c${checkColumn-1}`).addClass("clicked");
+                     recursiveCheck.push(`r${checkRow}c${checkColumn-1}`);
                      checkEmptySpots(checkRow, checkColumn-1);
                   } else if (board[checkRow][checkColumn-1] != "c") {
                      $(`#r${checkRow}c${checkColumn-1}`).html(board[checkRow][checkColumn-1]);

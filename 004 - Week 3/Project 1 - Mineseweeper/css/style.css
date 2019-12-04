@@ -53,8 +53,8 @@ input {
    grid-area: rows;
 }
 #settings-btn {
+   margin-right: auto;
    grid-area: settings-btn;
-   background-color: black;
    /* display: grid; */
    /* background-color: black; */
 }
@@ -188,6 +188,7 @@ input {
    height: 30px;
    width: 30px;
    line-height: 30px;
+   /* box-shadow:0px 0px 5px 0px black inset; */
    border-left: 5px solid grey;
    border-bottom: 5px solid grey;
    border-right: 5px solid white;
