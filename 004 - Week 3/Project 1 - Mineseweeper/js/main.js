@@ -95,143 +95,143 @@ function checkPosition (row, column) {
       $("#start-btn").removeClass("playing");
       $("#start-btn").addClass("lose");
    }
-   console.log(rowColumn);
    if (rowColumn != "c" && rowColumn != "n") {
       $(`#r${row}c${column}`).html(rowColumn)
       board[row][column] = "c"; 
+      console.table(board);
    } else {
       checkEmptySpots(row,column);
+      console.table(board);
    }
-   console.table(board);
-   // if (rowColumn === "n") {
-   //    for (let i = row-1 ; i <= row+1 ; i++) {
-   //       if (i === -1 || i === this.rows) continue
-   //       for (let j = column-1 ; j <= column+1 ; j++) {
-   //          if (j === -1 || j === this.columns) continue
-   //          if (board[i][j] === "b") {
-   //             sum += 1;
-   //          }
-   //       }
-   //    }
-   // }
 }
+
 let recursiveCheck = [];
 function checkEmptySpots (row, column) {
-   let reCheckRow, reCheckColumn;
+   let checkRow, checkColumn;
+   let direction = "";
    for (let i = 1 ; i <= 4 ; i++) {
       switch (i) {
          case 1:  //! Left
-            if (column >= 0 && column < board[0].length) {
-               if (column-1 >= 0 && board[row][column-1] != "c") {
-                  let $cell = $(`#r${row}c${column-1}`);
-                  if (board[row][column-1] === "n") {
-                     $cell.html(board[row][column-1]);
-                     $cell.addClass("clicked");
-                     board[row][column-1] = "c";
-                     recursiveCheck.push(`r${row}c${column}`);
-                     checkEmptySpots(row, column-1);
-                  } else {
-                     $cell.html(board[row][column-1]);
-                     $cell.addClass("clicked");
-                     board[row][column-1] = "c";
-
-                     // $cell.html(board[row+1][column-1]);
-                     // $cell.addClass("clicked");
-                     // board[row+1][column-1] = "c";
-
-                     // $cell.html(board[row-1][column-1]);
-                     // $cell.addClass("clicked");
-                     // board[row-1][column-1] = "c";
-                  }
-               }   
+            checkRow = row;
+            if (column === 0) {
+               checkColumn = column;
+            } else {
+               checkColumn = column - 1;
             }
+            direction = "left";
             break
-         case 2:  //! Up
-            if (row >= 0 &&  row < board.length) {
-               if (row+1 < board.length && board[row+1][column] != "c") {
-                  let $cell = $(`#r${row+1}c${column}`);
-                  if (board[row+1][column] === "n") {
-                     $cell.html(board[row+1][column]);
-                     $cell.addClass("clicked");
-                     board[row+1][column] = "c";
-                     recursiveCheck.push(`r${row}c${column}`);
-                     checkEmptySpots(row+1, column);
-                  } else {
-                     $cell.html(board[row+1][column]);
-                     $cell.addClass("clicked");
-                     board[row+1][column] = "c";
-
-                     // $cell.html(board[row+1][column+1]);
-                     // $cell.addClass("clicked");
-                     // board[row+1][column+1] = "c";
-
-                     // $cell.html(board[row+1][column-1]);
-                     // $cell.addClass("clicked");
-                     // board[row+1][column-1] = "c";
-                  }
-               } 
+         case 2:  //! Down
+            if (row === board.length-1) {
+               checkRow = row;
+            } else {
+               checkRow = row + 1;
             }
+            checkColumn = column;
+            direction = "bottom";
             break
          case 3:  //! Right
-            if (column >= 0 && column < board[0].length) {
-               if (column+1 < board[0].length && board[row][column+1] != "c") {
-                  let $cell = $(`#r${row}c${column+1}`);
-                  if (board[row][column+1] === "n") {
-                     $cell.html(board[row][column+1]);
-                     $cell.addClass("clicked");
-                     board[row][column+1] = "c";
-                     recursiveCheck.push(`r${row}c${column}`);
-                     checkEmptySpots(row, column+1);
-                  } else {
-                     $cell.html(board[row][column+1]);
-                     $cell.addClass("clicked");
-                     board[row][column+1] = "c";
-
-                     // $cell.html(board[row+1][column+1]);
-                     // $cell.addClass("clicked");
-                     // board[row+1][column+1] = "c";
-
-                     // $cell.html(board[row-1][column+1]);
-                     // $cell.addClass("clicked");
-                     // board[row-1][column+1] = "c";
-                  }
-               }
+            checkRow = row;
+            if (column === board[0].length-1) {
+               checkColumn = column;
+            } else {
+               checkColumn = column + 1;
             }
+            direction = "right";
             break;
-         case 4:  //! Down
-            if (row >= 0 && row < board.length) {
-               if (row-1 >= 0 && board[row-1][column] != "c") {
-                  let $cell = $(`#r${row-1}c${column}`);
-                  if (board[row-1][column] === "n") {
-                     $cell.html(board[row-1][column])
-                     $cell.addClass("clicked");
-                     board[row-1][column] = "c";
-                     recursiveCheck.push(`r${row}c${column}`);
-                     checkEmptySpots(row-1, column);
-                  } else {
-                     $cell.html(board[row-1][column]);
-                     $cell.addClass("clicked");
-                     board[row-1][column] = "c";
-
-                     // $cell.html(board[row-1][column+1]);
-                     // $cell.addClass("clicked");
-                     // board[row-1][column+1] = "c";
-
-                     // $cell.html(board[row-1][column-1]);
-                     // $cell.addClass("clicked");
-                     // board[row-1][column-1] = "c";
-                  }
-               }
+         case 4:  //! Up
+            if (row === 0) {
+               checkRow = row;
+            } else {
+               checkRow = row - 1;
             }
+            checkColumn = column;
+            direction = "top"
             break;
          default:
-               reCheckRow = parseInt(recursiveCheck[recursiveCheck.length].slice(1,recursiveCheck[recursiveCheck.length].indexOf("c")));
-               reCheckColumn = parseInt(recursiveCheck[recursiveCheck.length].slice(recursiveCheck[recursiveCheck.length].indexOf("c")+1,recursiveCheck[recursiveCheck.length].length));
-               recursiveCheck.pop();
-               checkEmptySpots(reCheckRow, reCheckColumn);
+            let reCheckRow = parseInt(recursiveCheck[recursiveCheck.length].slice(1,recursiveCheck[recursiveCheck.length].indexOf("c")));
+            let reCheckColumn = parseInt(recursiveCheck[recursiveCheck.length].slice(recursiveCheck[recursiveCheck.length].indexOf("c")+1,recursiveCheck[recursiveCheck.length].length));
+            recursiveCheck.pop();
+            checkEmptySpots(reCheckRow, reCheckColumn);
             break;
       }
-      // console.table(board);
+      if (board[checkRow][checkColumn] != "c") {
+         let $cell = $(`#r${checkRow}c${checkColumn}`);
+         if (board[checkRow][checkColumn] === "n") {
+            $cell.html(board[checkRow][checkColumn]);
+                       board[checkRow][checkColumn] = "c";
+            $cell.addClass("clicked");
+            recursiveCheck.push(`r${checkRow}c${checkColumn}`);
+            checkEmptySpots(checkRow, checkColumn);
+         } else {
+            $cell.html(board[checkRow][checkColumn]);
+                        board[checkRow][checkColumn] = "c";
+            $cell.addClass("clicked");
+            if (checkRow === 0 || checkRow === board.length-1 || checkColumn === 0 || checkColumn === board[0].length-1) {
+               if (checkColumn === 0 && board[checkRow][checkColumn+1] != "c") {
+                  $(`#r${checkRow}c${checkColumn+1}`).html(board[checkRow][checkColumn+1]);
+                                                           board[checkRow][checkColumn+1] = "c";
+                  $(`#r${checkRow}c${checkColumn+1}`).addClass("clicked");
+               } else if (checkRow === 0 && board[checkRow+1][checkColumn] != "c") {
+                  $(`#r${checkRow+1}c${checkColumn}`).html(board[checkRow+1][checkColumn]);
+                                                           board[checkRow+1][checkColumn] = "c";
+                  $(`#r${checkRow+1}c${checkColumn}`).addClass("clicked");
+               } else if (checkColumn === board[0].length-1 && board[checkRow][checkColumn-1] != "c") {
+                  $(`#r${checkRow}c${checkColumn-1}`).html(board[checkRow][checkColumn-1]);
+                                                           board[checkRow][checkColumn-1] = "c";
+                  $(`#r${checkRow}c${checkColumn-1}`).addClass("clicked");
+               } else if (checkRow === board.length-1 && board[checkRow-1][checkColumn] != "c") {
+                  $(`#r${checkRow-1}c${checkColumn}`).html(board[checkRow-1][checkColumn]);
+                                                           board[checkRow-1][checkColumn] = "c";
+                  $(`#r${checkRow-1}c${checkColumn}`).addClass("clicked");
+               }
+            } else {
+               if (direction === "left" || direction === "right") {
+                  if (board[checkRow+1][checkColumn] === "n") {
+                     $(`#r${checkRow+1}c${checkColumn}`).html(board[checkRow+1][checkColumn]);
+                                                              board[checkRow+1][checkColumn] = "c";
+                     $(`#r${checkRow+1}c${checkColumn}`).addClass("clicked");
+                     checkEmptySpots(checkRow+1, checkColumn);
+                  } else if (board[checkRow+1][checkColumn] != "c") {
+                     $(`#r${checkRow+1}c${checkColumn}`).html(board[checkRow+1][checkColumn]);
+                                                              board[checkRow+1][checkColumn] = "c";
+                     $(`#r${checkRow+1}c${checkColumn}`).addClass("clicked");
+                  }
+                  if (board[checkRow-1][checkColumn] === "n") {
+                     $(`#r${checkRow-1}c${checkColumn}`).html(board[checkRow-1][checkColumn]);
+                                                              board[checkRow-1][checkColumn] = "c";
+                     $(`#r${checkRow-1}c${checkColumn}`).addClass("clicked");
+                     checkEmptySpots(checkRow-1, checkColumn);
+                  } else if (board[checkRow-1][checkColumn] != "c") {
+                     $(`#r${checkRow-1}c${checkColumn}`).html(board[checkRow-1][checkColumn]);
+                                                              board[checkRow-1][checkColumn] = "c";
+                     $(`#r${checkRow-1}c${checkColumn}`).addClass("clicked");
+                  }
+               }
+               if (direction === "top" || direction === "bottom") {
+                  if (board[checkRow][checkColumn+1] === "n") {
+                     $(`#r${checkRow}c${checkColumn+1}`).html(board[checkRow][checkColumn+1]);
+                                                              board[checkRow][checkColumn+1] = "c";
+                     $(`#r${checkRow}c${checkColumn+1}`).addClass("clicked");
+                     checkEmptySpots(checkRow, checkColumn+1);
+                  } else if (board[checkRow][checkColumn+1] != "c") {
+                     $(`#r${checkRow}c${checkColumn+1}`).html(board[checkRow][checkColumn+1]);
+                                                              board[checkRow][checkColumn+1] = "c";
+                     $(`#r${checkRow}c${checkColumn+1}`).addClass("clicked");
+                  }
+                  if (board[checkRow][checkColumn-1] === "n") {
+                     $(`#r${checkRow}c${checkColumn-1}`).html(board[checkRow][checkColumn-1]);
+                                                              board[checkRow][checkColumn-1] = "c";
+                     $(`#r${checkRow}c${checkColumn-1}`).addClass("clicked");
+                     checkEmptySpots(checkRow, checkColumn-1);
+                  } else if (board[checkRow][checkColumn-1] != "c") {
+                     $(`#r${checkRow}c${checkColumn-1}`).html(board[checkRow][checkColumn-1]);
+                                                              board[checkRow][checkColumn-1] = "c";
+                     $(`#r${checkRow}c${checkColumn-1}`).addClass("clicked");
+                  }
+               }
+            }
+         }
+      }
    }
 }
 
