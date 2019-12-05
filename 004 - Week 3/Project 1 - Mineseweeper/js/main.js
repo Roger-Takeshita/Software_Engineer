@@ -1,6 +1,6 @@
-let board, bombs, timer;
-let boardRows = 20;
-let boardColumns = 20;
+let board, bombs, timer, newBoard;
+let boardRows = 14;
+let boardColumns = 14;
 
 function init () {
    board = [];
@@ -51,9 +51,9 @@ class Board {
       let sum = 0;
       let $cell = $(`#r${row}c${column}`);
       for (let i = row-1 ; i <= row+1 ; i++) {
-         if (i === -1 || i === this.rows) continue
+         if (i === -1 || i >= this.rows) continue
          for (let j = column-1 ; j <= column+1 ; j++) {
-            if (j === -1 || j === this.columns) continue
+            if (j === -1 || j >= this.columns) continue
             if (board[i][j].bomb) {
                sum += 1;
             }
@@ -259,6 +259,7 @@ function mouseLeftClick (rowColumn) {
       let cellBoard = board[clickedRow][clickedColumn];
       let startButtonElement = document.getElementById("start-btn");
       let cellElement = document.getElementById(`r${clickedRow}c${clickedColumn}`);
+      let boardElement = document.getElementById("board");
       
       if (!cellBoard.flagged && !cellBoard.clicked) {
          if (cellBoard.bomb === true) {
@@ -288,6 +289,8 @@ function mouseLeftClick (rowColumn) {
                   cellBoard.clicked = true;
                }
             }
+            boardElement.removeEventListener("click", mouseLeftClick);
+            boardElement.removeEventListener("contextmenu", mouseRightClick);
          } else if (!cellBoard.clicked && cellBoard.value != 0) {
             cellElement.innerHTML = cellBoard.value; 
             cellElement.classList.add("clicked");
@@ -298,27 +301,55 @@ function mouseLeftClick (rowColumn) {
       }
    }
 }
+function clearUI () {
+   clearInterval(timer);
+   document.getElementById("timer").innerHTML = "<p>00:00:00</p>";
+   document.getElementById("board").removeEventListener("click", mouseLeftClick);
+   document.getElementById("board").removeEventListener("contextmenu", mouseRightClick);
+   document.getElementById("num-bombs").innerHTML = "<p>000</p>"
+   document.getElementById("start-btn").classList.remove("playing");
+   document.getElementById("start-btn").classList.remove("lose");
+   document.getElementById("start-btn").classList.add("start");
+}
+document.getElementById("settings-button").addEventListener("click", function() {
+   possibleRows = document.getElementById("rows-value").value;
+   possibleColumns = document.getElementById("columns-value").value;
+   if (possibleRows === "" && possibleColumns === "") {
+      alert(`The default board is ${boardRows} Rows x ${boardColumns} Columns`);
+      init();
+      newBoard = new Board(boardRows, boardColumns);
+      newBoard.create()
+      clearUI();
+   } else if (typeof parseInt(possibleRows) !== "number" || typeof parseInt(possibleColumns) !== "number") {
+      alert("Please insert a valid number!");
+   } else {
+      boardRows = possibleRows;
+      boardColumns = possibleColumns;
+      init();
+      newBoard = new Board(boardRows, boardColumns);
+      newBoard.create()
+      clearUI();
+   }
+});
 
-init();
-let newBoard = new Board(boardRows, boardColumns);
-newBoard.create()
-
-$("#start-btn").click(function () {
+document.getElementById("start-btn").addEventListener("click", function() {
    let btnStatus = document.getElementById("start-btn");
-   let timerElement = document.getElementById("timer");
    let secString = minString = hourString = "00";
+   let timerElement = document.getElementById("timer");
+   let boardElement = document.getElementById("board");
+   let bombsElement = document.getElementById("num-bombs");
    if (timer === undefined || btnStatus.classList.contains("start")) {
       let sec = 0;
       let min = 0;
       let hour = 0;
-      $("#start-btn").removeClass("start");
-      $("#start-btn").addClass("playing");
+      btnStatus.classList.remove("start");
+      btnStatus.classList.add("playing");
       if (bombs < 10) {
-         $("#num-bombs p").html(`00${bombs}`);
+         bombsElement.innerHTML = `<p>00${bombs}</p>`
       } else if (bombs < 100) {
-         $("#num-bombs p").html(`0${bombs}`);
+         bombsElement.innerHTML = `<p>0${bombs}</p>`
       } else {
-         $("#num-bombs p").html(bombs);
+         bombsElement.innerHTML = `<p>${bombs}</p>`
       }
       timer = setInterval(() => {
          sec += 1;
@@ -326,7 +357,6 @@ $("#start-btn").click(function () {
             secString = `0${sec}`;
          } else {
             secString = sec;
-            // $("#second").text(sec);
          }
          if (sec === 59){
             sec = 0;
@@ -342,38 +372,38 @@ $("#start-btn").click(function () {
             hour += 1;
             if (hour<10) {
                hourString = `0${hour}`;
-               // $("#hour").text(`0${hour}`);
             } else {
                if (hour > 23) {
                   hour = 0;
                }
                hourString = hour;
-               // $("#hour").text(hour);
             }
          }
          timerElement.innerHTML = `<p>${hourString}:${minString}:${secString}</p>`
       }, 1000);
-      document.getElementById("board").addEventListener("click", mouseLeftClick);
-      document.getElementById("board").addEventListener("contextmenu", mouseRightClick);
+      boardElement.addEventListener("click", mouseLeftClick);
+      boardElement.addEventListener("contextmenu", mouseRightClick);
    } else if (btnStatus.classList.contains("playing")){
       btnStatus.classList.remove("playing");
       btnStatus.classList.add("start");
       clearInterval(timer);
       init();
       newBoard = new Board(boardRows, boardColumns);
-      newBoard.create()
-      document.getElementById("timer").innerHTML = "<p>00:00:00</p>";
-      document.getElementById("board").addEventListener("click", mouseLeftClick);
-      document.getElementById("board").addEventListener("contextmenu", mouseRightClick);
+      newBoard.create();
+      timerElement.innerHTML = "<p>00:00:00</p>";
+      boardElement.removeEventListener("click", mouseLeftClick);
+      boardElement.removeEventListener("contextmenu", mouseRightClick);
+      bombsElement.innerHTML = "<p>000</p>"
    } else if (btnStatus.classList.contains("lose")) {
       btnStatus.classList.remove("lose");
       btnStatus.classList.add("start");
       clearInterval(timer)
       init();
       newBoard = new Board(boardRows, boardColumns);
-      newBoard.create()
-      document.getElementById("timer").innerHTML = "<p>00:00:00</p>";
-      document.getElementById("board").addEventListener("click", mouseLeftClick);
-      document.getElementById("board").addEventListener("contextmenu", mouseRightClick);
+      newBoard.create();
+      timerElement.innerHTML = "<p>00:00:00</p>";
+      boardElement.removeEventListener("click", mouseLeftClick);
+      boardElement.removeEventListener("contextmenu", mouseRightClick);
+      bombsElement.innerHTML = "<p>000</p>"
    }
 });
