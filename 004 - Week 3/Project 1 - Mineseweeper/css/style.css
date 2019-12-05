@@ -211,16 +211,16 @@ input {
    background-color: lightgray;
    cursor: auto;
 }
-div.clicked.b {
+div.clicked.bomb {
    background-image: url('../images/explosion.png');
    background-size: cover;
    background-color: lightgray;
    font-size: 0;
 }
-div.clicked.n {
+/* div.clicked.n {
    background-color: lightgray;
    font-size: 0;
-}
+} */
 div.clicked.one {
    color: green;
 }

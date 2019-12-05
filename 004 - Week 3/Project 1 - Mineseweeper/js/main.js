@@ -8,13 +8,19 @@ class Board {
       this.rows = rows;
       this.columns = columns;
    }
-
    drawEmptyBoard () {
       let boardHTML = "";
       for (let i = 0 ; i < this.rows ; i++) {
          board.push([]);
          for (let j = 0 ; j < this.columns ; j++) {
-            board[i].push(0);
+            board[i].push({
+               xPos: i,
+               yPos: j,
+               value: 0,
+               bomb: false,
+               clicked: false,
+               flagged: false
+            });
             boardHTML += `<div class="cell" id="r${i}c${j}"></div>`;
          }
       }
@@ -30,48 +36,48 @@ class Board {
       while (numBombs > 0) {
          let randRow = Math.floor(Math.random() * this.rows);
          let randColumn = Math.floor(Math.random() * this.columns);
-         if (board[randRow][randColumn] === 0) {
-            board[randRow][randColumn] = "b"
-            $(`#r${randRow}c${randColumn}`).addClass("b");;
+         if (board[randRow][randColumn].bomb === false) {
+            board[randRow][randColumn].bomb = true;
+            $(`#r${randRow}c${randColumn}`).addClass("bomb");;
             numBombs -= 1;
          }
       }
    }
    dropNumbers (row, column) {
       let sum = 0;
-      let $rowColumn = $(`#r${row}c${column}`);
+      let $cell = $(`#r${row}c${column}`);
       for (let i = row-1 ; i <= row+1 ; i++) {
          if (i === -1 || i === this.rows) continue
          for (let j = column-1 ; j <= column+1 ; j++) {
             if (j === -1 || j === this.columns) continue
-            if (board[i][j] === "b") {
+            if (board[i][j].bomb) {
                sum += 1;
             }
          }
       }
       if (sum === 0) {
-         board[row][column] = "n";
-         $rowColumn.addClass("n");
+         // board[row][column].value = 0;
+         $cell.addClass("empty");
       } else {
-         board[row][column] = sum;
+         board[row][column].value = sum;
          switch (sum) {
             case 1:
-               $rowColumn.addClass("one");
+               $cell.addClass("one");
                break;
             case 2:
-               $rowColumn.addClass("two");
+               $cell.addClass("two");
                break;
             case 3:
-               $rowColumn.addClass("three");
+               $cell.addClass("three");
                break;
             case 4:
-               $rowColumn.addClass("four");
+               $cell.addClass("four");
                break;
             case 5:
-               $rowColumn.addClass("five");
+               $cell.addClass("five");
                break;
             case 6:
-               $rowColumn.addClass("six");
+               $cell.addClass("six");
                break;
          }
       }
@@ -81,196 +87,124 @@ class Board {
       this.dropBombs();
       for (let i = 0 ; i < this.rows ; i++) {
          for (let j = 0 ; j < this.columns ; j++) {
-            if (board[i][j] !== "b") {
+            if (!board[i][j].bomb) {
                this.dropNumbers(i, j);
+            } else {
+               board[i][j].value = 10;
             }
          }
       }
    }
 }
 
-function checkPosition (row, column) {
-   let rowColumn = board[row][column];
-   if (rowColumn === "b") {
-      clearInterval(timer);
-      $("#start-btn").removeClass("playing");
-      $("#start-btn").addClass("lose");
-   }
-   if (rowColumn != "c" && rowColumn != "n") {
-      $(`#r${row}c${column}`).html(rowColumn)
-      board[row][column] = "c"; 
-      console.table(board);
-   } else {
-      checkEmptySpots(row,column);
-      console.table(board);
-   }
-}
-
-
 function checkEmptySpots (row, column) {
    let checkRow, checkColumn;
-   let direction = "";
-   let cellDom;
-   for (let i = 1 ; i <= 4 ; i++) {
+   let cellDom, cellBoard;
+   let lastItemFlag = false;
+   for (let i = 1 ; i <= 8 ; i++) {
       switch (i) {
-         case 1:  //! Left
+         case 1:  //! (X  , Y-1) - Left
             checkRow = row;
             if (column === 0) {
                checkColumn = column;
             } else {
                checkColumn = column - 1;
-               if (board[checkRow][checkColumn] === "c") continue;
             }
-            direction = "left";
-            break
-         case 2:  //! Top
+            if (board[checkRow][checkColumn].clicked) continue;
+            break;
+         case 2:  //! (X-1, Y-1) - Left Top Corner
+            if (row === 0) {
+               checkRow = row;
+            } else {
+               checkRow = row - 1;
+            }
+            if (column === 0) {
+               checkColumn = column;
+            } else {
+               checkColumn = column - 1;
+            }
+            if (board[checkRow][checkColumn].clicked) continue;
+            break;
+         case 3:  //! (X-1,   Y) - Top
             checkColumn = column;
             if (row === 0) {
                checkRow = row;
             } else {
                checkRow = row - 1;
-               if (board[checkRow][checkColumn] === "c") continue;
             }
-            direction = "top"
-            break
-         case 3:  //! Right
-            checkRow = row;
-            if (column === board[0].length-1) {
+            if (board[checkRow][checkColumn].clicked) continue;
+            break;
+         case 4:  //! (X-1, Y+1) - Right Top Corner
+            if (row === 0) {
+               checkRow = row;
+            } else {
+               checkRow = row - 1;
+            }
+            if (column === board[0].length - 1) {
                checkColumn = column;
             } else {
                checkColumn = column + 1;
-               if (board[checkRow][checkColumn] === "c") continue;
             }
-            direction = "right";
+            if (board[checkRow][checkColumn].clicked) continue;
             break;
-         case 4:  //! Bottom
-            checkColumn = column;
-            if (row === board.length-1) {
+         case 5:  //! (X  , Y+1) - Right
+            checkRow = row;
+            if (column === board[0].length - 1) {
+               checkColumn = column;
+            } else {
+               checkColumn = column + 1;
+            }
+            if (board[checkRow][checkColumn].clicked) continue;
+            break;
+         case 6:  //! (X+1, Y+1) - Right Bottom Corner
+            if (row === board.length - 1) {
                checkRow = row;
             } else {
                checkRow = row + 1;
-               // if (board[checkRow][checkColumn] === "c") continue;
             }
-            direction = "bottom";
+            if (column === board[0].length - 1) {
+               checkColumn = column;
+            } else {
+               checkColumn = column + 1;
+            }
+            if (board[checkRow][checkColumn].clicked) continue;
             break;
-         default:
-            /* let rowCorner, columnCorner;
-            for (let i = 1 ; i <= 4 ; i++) {
-               switch (i) {
-                  case 1:              //! Top Left Corner
-                     rowCorner = row+1;
-                     columnCorner = column-1;
-                     break;
-                  case 2:              //! Top Right Corner
-                     rowCorner = row+1;
-                     columnCorner = column+1;
-                     break;
-                  case 3:              //! Bottom Right Corner
-                     rowCorner = row-1;
-                     columnCorner = column+1;
-                     break;
-                  case 4:              //! Bottom Left Corner
-                     rowCorner = row-1;
-                     columnCorner = column-1;
-                     break;
-               }
-               if (board[rowCorner][columnCorner] != "c") {
-                  let rowColumnCorner = `#r${rowCorner}c${columnCorner}`;
-                  $(rowColumnCorner).html(board[rowCorner][columnCorner]);
-                  $(rowColumnCorner).addClass("clicked");
-                  if (board[rowCorner][columnCorner] === "n") {
-                     board[rowCorner][columnCorner] = "c";
-                     recursiveCheck.push(rowColumnCorner);
-                     checkEmptySpots(checkRow, checkColumn);
-                  }
-                  board[rowCorner][columnCorner] = "c";
-               }
-            } */
-            let reCheckRow = parseInt(recursiveCheck[recursiveCheck.length].slice(1,recursiveCheck[recursiveCheck.length].indexOf("c")));
-            let reCheckColumn = parseInt(recursiveCheck[recursiveCheck.length].slice(recursiveCheck[recursiveCheck.length].indexOf("c")+1,recursiveCheck[recursiveCheck.length].length));
-            recursiveCheck.pop();
-            checkEmptySpots(reCheckRow, reCheckColumn);
+         case 7:  //! (X+1,   Y) - Bottom
+            checkColumn = column;
+            if (row === board.length - 1) {
+               checkRow = row;
+            } else {
+               checkRow = row + 1;
+            }
+            if (board[checkRow][checkColumn].clicked) continue;
+            break;
+         case 8:  //! (X+1, Y-1) - Left Bottom Corner
+            if (row === board.length - 1) {
+               checkRow = row;
+            } else {
+               checkRow = row + 1;
+            }
+            if (column === board[0].length - 1) {
+               checkColumn = column;
+            } else {
+               checkColumn = column - 1;
+            }
+            lastItemFlag = true;
             break;
       }
-      if (board[checkRow][checkColumn] != "c") {
-         cellDom = `#r${checkRow}c${checkColumn}`;
-         if (board[checkRow][checkColumn] === "n") {
-            $(cellDom).html(board[checkRow][checkColumn]);
-                       board[checkRow][checkColumn] = "c";
-            $(cellDom).addClass("clicked");
-            recursiveCheck.push(cellDom);
+      if (checkRow >= 0 && checkColumn >= 0 && checkRow < board.length && checkColumn < board[0].length && !board[checkRow][checkColumn].clicked) {
+         cellBoard = board[checkRow][checkColumn];
+         cellDom = `r${checkRow}c${checkColumn}`;
+         if (cellBoard.value === 0) {
+            cellBoard.clicked = true;
+            document.getElementById(cellDom).classList.add("clicked");
             checkEmptySpots(checkRow, checkColumn);
          } else {
-            $(cellDom).html(board[checkRow][checkColumn]);
-                        board[checkRow][checkColumn] = "c";
-            $(cellDom).addClass("clicked");
-            if (checkRow === 0 || checkRow === board.length-1 || checkColumn === 0 || checkColumn === board[0].length-1) {
-               if (checkColumn === 0 && board[checkRow][checkColumn+1] != "c") {
-                  $(`#r${checkRow}c${checkColumn+1}`).html(board[checkRow][checkColumn+1]);
-                                                           board[checkRow][checkColumn+1] = "c";
-                  $(`#r${checkRow}c${checkColumn+1}`).addClass("clicked");
-               } else if (checkRow === 0 && board[checkRow+1][checkColumn] != "c") {
-                  $(`#r${checkRow+1}c${checkColumn}`).html(board[checkRow+1][checkColumn]);
-                                                           board[checkRow+1][checkColumn] = "c";
-                  $(`#r${checkRow+1}c${checkColumn}`).addClass("clicked");
-               } else if (checkColumn === board[0].length-1 && board[checkRow][checkColumn-1] != "c") {
-                  $(`#r${checkRow}c${checkColumn-1}`).html(board[checkRow][checkColumn-1]);
-                                                           board[checkRow][checkColumn-1] = "c";
-                  $(`#r${checkRow}c${checkColumn-1}`).addClass("clicked");
-               } else if (checkRow === board.length-1 && board[checkRow-1][checkColumn] != "c") {
-                  $(`#r${checkRow-1}c${checkColumn}`).html(board[checkRow-1][checkColumn]);
-                                                           board[checkRow-1][checkColumn] = "c";
-                  $(`#r${checkRow-1}c${checkColumn}`).addClass("clicked");
-               }
-            } else {
-               if (direction === "left" || direction === "right") {
-                  if (board[checkRow+1][checkColumn] === "n") {               //! Right
-                     $(`#r${checkRow+1}c${checkColumn}`).html(board[checkRow+1][checkColumn]);
-                                                              board[checkRow+1][checkColumn] = "c";
-                     $(`#r${checkRow+1}c${checkColumn}`).addClass("clicked");
-                     recursiveCheck.push(`r${checkRow+1}c${checkColumn}`);
-                     checkEmptySpots(checkRow+1, checkColumn);
-                  } else if (board[checkRow+1][checkColumn] != "c") {
-                     $(`#r${checkRow+1}c${checkColumn}`).html(board[checkRow+1][checkColumn]);
-                                                              board[checkRow+1][checkColumn] = "c";
-                     $(`#r${checkRow+1}c${checkColumn}`).addClass("clicked");
-                  }
-                  if (board[checkRow-1][checkColumn] === "n") {               //! Left
-                     $(`#r${checkRow-1}c${checkColumn}`).html(board[checkRow-1][checkColumn]);
-                                                              board[checkRow-1][checkColumn] = "c";
-                     $(`#r${checkRow-1}c${checkColumn}`).addClass("clicked");
-                     recursiveCheck.push(`r${checkRow-1}c${checkColumn}`);
-                     checkEmptySpots(checkRow-1, checkColumn);
-                  } else if (board[checkRow-1][checkColumn] != "c") {
-                     $(`#r${checkRow-1}c${checkColumn}`).html(board[checkRow-1][checkColumn]);
-                                                              board[checkRow-1][checkColumn] = "c";
-                     $(`#r${checkRow-1}c${checkColumn}`).addClass("clicked");
-                  }
-               }
-               if (direction === "top" || direction === "bottom") {
-                  if (board[checkRow][checkColumn+1] === "n") {               //! Bottom
-                     $(`#r${checkRow}c${checkColumn+1}`).html(board[checkRow][checkColumn+1]);
-                                                              board[checkRow][checkColumn+1] = "c";
-                     $(`#r${checkRow}c${checkColumn+1}`).addClass("clicked");
-                     recursiveCheck.push(`r${checkRow}c${checkColumn+1}`);
-                     checkEmptySpots(checkRow, checkColumn+1);
-                  } else if (board[checkRow][checkColumn+1] != "c") {
-                     $(`#r${checkRow}c${checkColumn+1}`).html(board[checkRow][checkColumn+1]);
-                                                              board[checkRow][checkColumn+1] = "c";
-                     $(`#r${checkRow}c${checkColumn+1}`).addClass("clicked");
-                  }
-                  if (board[checkRow][checkColumn-1] === "n") {               //! Top
-                     $(`#r${checkRow}c${checkColumn-1}`).html(board[checkRow][checkColumn-1]);
-                                                              board[checkRow][checkColumn-1] = "c";
-                     $(`#r${checkRow}c${checkColumn-1}`).addClass("clicked");
-                     recursiveCheck.push(`r${checkRow}c${checkColumn-1}`);
-                     checkEmptySpots(checkRow, checkColumn-1);
-                  } else if (board[checkRow][checkColumn-1] != "c") {
-                     $(`#r${checkRow}c${checkColumn-1}`).html(board[checkRow][checkColumn-1]);
-                                                              board[checkRow][checkColumn-1] = "c";
-                     $(`#r${checkRow}c${checkColumn-1}`).addClass("clicked");
-                  }
-               }
+            document.getElementById(cellDom).innerHTML = cellBoard.value;
+            cellBoard.clicked = true;
+            document.getElementById(cellDom).classList.add("clicked");
+            if (lastItemFlag) {
+               return;
             }
          }
       }
@@ -279,8 +213,8 @@ function checkEmptySpots (row, column) {
 
 let newBoard = new Board(20, 20);
 newBoard.create()
-console.table(board);
 
+// TODO Still need to block the game before clicking on the set settings
 $("#start-btn").click(function () {
    if (timer === undefined) {
       let sec = 0;
@@ -330,37 +264,54 @@ $("#start-btn").click(function () {
 $(".cell").contextmenu(function(event) {
    event.preventDefault();
    if (bombs > 0) {
-      if (!this.classList.contains("clicked")) {
-         if (this.classList.contains("flagged")) {
-            this.classList.remove('flagged')
+      let clickedRow = parseInt(this.id.slice(1,this.id.indexOf("c")));
+      let clickedColumn = parseInt(this.id.slice(this.id.indexOf("c")+1,this.id.length));
+      let cellBoard = board[clickedRow][clickedColumn];
+      let bobmsElement = document.getElementById("num-bombs");
+      
+      if (!cellBoard.click) {
+         if (cellBoard.flagged) {
+            cellBoard.flagged = false;
+            this.classList.remove("flagged");
             bombs += 1;
          } else {
-            this.classList.add('flagged')
+            cellBoard.flagged = true;
+            this.classList.add("flagged");
             bombs -= 1;
          }
-         // console.log(this.id);
-         // console.log(this);
-      }
-      if (bombs < 10) {
-         $("#num-bombs p").html(`00${bombs}`);
-      } else if (bombs < 100) {
-         $("#num-bombs p").html(`0${bombs}`);
-      } else {
-         $("#num-bombs p").html(bombs);
+         if (bombs < 10) {
+            bobmsElement.innerHTML = `<p>00${bombs}</p>`;
+         } else if (bombs < 100) {
+            bobmsElement.innerHTML = `<p>0${bombs}</p>`;
+         } else {
+            bobmsElement.innerHTML = `<p>${bombs}</p>`;
+         }
       }
    }
 });
 
 $("#board").on("click", ".cell", function() {
-   let clickedRow, clickedColumn;
-   if (!this.classList.contains("flagged")) {
-      this.classList.add('clicked')
-      clickedRow = parseInt(this.id.slice(1,this.id.indexOf("c")));
-      clickedColumn = parseInt(this.id.slice(this.id.indexOf("c")+1,this.id.length));
-      checkPosition(clickedRow, clickedColumn);
-      // console.log(this.id);
-      // console.log(this);
-      // console.log(clickedRow,clickedColumn);
+   let clickedRow = parseInt(this.id.slice(1,this.id.indexOf("c")));
+   let clickedColumn = parseInt(this.id.slice(this.id.indexOf("c")+1,this.id.length));
+   let cellBoard = board[clickedRow][clickedColumn];
+   let startButtonElement = document.getElementById("start-btn");
+   let cellElement = document.getElementById(`r${clickedRow}c${clickedColumn}`);
+   
+   if (!cellBoard.flagged && !cellBoard.clicked) {
+      if (cellBoard.bomb === true) {
+         clearInterval(timer);
+         startButtonElement.classList.remove("playing");
+         startButtonElement.classList.add("lose");
+         cellElement.classList.add("clicked");
+         // TODO fix the queryselectorall to add a class "clicked"
+         // document.querySelectorAll(".cell").classList.add("clicked");
+      } else if (!cellBoard.clicked && cellBoard.value != 0) {
+         cellElement.innerHTML = cellBoard.value; 
+         cellElement.classList.add("clicked");
+         cellBoard.clicked = true; 
+      } else {
+         checkEmptySpots(clickedRow, clickedColumn);
+      }
    }
 });
 
