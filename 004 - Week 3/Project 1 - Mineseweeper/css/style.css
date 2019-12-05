@@ -6,37 +6,18 @@ body {
    justify-items: center;
    justify-content: center;
    background-color: darkgray;
-}
-main {
-   /* grid-template-columns: 1fr;
-   grid-template-rows: 1fr;
-   grid-template-areas: 
-      "complete-board"; */
+   width: fit-content;
+   margin: auto;
 }
 #settings {
    height: 100px;
    display: grid;
    flex-direction: column;
-   grid-template-columns: 1fr 1fr 1fr;
+   grid-template-columns: 1fr 1fr;
    grid-template-rows: auto;
    grid-template-areas:
-      "columns columns settings-btn"
-      "rows rows settings-btn";
-   text-align: right;
-   align-content: right;
-   justify-items: right;
-   justify-content: right;
-}
-#columns, #rows {
-   display: flex;
-   text-align: right;
-   align-content: right;
-   justify-items: right;
-   justify-content: right;
-}
-#columns p, #rows p{
-   font-size: 12px;
-   line-height: 25px;
+      "columns settings-btn"
+      "rows settings-btn";
 }
 input {
    font-family: 'Press Start 2P', cursive;
@@ -44,7 +25,8 @@ input {
    line-height: 32.5px;
    height: 25px;
    margin: 7.5px 0 0 0;
-   width: 30%;
+   width: 90px;
+   text-align: center;
 }
 #columns {
    grid-area: columns;
@@ -52,11 +34,20 @@ input {
 #rows {
    grid-area: rows;
 }
+#columns, #rows {
+   display: flex;
+   flex-grow: 1;
+   flex-direction: row-reverse;
+   margin: 0 30px 0 0;
+}
+#columns p, #rows p{
+   font-size: 12px;
+   line-height: 25px;
+}
 #settings-btn {
-   margin-right: auto;
    grid-area: settings-btn;
-   /* display: grid; */
-   /* background-color: black; */
+   justify-self: start;
+   margin-left: 30px;
 }
 #settings-button {
    font-family: 'Press Start 2P', cursive;

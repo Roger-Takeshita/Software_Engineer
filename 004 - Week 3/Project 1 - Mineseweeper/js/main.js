@@ -301,6 +301,7 @@ function mouseLeftClick (rowColumn) {
       }
    }
 }
+
 function clearUI () {
    clearInterval(timer);
    document.getElementById("timer").innerHTML = "<p>00:00:00</p>";
@@ -311,11 +312,11 @@ function clearUI () {
    document.getElementById("start-btn").classList.remove("lose");
    document.getElementById("start-btn").classList.add("start");
 }
+
 document.getElementById("settings-button").addEventListener("click", function() {
    possibleRows = document.getElementById("rows-value").value;
    possibleColumns = document.getElementById("columns-value").value;
    if (possibleRows === "" && possibleColumns === "") {
-      alert(`The default board is ${boardRows} Rows x ${boardColumns} Columns`);
       init();
       newBoard = new Board(boardRows, boardColumns);
       newBoard.create()
@@ -325,10 +326,28 @@ document.getElementById("settings-button").addEventListener("click", function() 
    } else {
       boardRows = possibleRows;
       boardColumns = possibleColumns;
-      init();
-      newBoard = new Board(boardRows, boardColumns);
-      newBoard.create()
-      clearUI();
+      if (boardRows > 300 || boardColumns > 300) {
+         alert("The maximum is 300x300");
+         possibleRows = document.getElementById("rows-value").value = 14;
+         possibleColumns = document.getElementById("columns-value").value = 14;
+         init();
+         newBoard = new Board(possibleRows, possibleColumns);
+         newBoard.create()
+         clearUI();
+      } else if (boardRows <14 || boardColumns < 14) {
+         alert("The mininum is 14x14");
+         possibleRows = document.getElementById("rows-value").value = 14;
+         possibleColumns = document.getElementById("columns-value").value = 14;
+         init();
+         newBoard = new Board(possibleRows, possibleColumns);
+         newBoard.create()
+         clearUI();
+      }else {
+         init();
+         newBoard = new Board(boardRows, boardColumns);
+         newBoard.create()
+         clearUI();
+      }
    }
 });
 
