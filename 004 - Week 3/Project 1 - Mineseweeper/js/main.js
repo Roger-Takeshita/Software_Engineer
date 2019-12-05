@@ -32,7 +32,7 @@ class Board {
       })
    }
    dropBombs () {
-      let numBombs = bombs = Math.floor(this.columns*this.rows*0.15);
+      let numBombs = bombs = Math.floor(this.columns*this.rows*0.25);
       while (numBombs > 0) {
          let randRow = Math.floor(Math.random() * this.rows);
          let randColumn = Math.floor(Math.random() * this.columns);
@@ -78,6 +78,12 @@ class Board {
                break;
             case 6:
                $cell.addClass("six");
+               break;
+            case 7:
+               $cell.addClass("seven");
+               break;
+            case 8:
+               $cell.addClass("eight");
                break;
          }
       }
@@ -269,7 +275,7 @@ $(".cell").contextmenu(function(event) {
       let cellBoard = board[clickedRow][clickedColumn];
       let bobmsElement = document.getElementById("num-bombs");
       
-      if (!cellBoard.click) {
+      if (!cellBoard.clicked) {
          if (cellBoard.flagged) {
             cellBoard.flagged = false;
             this.classList.remove("flagged");
@@ -303,8 +309,28 @@ $("#board").on("click", ".cell", function() {
          startButtonElement.classList.remove("playing");
          startButtonElement.classList.add("lose");
          cellElement.classList.add("clicked");
-         // TODO fix the queryselectorall to add a class "clicked"
-         // document.querySelectorAll(".cell").classList.add("clicked");
+         let revealBoard = document.querySelectorAll(".cell");
+         let revealRow, revealColumn;
+
+         for (let viewCell of revealBoard) {
+            revealRow = parseInt(viewCell.id.slice(1, viewCell.id.indexOf("c")));
+            revealColumn = parseInt(viewCell.id.slice(viewCell.id.indexOf("c")+1,viewCell.id.length));
+            cellBoard = board[revealRow][revealColumn];
+            viewCell.innerHTML = cellBoard.value;
+            if (cellBoard.bomb) {
+               if (!viewCell.classList.contains("clicked")) {
+                  viewCell.classList.add("clicked")
+                  viewCell.classList.add("reveal");
+                  cellBoard.clicked = true;
+               } else {
+                  viewCell.classList.add("clicked");
+                  cellBoard.clicked = true;
+               }
+            } else {
+               viewCell.classList.add("clicked");
+               cellBoard.clicked = true;
+            }
+         }
       } else if (!cellBoard.clicked && cellBoard.value != 0) {
          cellElement.innerHTML = cellBoard.value; 
          cellElement.classList.add("clicked");

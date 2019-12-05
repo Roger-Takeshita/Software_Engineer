@@ -188,7 +188,6 @@ input {
    height: 30px;
    width: 30px;
    line-height: 30px;
-   /* box-shadow:0px 0px 5px 0px black inset; */
    border-left: 5px solid grey;
    border-bottom: 5px solid grey;
    border-right: 5px solid white;
@@ -204,7 +203,6 @@ input {
    background-color: lightgray;
 }
 .clicked {
-   /* background-color: grey; */
    border: 1px solid darkgrey;
 }
 .clicked:hover {
@@ -217,26 +215,39 @@ div.clicked.bomb {
    background-color: lightgray;
    font-size: 0;
 }
-/* div.clicked.n {
+div.reveal.bomb {
+   background-image: url('../images/bomb.png');
+   background-size: cover;
    background-color: lightgray;
    font-size: 0;
-} */
-div.clicked.one {
+}
+div.clicked.empty {
+   background-color: lightgray;
+   font-size: 0;
+}
+
+div.clicked.one, div.reveal.one {
    color: green;
 }
-div.clicked.two {
+div.clicked.two, div.reveal.two {
    color: blue;
 }
-div.clicked.three {
+div.clicked.three, div.reveal.three {
    color: yellow;
 }
-div.clicked.four {
+div.clicked.four, div.reveal.four{
    color: darkorchid;
 }
-div.clicked.five {
-   color: orange;
+div.clicked.five, div.reveal.five {
+   color: mediumturquoise;
 }
-div.clicked.six {
+div.clicked.six, div.reveal.six {
+   color: darkcyan;
+}
+div.clicked.seven, div.reveal.seven {
+   color: balck;
+}
+div.clicked.eight, div.reveal.eight {
    color: red;
 }
 footer {
