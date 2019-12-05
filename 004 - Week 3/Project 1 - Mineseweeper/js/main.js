@@ -1,7 +1,11 @@
-let board = [];
-let timer;
-let bombs = 0;
-let recursiveCheck = [];
+let board, bombs, timer;
+let boardRows = 20;
+let boardColumns = 20;
+
+function init () {
+   board = [];
+   bombs = 0;
+}
 
 class Board {
    constructor (rows, columns) {
@@ -217,12 +221,93 @@ function checkEmptySpots (row, column) {
    }
 }
 
-let newBoard = new Board(20, 20);
+function mouseRightClick (rowColumn) {
+   if (rowColumn.target.classList.contains("cell")) {
+      rowColumn.preventDefault();
+      if (bombs > 0) {
+         let clickedRow = parseInt(rowColumn.target.id.slice(1,rowColumn.target.id.indexOf("c")));
+         let clickedColumn = parseInt(rowColumn.target.id.slice(rowColumn.target.id.indexOf("c")+1,rowColumn.target.id.length));
+         let cellBoard = board[clickedRow][clickedColumn];
+         let bobmsElement = document.getElementById("num-bombs");
+         
+         if (!cellBoard.clicked) {
+            if (cellBoard.flagged) {
+               cellBoard.flagged = false;
+               rowColumn.target.classList.remove("flagged");
+               bombs += 1;
+            } else {
+               cellBoard.flagged = true;
+               rowColumn.target.classList.add("flagged");
+               bombs -= 1;
+            }
+            if (bombs < 10) {
+               bobmsElement.innerHTML = `<p>00${bombs}</p>`;
+            } else if (bombs < 100) {
+               bobmsElement.innerHTML = `<p>0${bombs}</p>`;
+            } else {
+               bobmsElement.innerHTML = `<p>${bombs}</p>`;
+            }
+         }
+      }
+   }
+}
+
+function mouseLeftClick (rowColumn) {
+   if (rowColumn.target.classList.contains("cell")) {
+      let clickedRow = parseInt(rowColumn.target.id.slice(1,rowColumn.target.id.indexOf("c")));
+      let clickedColumn = parseInt(rowColumn.target.id.slice(rowColumn.target.id.indexOf("c")+1,rowColumn.target.id.length));
+      let cellBoard = board[clickedRow][clickedColumn];
+      let startButtonElement = document.getElementById("start-btn");
+      let cellElement = document.getElementById(`r${clickedRow}c${clickedColumn}`);
+      
+      if (!cellBoard.flagged && !cellBoard.clicked) {
+         if (cellBoard.bomb === true) {
+            clearInterval(timer);
+            startButtonElement.classList.remove("playing");
+            startButtonElement.classList.add("lose");
+            cellElement.classList.add("clicked");
+            let revealBoard = document.querySelectorAll(".cell");
+            let revealRow, revealColumn;
+
+            for (let viewCell of revealBoard) {
+               revealRow = parseInt(viewCell.id.slice(1, viewCell.id.indexOf("c")));
+               revealColumn = parseInt(viewCell.id.slice(viewCell.id.indexOf("c")+1,viewCell.id.length));
+               cellBoard = board[revealRow][revealColumn];
+               viewCell.innerHTML = cellBoard.value;
+               if (cellBoard.bomb) {
+                  if (!viewCell.classList.contains("clicked")) {
+                     viewCell.classList.add("clicked")
+                     viewCell.classList.add("reveal");
+                     cellBoard.clicked = true;
+                  } else {
+                     viewCell.classList.add("clicked");
+                     cellBoard.clicked = true;
+                  }
+               } else {
+                  viewCell.classList.add("clicked");
+                  cellBoard.clicked = true;
+               }
+            }
+         } else if (!cellBoard.clicked && cellBoard.value != 0) {
+            cellElement.innerHTML = cellBoard.value; 
+            cellElement.classList.add("clicked");
+            cellBoard.clicked = true; 
+         } else {
+            checkEmptySpots(clickedRow, clickedColumn);
+         }
+      }
+   }
+}
+
+init();
+let newBoard = new Board(boardRows, boardColumns);
 newBoard.create()
 
-// TODO Still need to block the game before clicking on the set settings
 $("#start-btn").click(function () {
-   if (timer === undefined) {
+   let btnStatus = document.getElementById("start-btn");
+   let timerElement = document.getElementById("timer");
+   let secString = minString = hourString = "00";
+   if (timer === undefined || btnStatus.classList.contains("start")) {
       let sec = 0;
       let min = 0;
       let hour = 0;
@@ -238,106 +323,57 @@ $("#start-btn").click(function () {
       timer = setInterval(() => {
          sec += 1;
          if (sec<10) {
-            $("#second").text(`0${sec}`);
+            secString = `0${sec}`;
          } else {
-            $("#second").text(sec);
+            secString = sec;
+            // $("#second").text(sec);
          }
          if (sec === 59){
             sec = 0;
             min += 1;
             if (min<10) {
-               $("#minute").text(`0${min}`);
+               minString = `0${min}`;
             } else {
-               $("#minute").text(min);
+               minString = min;
             }
          }
          if (min === 59) {
             min = 0;
             hour += 1;
             if (hour<10) {
-               $("#hour").text(`0${hour}`);
+               hourString = `0${hour}`;
+               // $("#hour").text(`0${hour}`);
             } else {
                if (hour > 23) {
                   hour = 0;
                }
-               $("#hour").text(hour);
+               hourString = hour;
+               // $("#hour").text(hour);
             }
          }
+         timerElement.innerHTML = `<p>${hourString}:${minString}:${secString}</p>`
       }, 1000);
+      document.getElementById("board").addEventListener("click", mouseLeftClick);
+      document.getElementById("board").addEventListener("contextmenu", mouseRightClick);
+   } else if (btnStatus.classList.contains("playing")){
+      btnStatus.classList.remove("playing");
+      btnStatus.classList.add("start");
+      clearInterval(timer);
+      init();
+      newBoard = new Board(boardRows, boardColumns);
+      newBoard.create()
+      document.getElementById("timer").innerHTML = "<p>00:00:00</p>";
+      document.getElementById("board").addEventListener("click", mouseLeftClick);
+      document.getElementById("board").addEventListener("contextmenu", mouseRightClick);
+   } else if (btnStatus.classList.contains("lose")) {
+      btnStatus.classList.remove("lose");
+      btnStatus.classList.add("start");
+      clearInterval(timer)
+      init();
+      newBoard = new Board(boardRows, boardColumns);
+      newBoard.create()
+      document.getElementById("timer").innerHTML = "<p>00:00:00</p>";
+      document.getElementById("board").addEventListener("click", mouseLeftClick);
+      document.getElementById("board").addEventListener("contextmenu", mouseRightClick);
    }
 });
-
-$(".cell").contextmenu(function(event) {
-   event.preventDefault();
-   if (bombs > 0) {
-      let clickedRow = parseInt(this.id.slice(1,this.id.indexOf("c")));
-      let clickedColumn = parseInt(this.id.slice(this.id.indexOf("c")+1,this.id.length));
-      let cellBoard = board[clickedRow][clickedColumn];
-      let bobmsElement = document.getElementById("num-bombs");
-      
-      if (!cellBoard.clicked) {
-         if (cellBoard.flagged) {
-            cellBoard.flagged = false;
-            this.classList.remove("flagged");
-            bombs += 1;
-         } else {
-            cellBoard.flagged = true;
-            this.classList.add("flagged");
-            bombs -= 1;
-         }
-         if (bombs < 10) {
-            bobmsElement.innerHTML = `<p>00${bombs}</p>`;
-         } else if (bombs < 100) {
-            bobmsElement.innerHTML = `<p>0${bombs}</p>`;
-         } else {
-            bobmsElement.innerHTML = `<p>${bombs}</p>`;
-         }
-      }
-   }
-});
-
-$("#board").on("click", ".cell", function() {
-   let clickedRow = parseInt(this.id.slice(1,this.id.indexOf("c")));
-   let clickedColumn = parseInt(this.id.slice(this.id.indexOf("c")+1,this.id.length));
-   let cellBoard = board[clickedRow][clickedColumn];
-   let startButtonElement = document.getElementById("start-btn");
-   let cellElement = document.getElementById(`r${clickedRow}c${clickedColumn}`);
-   
-   if (!cellBoard.flagged && !cellBoard.clicked) {
-      if (cellBoard.bomb === true) {
-         clearInterval(timer);
-         startButtonElement.classList.remove("playing");
-         startButtonElement.classList.add("lose");
-         cellElement.classList.add("clicked");
-         let revealBoard = document.querySelectorAll(".cell");
-         let revealRow, revealColumn;
-
-         for (let viewCell of revealBoard) {
-            revealRow = parseInt(viewCell.id.slice(1, viewCell.id.indexOf("c")));
-            revealColumn = parseInt(viewCell.id.slice(viewCell.id.indexOf("c")+1,viewCell.id.length));
-            cellBoard = board[revealRow][revealColumn];
-            viewCell.innerHTML = cellBoard.value;
-            if (cellBoard.bomb) {
-               if (!viewCell.classList.contains("clicked")) {
-                  viewCell.classList.add("clicked")
-                  viewCell.classList.add("reveal");
-                  cellBoard.clicked = true;
-               } else {
-                  viewCell.classList.add("clicked");
-                  cellBoard.clicked = true;
-               }
-            } else {
-               viewCell.classList.add("clicked");
-               cellBoard.clicked = true;
-            }
-         }
-      } else if (!cellBoard.clicked && cellBoard.value != 0) {
-         cellElement.innerHTML = cellBoard.value; 
-         cellElement.classList.add("clicked");
-         cellBoard.clicked = true; 
-      } else {
-         checkEmptySpots(clickedRow, clickedColumn);
-      }
-   }
-});
-
