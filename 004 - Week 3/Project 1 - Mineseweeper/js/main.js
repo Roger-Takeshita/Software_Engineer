@@ -296,6 +296,7 @@ function mouseLeftClick (rowColumn) {
          boardElement.removeEventListener("contextmenu", mouseRightClick);
          startButtonElement.classList.remove("playing");
          startButtonElement.classList.add("win");
+         document.getElementById("num-bombs").innerHTML = "<p>000</p>";
       }
    }
 }
