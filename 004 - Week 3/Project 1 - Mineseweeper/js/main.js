@@ -1,10 +1,14 @@
-let board, bombs, timer, newBoard;
-let boardRows = 14;
-let boardColumns = 14;
+let board, bombs, totalBombs, timer, newBoard;
+let minDefaultBoard = 14;
+let maxDefaultBoard = 300;
+let boardRows = minDefaultBoard;
+let boardColumns = minDefaultBoard;
+let totalCells = 0;
 
 function init () {
    board = [];
    bombs = 0;
+   totalCells = 0;
 }
 
 class Board {
@@ -36,7 +40,7 @@ class Board {
       })
    }
    dropBombs () {
-      let numBombs = bombs = Math.floor(this.columns*this.rows*0.25);
+      let numBombs = bombs = totalBombs = Math.floor(this.columns*this.rows*0.25);
       while (numBombs > 0) {
          let randRow = Math.floor(Math.random() * this.rows);
          let randColumn = Math.floor(Math.random() * this.columns);
@@ -207,12 +211,14 @@ function checkEmptySpots (row, column) {
          cellDom = `r${checkRow}c${checkColumn}`;
          if (cellBoard.value === 0) {
             cellBoard.clicked = true;
+            totalCells += 1;
             document.getElementById(cellDom).classList.add("clicked");
             checkEmptySpots(checkRow, checkColumn);
          } else {
             document.getElementById(cellDom).innerHTML = cellBoard.value;
             cellBoard.clicked = true;
             document.getElementById(cellDom).classList.add("clicked");
+            totalCells += 1;
             if (lastItemFlag) {
                return;
             }
@@ -267,37 +273,55 @@ function mouseLeftClick (rowColumn) {
             startButtonElement.classList.remove("playing");
             startButtonElement.classList.add("lose");
             cellElement.classList.add("clicked");
-            let revealBoard = document.querySelectorAll(".cell");
-            let revealRow, revealColumn;
-
-            for (let viewCell of revealBoard) {
-               revealRow = parseInt(viewCell.id.slice(1, viewCell.id.indexOf("c")));
-               revealColumn = parseInt(viewCell.id.slice(viewCell.id.indexOf("c")+1,viewCell.id.length));
-               cellBoard = board[revealRow][revealColumn];
-               viewCell.innerHTML = cellBoard.value;
-               if (cellBoard.bomb) {
-                  if (!viewCell.classList.contains("clicked")) {
-                     viewCell.classList.add("clicked")
-                     viewCell.classList.add("reveal");
-                     cellBoard.clicked = true;
-                  } else {
-                     viewCell.classList.add("clicked");
-                     cellBoard.clicked = true;
-                  }
-               } else {
-                  viewCell.classList.add("clicked");
-                  cellBoard.clicked = true;
-               }
-            }
+            revealBoard();
             boardElement.removeEventListener("click", mouseLeftClick);
             boardElement.removeEventListener("contextmenu", mouseRightClick);
+            document.getElementById("start-btn").focus();
          } else if (!cellBoard.clicked && cellBoard.value != 0) {
             cellElement.innerHTML = cellBoard.value; 
             cellElement.classList.add("clicked");
-            cellBoard.clicked = true; 
+            cellBoard.clicked = true;
+            totalCells += 1;
          } else {
+            cellElement.innerHTML = cellBoard.value; 
+            cellElement.classList.add("clicked");
+            cellBoard.clicked = true;
+            totalCells += 1;
             checkEmptySpots(clickedRow, clickedColumn);
          }
+      }
+      if (totalCells + totalBombs === boardRows*boardColumns) {
+         clearInterval(timer);
+         revealBoard();
+         boardElement.removeEventListener("click", mouseLeftClick);
+         boardElement.removeEventListener("contextmenu", mouseRightClick);
+         startButtonElement.classList.remove("playing");
+         startButtonElement.classList.add("win");
+      }
+   }
+}
+
+function revealBoard () {
+   let revealBoard = document.querySelectorAll(".cell");
+   let revealRow, revealColumn;
+
+   for (let viewCell of revealBoard) {
+      revealRow = parseInt(viewCell.id.slice(1, viewCell.id.indexOf("c")));
+      revealColumn = parseInt(viewCell.id.slice(viewCell.id.indexOf("c")+1,viewCell.id.length));
+      cellBoard = board[revealRow][revealColumn];
+      viewCell.innerHTML = cellBoard.value;
+      if (cellBoard.bomb) {
+         if (!viewCell.classList.contains("clicked")) {
+            viewCell.classList.add("clicked")
+            viewCell.classList.add("reveal");
+            cellBoard.clicked = true;
+         } else {
+            viewCell.classList.add("clicked");
+            cellBoard.clicked = true;
+         }
+      } else {
+         viewCell.classList.add("clicked");
+         cellBoard.clicked = true;
       }
    }
 }
@@ -313,45 +337,7 @@ function clearUI () {
    document.getElementById("start-btn").classList.add("start");
 }
 
-document.getElementById("settings-button").addEventListener("click", function() {
-   possibleRows = document.getElementById("rows-value").value;
-   possibleColumns = document.getElementById("columns-value").value;
-   if (possibleRows === "" && possibleColumns === "") {
-      init();
-      newBoard = new Board(boardRows, boardColumns);
-      newBoard.create()
-      clearUI();
-   } else if (typeof parseInt(possibleRows) !== "number" || typeof parseInt(possibleColumns) !== "number") {
-      alert("Please insert a valid number!");
-   } else {
-      boardRows = possibleRows;
-      boardColumns = possibleColumns;
-      if (boardRows > 300 || boardColumns > 300) {
-         alert("The maximum is 300x300");
-         possibleRows = document.getElementById("rows-value").value = 14;
-         possibleColumns = document.getElementById("columns-value").value = 14;
-         init();
-         newBoard = new Board(possibleRows, possibleColumns);
-         newBoard.create()
-         clearUI();
-      } else if (boardRows <14 || boardColumns < 14) {
-         alert("The mininum is 14x14");
-         possibleRows = document.getElementById("rows-value").value = 14;
-         possibleColumns = document.getElementById("columns-value").value = 14;
-         init();
-         newBoard = new Board(possibleRows, possibleColumns);
-         newBoard.create()
-         clearUI();
-      }else {
-         init();
-         newBoard = new Board(boardRows, boardColumns);
-         newBoard.create()
-         clearUI();
-      }
-   }
-});
-
-document.getElementById("start-btn").addEventListener("click", function() {
+function play () {
    let btnStatus = document.getElementById("start-btn");
    let secString = minString = hourString = "00";
    let timerElement = document.getElementById("timer");
@@ -405,24 +391,55 @@ document.getElementById("start-btn").addEventListener("click", function() {
    } else if (btnStatus.classList.contains("playing")){
       btnStatus.classList.remove("playing");
       btnStatus.classList.add("start");
-      clearInterval(timer);
-      init();
-      newBoard = new Board(boardRows, boardColumns);
-      newBoard.create();
-      timerElement.innerHTML = "<p>00:00:00</p>";
-      boardElement.removeEventListener("click", mouseLeftClick);
-      boardElement.removeEventListener("contextmenu", mouseRightClick);
-      bombsElement.innerHTML = "<p>000</p>"
+      newGame();
    } else if (btnStatus.classList.contains("lose")) {
       btnStatus.classList.remove("lose");
       btnStatus.classList.add("start");
-      clearInterval(timer)
-      init();
-      newBoard = new Board(boardRows, boardColumns);
-      newBoard.create();
-      timerElement.innerHTML = "<p>00:00:00</p>";
-      boardElement.removeEventListener("click", mouseLeftClick);
-      boardElement.removeEventListener("contextmenu", mouseRightClick);
-      bombsElement.innerHTML = "<p>000</p>"
+      newGame();
+   } else if (btnStatus.classList.contains("win")) {
+      btnStatus.classList.remove("win");
+      btnStatus.classList.add("start");
+      newGame();
+   }
+}
+
+function newGame () {
+   clearUI();
+   init();
+   newBoard = new Board(boardRows, boardColumns);
+   newBoard.create();
+   document.getElementById("start-btn").focus();
+}
+
+
+document.getElementById("settings-button").addEventListener("click", function() {
+   possibleRows = document.getElementById("rows-value").value;
+   possibleColumns = document.getElementById("columns-value").value;
+   if (possibleRows == "" && possibleColumns == "") {
+      alert(`The mininum is ${minDefaultBoard}x${minDefaultBoard}`);
+      document.getElementById("rows-value").value = minDefaultBoard;
+      document.getElementById("columns-value").value = minDefaultBoard;
+   } else if (isNaN(parseInt(possibleRows)) || isNaN(parseInt(possibleColumns))) {
+      alert("Please insert a valid number!");
+      document.getElementById("columns-value").focus();
+   } else {
+      boardRows = possibleRows;
+      boardColumns = possibleColumns;
+      if (boardRows > maxDefaultBoard || boardColumns > maxDefaultBoard) {
+         alert(`The maximum is ${maxDefaultBoard}x${maxDefaultBoard}`);
+         document.getElementById("rows-value").value = maxDefaultBoard;
+         document.getElementById("columns-value").value = maxDefaultBoard;
+      } else if (boardRows <minDefaultBoard || boardColumns < minDefaultBoard) {
+         alert(`The mininum is ${minDefaultBoard}x${minDefaultBoard}`);
+         document.getElementById("rows-value").value = minDefaultBoard;
+         document.getElementById("columns-value").value = minDefaultBoard;
+      }else {
+         init();
+         newBoard = new Board(boardRows, boardColumns);
+         newBoard.create()
+         document.getElementById("start-btn").addEventListener("click", play);
+         document.getElementById("settings").style.display = "none";
+         document.getElementById("start-btn").focus();
+      }
    }
 });

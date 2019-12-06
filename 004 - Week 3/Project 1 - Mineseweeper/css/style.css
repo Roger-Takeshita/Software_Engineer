@@ -152,6 +152,15 @@ input {
    justify-items: center;
    justify-content: center;
 }
+.win {
+   background-image: url('../images/emoji-004.png');
+   background-size: contain;
+   background-repeat: no-repeat;
+   text-align: center;
+   align-content: center;
+   justify-items: center;
+   justify-content: center;
+}
 #num-bombs {
    grid-area: num-bombs;
    flex-grow: 1;
