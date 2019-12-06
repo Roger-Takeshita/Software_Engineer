@@ -40,7 +40,7 @@ class Board {
       })
    }
    dropBombs () {
-      let numBombs = bombs = totalBombs = Math.floor(this.columns*this.rows*0.25);
+      let numBombs = bombs = totalBombs = Math.ceil(this.columns*this.rows*0.20);
       while (numBombs > 0) {
          let randRow = Math.floor(Math.random() * this.rows);
          let randColumn = Math.floor(Math.random() * this.columns);
@@ -64,7 +64,6 @@ class Board {
          }
       }
       if (sum === 0) {
-         // board[row][column].value = 0;
          $cell.addClass("empty");
       } else {
          board[row][column].value = sum;
@@ -411,26 +410,21 @@ function newGame () {
    document.getElementById("start-btn").focus();
 }
 
-
 document.getElementById("settings-button").addEventListener("click", function() {
    possibleRows = document.getElementById("rows-value").value;
    possibleColumns = document.getElementById("columns-value").value;
    if (possibleRows == "" && possibleColumns == "") {
-      alert(`The mininum is ${minDefaultBoard}x${minDefaultBoard}`);
       document.getElementById("rows-value").value = minDefaultBoard;
       document.getElementById("columns-value").value = minDefaultBoard;
    } else if (isNaN(parseInt(possibleRows)) || isNaN(parseInt(possibleColumns))) {
-      alert("Please insert a valid number!");
       document.getElementById("columns-value").focus();
    } else {
       boardRows = possibleRows;
       boardColumns = possibleColumns;
       if (boardRows > maxDefaultBoard || boardColumns > maxDefaultBoard) {
-         alert(`The maximum is ${maxDefaultBoard}x${maxDefaultBoard}`);
          document.getElementById("rows-value").value = maxDefaultBoard;
          document.getElementById("columns-value").value = maxDefaultBoard;
       } else if (boardRows <minDefaultBoard || boardColumns < minDefaultBoard) {
-         alert(`The mininum is ${minDefaultBoard}x${minDefaultBoard}`);
          document.getElementById("rows-value").value = minDefaultBoard;
          document.getElementById("columns-value").value = minDefaultBoard;
       }else {
