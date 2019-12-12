@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <meta http-equiv="X-UA-Compatible" content="ie=edge">
+   <title>Movies List</title>
+</head>
+<body>
+   <div>
+      <% movies.forEach(function(movie) { %>
+         <div>
+            <div><%= movie.title %></div>
+            <div><%= movie.releaseYear %></div>
+            <div><%= movie.mpaaaRating %></div>
+            <div><%= movie.cast.join(', ') %></div>
+            <div><%= movie.nowShowing ? 'Yes' : 'No'%></div>
+            <div><br/></div>
+         </div>
+      <% }) %>
+   </div>
+</body>
+</html>
