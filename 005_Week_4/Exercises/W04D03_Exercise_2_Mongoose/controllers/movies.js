@@ -32,11 +32,14 @@
       //- Save the new movie into mongoDB
          movie.save(function(err) {
             //? If you got an error, render the same page ("new") again
-               if (err) return res.render("movies/new");
+               if (err) {
+                  console.log(err);
+                  return res.render("movies/new");
+               }
             //? console.log the form
                console.log(movie);
             //? If you don't an error, it'll just redirect to the movies/index.ejs
-               res.redirect("/movies/index");
+               res.redirect("/movies");
          })
    }
 

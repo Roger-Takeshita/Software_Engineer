@@ -21,7 +21,7 @@
     router.post("/", moviesCtrl.create);
   
   //- GET All the Movies
-    router.get('/index', moviesCtrl.index)
+    router.get('/', moviesCtrl.index)
 
 //+ Export
   module.exports = router;

@@ -8,7 +8,8 @@
 //!           `Wbmd"MML.`Moo9^Yo.  `Mbmo `Moo9^Yo. P^YbmdP'  `Moo9^Yo.M9mmmP'  `Mbmmd' 
 
 
-var mongoose  = require("mongoose");
+//! Require the mongoose package
+   var mongoose  = require("mongoose");
 
 //! Connect the database.js to a database named "movies"
    mongoose.connect("mongodb://localhost/movies", {

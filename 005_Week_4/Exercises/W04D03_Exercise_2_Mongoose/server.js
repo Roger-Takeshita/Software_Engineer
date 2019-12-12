@@ -5,11 +5,11 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
 require("./config/database");
-    //+ Connect to the databas with Mongoose
-    //- Note that we aren't assigning out module to a variable, that;s because there's no need to because:
-    //- We're not exporting anything of use 
-    //- Calling require(""./config/database") is all it takes to make the code run
-    //- We can require Mongoose in any modules we want and it will always refer to the same configured Mongoose instance.
+    //+ Connect to the database with Mongoose
+      //- Note that we aren't assigning out module to a variable, that;s because there's no need to because:
+      //- We're not exporting anything of use 
+      //- Calling require(""./config/database") is all it takes to make the code run
+      //- We can require Mongoose in any modules we want and it will always refer to the same configured Mongoose instance.
 
 var indexRouter = require('./routes/index');
 var moviesRouter = require('./routes/movies');

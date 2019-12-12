@@ -21,14 +21,22 @@
 //+ Create the basic Movie Schema
    let movieSchema = new Schema (
       {
-         title: String,
+         title: {
+            type: String,
+            required: true
+         },
          releaseYear: {
             type: Number,
             default: function() {
                return new Date().getFullYear();
             }
          },
-         mpaaaRating: String,
+         mpaaRating: {
+            type: String,
+            enum: ['G', 'PG', 'PG-13', 'R']     //- enum: String must be in the provided list
+                                                //- match: String must match the provided regular expression
+                                                //- maxlenght and minlength
+         },
          cast: [String],
          nowShowing: {
             type: Boolean,
@@ -36,8 +44,8 @@
          }
       },
       {
-         timestamps: true
-      }
+         timestamps: true                       //- Add when it was created
+      }                                         //- Add When it was last updated
    );
 
 //+ Compile the schema into a model and export it
