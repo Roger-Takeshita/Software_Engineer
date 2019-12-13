@@ -41,9 +41,16 @@
       skills.splice(id, 1);
    }
 
+//+ Function/Method to edit one skill
+   function editOneSkill(id, newValue) {
+      skills[id] = newValue;
+      console.log(skills);
+   }
+
 //+ Export the functions/methods so we can use them in our controllers
    module.exports = {
       getAll,
       getOneSkill,
-      deleteOneSkill
+      deleteOneSkill,
+      editOneSkill
    };

@@ -22,7 +22,8 @@
 //+ Function/Method to render the show page
    function show (request, response) {
       response.render("skills/show", {                //- "skills/show" is the path to my views folder that is attached to app.set('views', path.join(__dirname, 'views'));
-         skill: Skill.getOneSkill(request.params.id)  //- request.params.id - get the id from request (in other words, once the user click on an especific item, this will send the id)
+         skill: Skill.getOneSkill(request.params.id), //- request.params.id - get the id from request (in other words, once the user click on an especific item, this will send the id)
+         skillId: request.params.id                   //- Added an Id, this way you can use in our ejs
       });
    };
 
@@ -32,9 +33,24 @@
       response.redirect('/skills');
    }
 
+//+ Function/Method to edit an item from our schema/model
+   function edit(request, response) {
+      if (request.body.have === "on"){ 
+         request.body.have = true;
+      } else {
+         request.body.have = false;
+      }
+      // console.log(request.params.id);
+      // console.log(request.body.skill);
+      // console.log(request.body.have);
+      Skill.editOneSkill(request.params.id, request.body);
+      response.redirect('/skills');
+   }
+
 //+ Export the functions/methods, otherwise we won't be able to call it from the routers
    module.exports = {
       index,
       show,
-      delete: deleteSkill
+      delete: deleteSkill,
+      edit
    }

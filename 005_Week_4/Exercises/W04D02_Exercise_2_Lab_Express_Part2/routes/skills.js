@@ -15,6 +15,7 @@
    router.get("/", skillsCtrl.index);                       //- "/"    is a link address - Request (GET)
    router.get("/:id", skillsCtrl.show);                     //- "/:id" is a link address - Request (GET)
    router.delete('/:id', skillsCtrl.delete);                //- "/:id" is a link address - Delete (DELETE)
+   router.put("/:id", skillsCtrl.edit)                      //- "/:id" is a link address - Edit/Update (PUT)
                                                                //? It's only "/" or "/:id", beacuse we already declared on the server app.use('/skills', skillsRouter);
                                                                //? The user request (GET) localhost:3000/skills/ or ..:3000/skills/:id
                                                                //? Then we call our controller to execute something
