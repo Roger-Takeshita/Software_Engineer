@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <meta http-equiv="X-UA-Compatible" content="ie=edge">
+   <link rel='stylesheet' href='/stylesheets/style.css' />
+   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+   <title>Flights Index</title>
+</head>
+<body>
+   <h1>Departing Flights</h1>
+   <table class="table">
+      <thead>
+         <tr class="columns">
+            <th>Air Line</th>
+            <th>Flight No</th>
+            <th>Gate</th>
+            <th>From</th>
+            <th>To</th>
+            <th>Departs</th>
+            <th>Status</th>
+         </tr>
+      </thead>
+      <tbody>
+         <% flights.forEach( function(flight) { %>
+            <% if (flight.status === "Done") { %>
+               <tr class="done">
+            <% } else if (flight.status === "Cancelled") { %>
+               <tr class="cancelled">
+            <% } else if ((flight.status === "Confirmed" || flight.status === "On Time") && new Date() < flight.departs) { %>
+               <tr class="confirmed">
+            <% } else { %>
+               <tr class="<%= new Date() > flight.departs ? 'passed' : '' %>">
+            <% } %>
+               <td><%= flight.airLine  %></td>
+               <td><%= flight.flightNo %></td>
+               <td><%= flight.gate     %></td>
+               <td><%= flight.from     %></td>
+               <td><%= flight.to       %></td>
+               <td><%= flight.departs  %></td>
+               <td><%= flight.status   %></td>
+            </tr>
+         <% }) %>
+      </tbody>
+   </table>
+   <div>
+      <button class="btn btn-primary" onclick="location.href='/flights/new'">Add New Flight</button>
+   </div>
+</body>
+</html>

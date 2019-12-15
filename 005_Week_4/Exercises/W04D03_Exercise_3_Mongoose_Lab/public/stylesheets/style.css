@@ -1,0 +1,28 @@
+body {
+  padding: 50px;
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+
+a {
+  color: #00B7FF;
+}
+.passed {
+  color: orange;
+  background-color: #fbfbfb;
+}
+.columns {
+  color: white;
+  background-color: black;
+  font-weight: bolder;
+}
+.done {
+  text-decoration: line-through;
+  color: darkgray;
+}
+.cancelled {
+  text-decoration: line-through;
+  color: red;
+}
+.confirmed {
+  color: darkgreen;
+}
