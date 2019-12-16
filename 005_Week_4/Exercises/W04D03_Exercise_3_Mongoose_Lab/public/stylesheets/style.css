@@ -26,3 +26,8 @@ a {
 .confirmed {
   color: darkgreen;
 }
+.hyperlink {
+  text-decoration: none;
+  color: blue;
+  font-size: 12px;
+}

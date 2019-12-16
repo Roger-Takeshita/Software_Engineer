@@ -1,0 +1,30 @@
+<%- include('../partials/header') %>
+   <h1>Flight from: <%= flight.from %> To <%= flight.to %></h1>
+   <table class="table">
+      <thead>
+         <tr class="columns">
+            <th>Airport</th>
+            <th>Air Line</th>
+            <th>Flight No</th>
+            <th>Gate</th>
+            <th>From</th>
+            <th>To</th>
+            <th>Departs</th>
+            <th>Status</th>
+         </tr>
+      </thead>
+      <tbody>
+         <tr>
+            <td><%= flight.airport      %></td>
+            <td><%= flight.airLine      %></td>
+            <td><%= flight.flightNo     %></td>
+            <td><%= flight.gate         %></td>
+            <td><%= flight.from         %></td>
+            <td><%= flight.to           %></td>
+            <td><%= flight.departs      %></td>
+            <td><%= flight.status       %></td>
+         </tr>
+      </tbody>
+   </table>
+   <input type="button" class="btn btn-danger" onclick="location.href='/flights'" value="Cancel">
+<%- include('../partials/footer') %>

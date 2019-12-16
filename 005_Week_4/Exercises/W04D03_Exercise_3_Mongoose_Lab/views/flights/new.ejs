@@ -1,6 +1,13 @@
 <%- include('../partials/header') %>
-   <h1>Add a New Flight</h1>
    <form action="/flights" method="POST">
+      <label>Airport
+         <select name="airport">
+            <option value="AUS">AUS</option>
+            <option value="DAL">DAL</option>
+            <option value="LAX">LAX</option>
+            <option value="SEA">SEA</option>
+         </select>
+      </label>
       <label>Air Lines
          <select name="airLine">
             <option value="American">American</option>
@@ -44,6 +51,7 @@
             <option value="Whitehorse">Whitehorse</option>
          </select>
       </label><br>
+      </label>
       <label>Departure Date:
          <input type="date" name="flightDate" autocomplete="off">
       </label><br>

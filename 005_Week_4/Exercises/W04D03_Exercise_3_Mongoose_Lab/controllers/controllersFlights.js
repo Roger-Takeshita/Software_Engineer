@@ -6,7 +6,17 @@
       Flight.find({}).sort({departs: 1}).exec(function(err, flight) {
          res.render("flights/index", {
             flights: flight,
-            title : "Flight Index"
+            title : "Departing Flights"
+         });
+      });
+   };
+
+//+ Render the Show
+   function show (req, res) {
+      Flight.findById({_id: req.params.id}).exec(function(err, flightOne) {
+         res.render("flights/show", {
+            flight: flightOne,
+            title: "Show One Flight"
          });
       });
    };
@@ -14,7 +24,7 @@
 //+ Render the new
    function newFlight (req, res) {
       res.render("flights/new", {
-         title: "New Flight"
+         title: "Add a New Flight"
       });
    };
 
@@ -47,5 +57,6 @@
    module.exports = {
       index,
       new: newFlight,
-      create
+      create,
+      show
    }

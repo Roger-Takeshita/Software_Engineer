@@ -2,7 +2,23 @@
    const mongoose = require("mongoose");     //- Require mongoose packages
    const Schema = mongoose.Schema;           //- Shorthand for mongoose schema
 
-//+ Create a basic flight schema
+//+ Destination Schema
+   let destinationSchema = new Schema (
+      {
+         airport: {
+            type: String,
+            enum: ["AUS", "DAL", "LAX", "SEA"]
+         },
+         arrival: {
+            type: Date
+         }
+      },
+      {
+         timestamps: true
+      }
+   );
+
+//+ Flight schema
    let flightSchema = new Schema (
       {
          airLine: {
@@ -37,7 +53,13 @@
          status: {
             type: String,
             enum: ["Scheduled", "Confirmed", "On Time", "Delayed", "Cancelled", "Boarding", "Done"]
-         }
+         },
+         airport: {
+            type: String,
+            enum: ["AUS", "DAL", "LAX", "SEA"],
+            default: "SEA"
+         },
+         destination: [destinationSchema]
       },
       {
          timestamps: true

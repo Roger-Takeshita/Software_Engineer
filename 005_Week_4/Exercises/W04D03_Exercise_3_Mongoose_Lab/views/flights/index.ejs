@@ -1,13 +1,14 @@
 <%- include('../partials/header') %>
-   <h1>Departing Flights</h1>
    <table class="table">
       <thead>
          <tr class="columns">
+            <th>Airport</th>
             <th>Air Line</th>
             <th>Flight No</th>
             <th>Gate</th>
             <th>From</th>
             <th>To</th>
+            <th>Destination</th>
             <th>Departs</th>
             <th>Status</th>
          </tr>
@@ -23,13 +24,15 @@
             <% } else { %>
                <tr class="<%= new Date() > flight.departs ? 'passed' : '' %>">
             <% } %>
-               <td><%= flight.airLine  %></td>
-               <td><%= flight.flightNo %></td>
-               <td><%= flight.gate     %></td>
-               <td><%= flight.from     %></td>
-               <td><%= flight.to       %></td>
-               <td><%= flight.departs  %></td>
-               <td><%= flight.status   %></td>
+               <td><%= flight.airport      %></td>
+               <td><%= flight.airLine      %></td>
+               <td><%= flight.flightNo     %><a href="/flights/<%= flight._id %>" class="hyperlink"> (details)</a></td>
+               <td><%= flight.gate         %></td>
+               <td><%= flight.from         %></td>
+               <td><%= flight.to           %></td>
+               <td><%= flight.destination  %></td>
+               <td><%= flight.departs      %></td>
+               <td><%= flight.status       %></td>
             </tr>
          <% }) %>
       </tbody>
