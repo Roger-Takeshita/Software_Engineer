@@ -3,16 +3,19 @@
 
 //+ Render the index
    function index (req, res) {
-      Flight.find({}).sort({departs: 1}).exec(function(err, flg) {
+      Flight.find({}).sort({departs: 1}).exec(function(err, flight) {
          res.render("flights/index", {
-            flights: flg
+            flights: flight,
+            title : "Flight Index"
          });
       });
    };
 
 //+ Render the new
    function newFlight (req, res) {
-      res.render("flights/new")
+      res.render("flights/new", {
+         title: "New Flight"
+      });
    };
 
 //+ Create new object

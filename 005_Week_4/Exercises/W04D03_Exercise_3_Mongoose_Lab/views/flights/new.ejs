@@ -1,14 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-   <meta charset="UTF-8">
-   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-   <link rel='stylesheet' href='/stylesheets/style.css' />
-   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-   <title>New Flight</title>
-</head>
-<body>
+<%- include('../partials/header') %>
    <h1>Add a New Flight</h1>
    <form action="/flights" method="POST">
       <label>Air Lines
@@ -73,5 +63,4 @@
       </label><br>
       <input type="submit" class="btn btn-success" value="Add Flight"><input type="button" class="btn btn-danger" onclick="location.href='/flights'" value="Cancel">
    </form>
-</body>
-</html>
+<%- include('../partials/footer') %>
