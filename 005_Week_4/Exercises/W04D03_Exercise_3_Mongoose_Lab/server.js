@@ -6,8 +6,9 @@ var logger = require('morgan');
 let methodOverride = require('method-override');                    //+ Require the method-override packages
 
 require("./config/database");                                       //+ Connect to the database with mongoose
-var indexRouter = require('./routes/routersIndex');
-var flightsRouter = require('./routes/routersFlight');
+const indexRouter = require('./routes/routersIndex');
+const flightsRouter = require('./routes/routersFlight');
+const arrivalsRouter = require('./routes/routersArrival');
 
 var app = express();
 
@@ -24,8 +25,9 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(methodOverride('_method'));                                 //+ Middleware - method-override
 
 
-app.use('/', indexRouter);                                          //+ Index middleware
-app.use('/flights', flightsRouter);                                 //+ Router middleware
+app.use('/', indexRouter);                                          //+ Index   middleware
+app.use('/flights', flightsRouter);                                 //+ Flights middleware
+app.use('/', arrivalsRouter);                                       //+ Arrival middleware
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

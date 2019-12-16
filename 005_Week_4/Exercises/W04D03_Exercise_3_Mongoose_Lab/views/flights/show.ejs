@@ -26,5 +26,38 @@
          </tr>
       </tbody>
    </table>
-   <input type="button" class="btn btn-danger" onclick="location.href='/flights'" value="Cancel">
+   <form action="/flights/<%= flight._id %>/arrivals" method="POST">
+      <label>Arrival Airport
+         <select name="airport">
+            <option value="AUS">AUS</option>
+            <option value="DAL">DAL</option>
+            <option value="LAX">LAX</option>
+            <option value="SEA">SEA</option>
+         </select>
+      </label>
+      <label>Arrival Date:
+         <input type="date" name="arrivalDate" autocomplete="off">
+      </label>
+      <label>Arrival Time:
+         <input type="time" name="arrivalTime" autocomplete="off">
+      </label>
+      <input type="submit" class="btn btn-success" value="Confirm Settings">
+      <input type="button" class="btn btn-danger" onclick="location.href='/flights'" value="Cancel">
+   </form>
+   <table class="table">
+      <thead>
+         <tr class="columns arrival">
+            <th>Destination Airport</th>
+            <th>Arrival Date & Time</th>
+         </tr>
+      </thead>
+      <tbody>
+         <% flight.destination.forEach( function(arrival) { %>
+            <tr>
+               <td><%= arrival.airport  %></td>
+               <td><%= arrival.arrival  %></td>
+            </tr>
+         <% }) %>
+      </tbody>
+   </table>
 <%- include('../partials/footer') %>
