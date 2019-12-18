@@ -10,6 +10,7 @@ function create (req, res) {
       airport: req.body.airport,
       arrival: newDate,
    }
+   console.log(newArrival, req.params.id);
    Flight.findById(req.params.id, function(err, flight) {
       flight.destination.push(newArrival);
       flight.save(function(err) {

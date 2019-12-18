@@ -7,10 +7,12 @@
       {
          airport: {
             type: String,
-            enum: ["AUS", "DAL", "LAX", "SEA"]
+            enum: ["AUS", "DAL", "LAX", "SEA"],
+            required: true
          },
          arrival: {
-            type: Date
+            type: Date,
+            required: true
          }
       },
       {

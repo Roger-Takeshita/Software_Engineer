@@ -13,10 +13,30 @@
 
 //+ Render the Show
    function show (req, res) {
-      Flight.findById({_id: req.params.id}).exec(function(err, flightOne) {
-         res.render("flights/show", {
-            flight: flightOne,
-            title: "Show One Flight"
+      let airports = Flight.schema.path("airport").enumValues;
+      let airportsDropDown = [...airports];
+      Flight.findById({_id: req.params.id}).where("destination").exec(function (err, flightDest) {
+         Flight.findById({_id: req.params.id}).exec(function(err, flightOne) {
+            for (let i = 0 ; i < airportsDropDown.length ; i++) {
+               if (airportsDropDown[i] === flightOne.airport) {
+                  airportsDropDown.splice(i, 1);
+                  i -= 1;
+                  continue;
+               } else {
+                  for (let j = 0 ; j < flightDest.destination.length ; j++) {
+                     if (airportsDropDown[i] === flightDest.destination[j].airport) {
+                        airportsDropDown.splice(i, 1);
+                        i -= 1;
+                        break;
+                     }
+                  }
+               }
+            }
+            res.render("flights/show", {
+               flight: flightOne,
+               title: `Flight from ${flightOne.from} to ${flightOne.to}:`,
+               airports : airportsDropDown
+            });
          });
       });
    };

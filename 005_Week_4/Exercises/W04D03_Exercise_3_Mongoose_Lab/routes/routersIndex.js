@@ -4,7 +4,7 @@
 
 //+ Router that render the index page
    router.get("/", function(req, res, next) {
-      res.render('index', { title: 'Departing Flights' });
+      res.render('index', { title: 'Home' });
    });
 
 //+ Export skills router to the server.js

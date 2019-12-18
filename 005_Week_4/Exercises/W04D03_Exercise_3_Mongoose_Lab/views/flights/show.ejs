@@ -1,5 +1,4 @@
 <%- include('../partials/header') %>
-   <h1>Flight from: <%= flight.from %> To <%= flight.to %></h1>
    <table class="table">
       <thead>
          <tr class="columns">
@@ -29,10 +28,13 @@
    <form action="/flights/<%= flight._id %>/arrivals" method="POST">
       <label>Arrival Airport
          <select name="airport">
-            <option value="AUS">AUS</option>
-            <option value="DAL">DAL</option>
-            <option value="LAX">LAX</option>
-            <option value="SEA">SEA</option>
+            <% if (flight.destination) { %>
+               <% airports.forEach((air) => { %>
+                  <option value="<%= air %>"><%= air %></option>
+               <% })%>
+            <% } else { %>
+               <option value=""></option>
+            <% } %>
          </select>
       </label>
       <label>Arrival Date:
@@ -52,7 +54,7 @@
          </tr>
       </thead>
       <tbody>
-         <% flight.destination.forEach( function(arrival) { %>
+         <% flight.destination.forEach ( function(arrival) { %>
             <tr>
                <td><%= arrival.airport  %></td>
                <td><%= arrival.arrival  %></td>

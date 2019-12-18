@@ -3,35 +3,77 @@ body {
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
 }
 
-a {
-  color: #00B7FF;
-}
 .passed {
   color: orange;
   background-color: #fbfbfb;
 }
+
 .columns {
   color: white;
   background-color: black;
   font-weight: bolder;
 }
+
 .done {
   text-decoration: line-through;
   color: darkgray;
 }
+
 .cancelled {
   text-decoration: line-through;
   color: red;
 }
+
 .confirmed {
   color: darkgreen;
 }
+
 .hyperlink {
   text-decoration: none;
   color: blue;
   font-size: 12px;
 }
+
 .arrival {
   background-color: lightgray;
   color: black;
+}
+
+nav > a, div > nav {
+  color: white;
+  margin: 20px;
+  text-decoration: none;
+  padding: 10px;
+  border-radius: 5px;
+  background-color: #007bff;
+  text-align: right;
+  font-weight: bolder;
+}
+
+nav > a:hover {
+  color: white;
+  background-color: lightskyblue;
+}
+
+nav > a.active {
+  color: white;
+}
+
+footer {
+  text-align: center;
+}
+
+footer a, footer a:hover {
+  text-decoration: none;
+  color: black;
+}
+
+footer span {
+  font-family: 'Dancing Script', cursive;
+  font-size: 15px;
+}
+
+footer img {
+  height: 20px;
+  width: 20px;
 }
