@@ -26,7 +26,7 @@
       </tbody>
    </table>
    <form action="/flights/<%= flight._id %>/arrivals" method="POST">
-      <label>Arrival Airport
+      <label>Arrival Airport:
          <select name="airport">
             <% if (flight.destination) { %>
                <% airports.forEach((air) => { %>
@@ -56,7 +56,7 @@
       <tbody>
          <% flight.destination.forEach ( function(arrival) { %>
             <tr>
-               <td><%= arrival.airport  %></td>
+               <td><%= arrival.airport  %><a href="/flights/<%= flight._id %>/seats" class="hyperlink"> (seats)</a></td>
                <td><%= arrival.arrival  %></td>
             </tr>
          <% }) %>

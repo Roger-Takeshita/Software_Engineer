@@ -61,7 +61,11 @@
             enum: ["AUS", "DAL", "LAX", "SEA"],
             default: "SEA"
          },
-         destination: [destinationSchema]
+         destination: [destinationSchema],
+         tickets: [{
+            type: Schema.Types.ObjectId,
+            ref: "Ticket"
+         }]
       },
       {
          timestamps: true

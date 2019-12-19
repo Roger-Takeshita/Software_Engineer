@@ -9,6 +9,7 @@ require("./config/database");                                       //+ Connect 
 const indexRouter = require('./routes/routersIndex');
 const flightsRouter = require('./routes/routersFlight');
 const arrivalsRouter = require('./routes/routersArrival');
+const ticketsRouter = require("./routes/routersTickets");
 
 var app = express();
 
@@ -28,6 +29,8 @@ app.use(methodOverride('_method'));                                 //+ Middlewa
 app.use('/', indexRouter);                                          //+ Index   middleware
 app.use('/flights', flightsRouter);                                 //+ Flights middleware
 app.use('/', arrivalsRouter);                                       //+ Arrival middleware
+app.use("/flights", ticketsRouter);
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
