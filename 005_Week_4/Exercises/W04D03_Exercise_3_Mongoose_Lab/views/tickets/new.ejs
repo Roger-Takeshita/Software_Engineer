@@ -1,4 +1,6 @@
 <%- include('../partials/header') %>
+<main class="other-main">
+   <h1><%= title %></h1>
    <table class="table">
       <thead>
          <tr class="columns">
@@ -17,13 +19,14 @@
          </tr>
       </tbody>
    </table>
-   <form action="/flights/<%= flightId %>/seats" method="POST">
+   <form action="/flights/<%= destinationFlightId %>/seats" method="POST">
       <label>Seat:
          <input name="seat" required pattern="[A-F][1-9]\d?">
       </label>
       <label>Price:
          <input name="price">
       </label><br>
-      <input type="submit" class="btn btn-success" value="Add Seat"><input type="button" class="btn btn-danger" onclick="location.href='/flights/<%= flightId %>'" value="Cancel">
+      <input type="submit" class="btn btn-success" value="Add Seat"><input type="button" class="btn btn-danger" onclick="location.href='/flights/<%= originFlightId %>'" value="Cancel">
    </form>
+</main>
 <%- include('../partials/footer') %>

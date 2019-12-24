@@ -1,4 +1,6 @@
 <%- include('../partials/header') %>
+<main class="other-main">
+   <h1><%= title %></h1>
    <table class="table">
       <thead>
          <tr class="columns">
@@ -25,7 +27,7 @@
          </tr>
       </tbody>
    </table>
-   <form action="/flights/<%= flight._id %>/arrivals" method="POST">
+   <form class="form-two" action="/flights/<%= flight._id %>/arrivals" method="POST">
       <label>Arrival Airport:
          <select name="airport">
             <% if (flight.destination) { %>
@@ -43,23 +45,26 @@
       <label>Arrival Time:
          <input type="time" name="arrivalTime" autocomplete="off">
       </label>
-      <input type="submit" class="btn btn-success" value="Confirm Settings">
+      <input type="submit" class="btn btn-success" value="Confirm">
       <input type="button" class="btn btn-danger" onclick="location.href='/flights'" value="Cancel">
    </form>
    <table class="table">
       <thead>
-         <tr class="columns arrival">
+         <tr class="columns destination">
             <th>Destination Airport</th>
             <th>Arrival Date & Time</th>
          </tr>
       </thead>
       <tbody>
-         <% flight.destination.forEach ( function(arrival) { %>
-            <tr>
-               <td><%= arrival.airport  %><a href="/flights/<%= flight._id %>/seats" class="hyperlink"> (seats)</a></td>
-               <td><%= arrival.arrival  %></td>
-            </tr>
+         <% flight.destination.forEach ( function(destination) { %>
+            <form action="/flights/<%= flight._id %>/<%= destination._id %>/seats/" method="GET">
+               <tr>
+                  <td name="flightId" value="<%= destination._id %>"><%= destination.airport  %> <input type="submit" class="" value="Seats"></td>
+                  <td><%= destination.arrival  %></td>
+               </tr>
+            </form>
          <% }) %>
       </tbody>
    </table>
+</main>
 <%- include('../partials/footer') %>

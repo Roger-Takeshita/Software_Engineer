@@ -32,10 +32,13 @@
                   }
                }
             }
-            res.render("flights/show", {
-               flight: flightOne,
-               title: `Flight from ${flightOne.from} to ${flightOne.to}:`,
-               airports : airportsDropDown
+            Flight.findById(req.params.id).populate('tickets').exec(function(err, ticket) {
+               res.render("flights/show", {
+                  flight: flightOne,
+                  title: `Flight from ${flightOne.from} to ${flightOne.to}:`,
+                  airports : airportsDropDown,
+                  ticket: ticket
+               });
             });
          });
       });

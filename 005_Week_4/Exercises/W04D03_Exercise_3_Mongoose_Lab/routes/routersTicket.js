@@ -4,7 +4,7 @@
    const ticketsCtrl = require("../controllers/controllersTickets");
 
 //+ Router that references the controllers to execute an action/render a page
-   router.get("/:id/seats", ticketsCtrl.show);
+   router.get('/:id/:destinationId/seats', ticketsCtrl.show);
    router.post("/:id/seats", ticketsCtrl.create);
 
 //+ Export flights router to the server.js
