@@ -1,6 +1,15 @@
 <%- include('../partials/header') %>
 <main class="other-main">
    <h1><%= title %></h1>
+   <form action="/flights/<%= originFlightId %>/<%= destinationFlightId %>/seats" method="POST">
+      <label>Seat:
+         <input name="seat" required pattern="[A-F][1-9]\d?">
+      </label>
+      <label>Price:
+         <input name="price">
+      </label><br>
+      <input type="submit" class="btn btn-success" value="Add Seat">   <input type="button" class="btn btn-danger" onclick="location.href='/flights/<%= originFlightId %>'" value="Cancel">
+   </form>
    <table class="table">
       <thead>
          <tr class="columns">
@@ -9,24 +18,15 @@
          </tr>
       </thead>
       <tbody>
-         <tr>
-            <% if (tickets) { %>
-               <% tickets.forEach( function(ticket) { %>
+         <% if (tickets) { %>
+            <% tickets.forEach( function(ticket) { %>
+               <tr>
                   <td><%= ticket.seat %> (delete)</td>
                   <td><%= ticket.price %></td>
+               </tr>
                <% }) %>
             <% } %>
-         </tr>
       </tbody>
    </table>
-   <form action="/flights/<%= destinationFlightId %>/seats" method="POST">
-      <label>Seat:
-         <input name="seat" required pattern="[A-F][1-9]\d?">
-      </label>
-      <label>Price:
-         <input name="price">
-      </label><br>
-      <input type="submit" class="btn btn-success" value="Add Seat"><input type="button" class="btn btn-danger" onclick="location.href='/flights/<%= originFlightId %>'" value="Cancel">
-   </form>
 </main>
 <%- include('../partials/footer') %>

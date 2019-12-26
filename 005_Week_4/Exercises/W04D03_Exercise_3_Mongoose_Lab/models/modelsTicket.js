@@ -12,6 +12,10 @@
          price: {
             type: [Number],
             min: 0
+         },
+         destFlight: {
+            type: Schema.Types.ObjectId,
+            ref: 'Flight' 
          }
       }
    );

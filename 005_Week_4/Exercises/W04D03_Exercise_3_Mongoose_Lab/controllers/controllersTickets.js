@@ -1,11 +1,24 @@
-//+ Require the flight schema (models)
+//! Require the flight schema (models)
    const Ticket = require("../models/modelsTicket");
    const Flight = require("../models/modelsFlight");
 
+//! Create a new object (ticket)
    function create (req, res) {
-      console.log(req.body);
+      let newTicket = {
+         seat: req.body.seat,
+         price: req.body.price,
+         destFlight: req.params.destinationId
+      }
+      let ticket = new Ticket(newTicket);
+      ticket.save((err)=>{
+         if (err) {
+            console.log(err);
+         }
+         res.redirect(`/flights/${req.params.id}/${req.params.destinationId}/seats`);
+      })
    };
 
+//! Render the show/new tickets
    function show (req, res) {
       console.log('From : ' + req.params.id);
       console.log('To : '   + req.params.destinationId)
@@ -24,7 +37,7 @@
             //       airportDest = dest.airport;
             //    }
             // });
-         Ticket.find({flight: req.params._id}, function(err, tickets) {
+         Ticket.find({destFlight: req.params.destinationId}, function(err, tickets) {
             res.render("tickets/new", {
                tickets: tickets,
                originFlightId: req.params.id,
@@ -35,6 +48,7 @@
       });
    };
 
+//! Export the methods   
    module.exports = {
       create,
       show

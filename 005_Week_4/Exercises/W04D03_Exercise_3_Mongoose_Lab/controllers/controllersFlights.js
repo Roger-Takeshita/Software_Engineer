@@ -1,7 +1,7 @@
-//+ Require the flight schema (models)
+//! Require the flight schema (models)
    const Flight = require("../models/modelsFlight");
 
-//+ Render the index
+//! Render the index
    function index (req, res) {
       Flight.find({}).sort({departs: 1}).exec(function(err, flight) {
          res.render("flights/index", {
@@ -11,7 +11,7 @@
       });
    };
 
-//+ Render the Show
+//! Render the Show
    function show (req, res) {
       let airports = Flight.schema.path("airport").enumValues;
       let airportsDropDown = [...airports];
@@ -32,26 +32,23 @@
                   }
                }
             }
-            Flight.findById(req.params.id).populate('tickets').exec(function(err, ticket) {
-               res.render("flights/show", {
-                  flight: flightOne,
-                  title: `Flight from ${flightOne.from} to ${flightOne.to}:`,
-                  airports : airportsDropDown,
-                  ticket: ticket
-               });
+            res.render("flights/show", {
+               flight: flightOne,
+               title: `Flight from ${flightOne.from} to ${flightOne.to}:`,
+               airports : airportsDropDown
             });
          });
       });
    };
 
-//+ Render the new
+//! Render the new
    function newFlight (req, res) {
       res.render("flights/new", {
          title: "Add a New Flight"
       });
    };
 
-//+ Create new object
+//! Create new object
    function create (req, res) {
       let date = req.body.flightDate;
       let time = req.body.flightTime;
@@ -76,7 +73,7 @@
       })
    };
 
-//+ Export the methods
+//! Export the methods
    module.exports = {
       index,
       new: newFlight,
