@@ -39,6 +39,18 @@ body {
   color: black;
 }
 
+.seats {
+  color: blue;
+  border-radius: 5px;
+  background-color: lightgrey;
+}
+
+.delete {
+  color: white;
+  border-radius: 5px;
+  background-color: #dc3445;
+}
+
 nav {
   line-height: 30px;
 }

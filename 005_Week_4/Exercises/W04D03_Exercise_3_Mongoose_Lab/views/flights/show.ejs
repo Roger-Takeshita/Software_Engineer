@@ -7,9 +7,6 @@
             <th>Airport</th>
             <th>Air Line</th>
             <th>Flight No</th>
-            <th>Gate</th>
-            <th>From</th>
-            <th>To</th>
             <th>Departs</th>
             <th>Status</th>
          </tr>
@@ -19,9 +16,6 @@
             <td><%= flight.airport      %></td>
             <td><%= flight.airLine      %></td>
             <td><%= flight.flightNo     %></td>
-            <td><%= flight.gate         %></td>
-            <td><%= flight.from         %></td>
-            <td><%= flight.to           %></td>
             <td><%= flight.departs      %></td>
             <td><%= flight.status       %></td>
          </tr>
@@ -59,7 +53,7 @@
          <% flight.destination.forEach ( function(destination) { %>
             <form action="/flights/<%= flight._id %>/<%= destination._id %>/seats/" method="GET">
                <tr>
-                  <td name="flightId" value="<%= destination._id %>"><%= destination.airport  %> <input type="submit" class="" value="Seats"></td>
+                  <td name="flightId" value="<%= destination._id %>"><%= destination.airport  %> <input type="submit" class="seats" value="Seats"></td>
                   <td><%= destination.arrival  %></td>
                </tr>
             </form>

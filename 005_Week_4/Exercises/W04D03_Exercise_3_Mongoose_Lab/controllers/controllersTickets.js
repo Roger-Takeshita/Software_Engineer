@@ -4,18 +4,27 @@
 
 //! Create a new object (ticket)
    function create (req, res) {
+      Ticket.find({destFlight: req.params.destinationId}).sort({seat: 1}).exec( function(err, tickets) {
+         tickets.forEach( (ticket) => {
+            if (ticket.seat.toString() === req.body.seat) {
+               console.log(ticket.seat.toString());
+               console.log(req.params.id, req.params.destinationId);
+               return res.redirect(`/flights/${req.params.id}/${req.params.destinationId}/seats`)
+            }
+         });
+      });
       let newTicket = {
          seat: req.body.seat,
          price: req.body.price,
          destFlight: req.params.destinationId
       }
       let ticket = new Ticket(newTicket);
-      ticket.save((err)=>{
+      ticket.save( (err) => {
          if (err) {
             console.log(err);
          }
          res.redirect(`/flights/${req.params.id}/${req.params.destinationId}/seats`);
-      })
+      });
    };
 
 //! Render the show/new tickets
@@ -37,7 +46,7 @@
             //       airportDest = dest.airport;
             //    }
             // });
-         Ticket.find({destFlight: req.params.destinationId}, function(err, tickets) {
+         Ticket.find({destFlight: req.params.destinationId}).sort({seat: 1}).exec( function(err, tickets) {
             res.render("tickets/new", {
                tickets: tickets,
                originFlightId: req.params.id,
@@ -48,8 +57,20 @@
       });
    };
 
+//! Delete one ticket
+   function deleteTicket (req, res) {
+      Ticket.deleteOne({_id: req.params.ticketId}, function(err, oneTicket) {
+         if (err) {
+            console.log(err);
+         }
+         console.log('One item was deleted: ' + oneTicket);
+         res.redirect(`/flights/${req.params.id}/${req.params.destinationId}/seats`);
+      })
+   };
+
 //! Export the methods   
    module.exports = {
       create,
-      show
+      show,
+      delete: deleteTicket
    };

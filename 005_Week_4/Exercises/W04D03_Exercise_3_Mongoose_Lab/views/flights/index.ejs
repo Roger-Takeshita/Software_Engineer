@@ -7,9 +7,6 @@
             <th>Airport</th>
             <th>Air Line</th>
             <th>Flight No</th>
-            <th>Gate</th>
-            <th>From</th>
-            <th>To</th>
             <th>Departs</th>
             <th>Status</th>
          </tr>
@@ -28,9 +25,6 @@
                <td><%= flight.airport      %></td>
                <td><%= flight.airLine      %></td>
                <td><%= flight.flightNo     %><a href="/flights/<%= flight._id %>" class="hyperlink"> (details)</a></td>
-               <td><%= flight.gate         %></td>
-               <td><%= flight.from         %></td>
-               <td><%= flight.to           %></td>
                <td><%= flight.departs      %></td>
                <td><%= flight.status       %></td>
             </tr>

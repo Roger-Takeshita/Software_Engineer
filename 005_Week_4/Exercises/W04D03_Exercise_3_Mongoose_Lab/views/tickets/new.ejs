@@ -6,7 +6,7 @@
          <input name="seat" required pattern="[A-F][1-9]\d?">
       </label>
       <label>Price:
-         <input name="price">
+         <input name="price" required>
       </label><br>
       <input type="submit" class="btn btn-success" value="Add Seat">   <input type="button" class="btn btn-danger" onclick="location.href='/flights/<%= originFlightId %>'" value="Cancel">
    </form>
@@ -20,10 +20,12 @@
       <tbody>
          <% if (tickets) { %>
             <% tickets.forEach( function(ticket) { %>
-               <tr>
-                  <td><%= ticket.seat %> (delete)</td>
-                  <td><%= ticket.price %></td>
-               </tr>
+               <form action="/flights/<%= originFlightId %>/<%= destinationFlightId %>/seats/<%= ticket.id %>?_method=DELETE" method="POST">
+                  <tr>
+                     <td><%= ticket.seat %> <input type="submit" class="delete" value="Delete"></td>
+                     <td>$<%= ticket.price %>,00</td>
+                  </tr>
+               </form>
                <% }) %>
             <% } %>
       </tbody>

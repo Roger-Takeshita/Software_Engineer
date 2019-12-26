@@ -56,9 +56,7 @@
       let newFlight = {
          airLine: req.body.airLine,
          flightNo: req.body.flightNo,
-         gate: req.body.gate,
-         from: req.body.from,
-         to: req.body.to,
+         airport: req.body.airport,
          departs: newDate,
          status: req.body.status
       }
