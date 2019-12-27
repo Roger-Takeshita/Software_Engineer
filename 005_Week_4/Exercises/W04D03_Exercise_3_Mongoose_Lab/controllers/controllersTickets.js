@@ -4,26 +4,30 @@
 
 //! Create a new object (ticket)
    function create (req, res) {
+      let ticketExistFlag = false;
       Ticket.find({destFlight: req.params.destinationId}).sort({seat: 1}).exec( function(err, tickets) {
          tickets.forEach( (ticket) => {
+            console.log(ticket.seat.toString(), req.body.seat);
             if (ticket.seat.toString() === req.body.seat) {
-               console.log(ticket.seat.toString());
-               console.log(req.params.id, req.params.destinationId);
-               return res.redirect(`/flights/${req.params.id}/${req.params.destinationId}/seats`)
+               ticketExistFlag = true;
             }
          });
-      });
-      let newTicket = {
-         seat: req.body.seat,
-         price: req.body.price,
-         destFlight: req.params.destinationId
-      }
-      let ticket = new Ticket(newTicket);
-      ticket.save( (err) => {
-         if (err) {
-            console.log(err);
-         }
-         res.redirect(`/flights/${req.params.id}/${req.params.destinationId}/seats`);
+         if (ticketExistFlag) {
+            return res.redirect(`/flights/${req.params.id}/${req.params.destinationId}/seats`);
+         } else {
+            let newTicket = {
+               seat: req.body.seat,
+               price: req.body.price,
+               destFlight: req.params.destinationId
+            }
+            let ticket = new Ticket(newTicket);
+            ticket.save( (err) => {
+               if (err) {
+                  console.log(err);
+               }
+               res.redirect(`/flights/${req.params.id}/${req.params.destinationId}/seats`);
+            });
+         };
       });
    };
 
