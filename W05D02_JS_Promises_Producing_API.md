@@ -349,6 +349,7 @@
       npm i
       npm i mongoose
       npm i dotenv
+      npm i cors
    ```
 
 <h3 id="dotenv">Create .env File</h3>
@@ -392,9 +393,13 @@
       require('./config/database');                       //! Connect DB
 
       const apiRouter = require('./routes/api');
+      const cors = require('cors');
+      
+      app.use(cors());
       
       app.use('/', indexRouter);
       app.use('/api', apiRouter);                         //! API Middleware
+      
    ```
 
 * In `controllers/database.js`
@@ -511,3 +516,30 @@
 
 * Delete Request
 	http://localhost:3000/api/puppies/5e0947e11eeac9f29e3d9663
+
+
+<h2 id="cors"><a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS">CORS</a><h2>
+
+[Go Back to Summary](#summary)
+
+* Browsers have a security mechanism that prevents JS from making a request for a source to a domain different from the one that the current web page was load from.
+* The domain is made up of the **host** and **port**. Therefore, `localhost:3000` is considered a different domain than `localhost:8080`.
+* To improve web applications, developers asked modern browser vendor to allow cross-origin requests and the **cross-origin resource sharing (CORS)** standard came to be.
+* To enable access to our server's API by clients not from our server's domain, we need to enable CORS.
+* We implement CORS in an Express app using middleware.
+
+<h3 id="cors-installation">Installation</h3>
+
+[Go Back to Summary](#summary)
+
+`npm i cors`
+
+* Mount the middleware in `server.js`
+
+```JavaScript
+   const cors = require('cors');
+   ...
+   var app = express();
+
+   app.use(cors());
+```
