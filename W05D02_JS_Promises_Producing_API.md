@@ -15,6 +15,7 @@
   * [Postman](#postman)
   * [API RESTful Routes](#api-restful)
   * [Example - Puppies API](#example)
+* [Cross-Origin Resource Sharing (CORS)](#cors)
 
 <h1 id="promises">JavaScript Promises</h1>
 
@@ -453,6 +454,77 @@
 
       module.exports = mongoose.model('Puppy', puppySchema, 'puppies');
    ```
+* In `controllers/api/puppiesAPIController.js`
+
+   ```JavaScript
+      //! Require Puppy Schema
+         const Puppy = require('../../models/puppySchema');
+
+      //! Index
+         const index = function(req, res) {
+            Puppy.find({}, function(err, puppies) {
+               res.status(200).json(puppies);
+            });
+         };
+
+      //! Show One Puppy
+         const showOne = function(req, res) {
+            Puppy.findById(req.params.id)
+            .then(puppy => {
+               if (puppy) {
+                  res.json(puppy);
+               } else {
+                  res.status(404).json({error: 'Puppy not found'});
+               }
+            })
+            .catch(err => {
+               res.status(500).json({error: 'Oh No!'});
+            });
+         };
+
+      //! Create a Puppy
+         const create = function(req, res) {
+            console.log(req.body);
+            Puppy.create(req.body)
+            .then(puppy => {
+               res.json(puppy);
+            })
+            .catch(err => {
+               res.status(500).json({ error: 'Something went wrong' });
+            });
+         };
+
+      //! Update a Puppy
+         const update = function(req, res) {
+            Puppy.findByIdAndUpdate(req.params.id, req.body, {
+               new: true
+            })
+            .then(puppy => {
+               res.json(puppy);
+            })
+            .catch(err => {
+               res.status(404).json({error: 'Puppu not found!'});
+            });
+         };
+
+      //! Delete a Puppy
+         const deletePuppy = function(req, res) {
+            Puppy.findByIdAndDelete(req.params.id)
+            .then(removePuppy => {
+               res.json(removePuppy);
+            });
+         };
+
+
+      //! Export methods/functions to route
+         module.exports = {
+            index,
+            showOne,
+            create,
+            update,
+            delete: deletePuppy
+         };
+   ```
 
 * In `routes/api/puppyAPIRouter.js`
   
@@ -518,7 +590,7 @@
 	http://localhost:3000/api/puppies/5e0947e11eeac9f29e3d9663
 
 
-<h2 id="cors"><a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS">CORS</a><h2>
+<h1 id="cors"><a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS">CORS</a></h1>
 
 [Go Back to Summary](#summary)
 
@@ -528,7 +600,7 @@
 * To enable access to our server's API by clients not from our server's domain, we need to enable CORS.
 * We implement CORS in an Express app using middleware.
 
-<h3 id="cors-installation">Installation</h3>
+<h2 id="cors-installation">Installation</h2>
 
 [Go Back to Summary](#summary)
 
