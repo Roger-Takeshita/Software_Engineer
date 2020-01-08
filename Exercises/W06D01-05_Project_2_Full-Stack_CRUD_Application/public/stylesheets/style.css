@@ -1,0 +1,64 @@
+
+#logo {
+  height: 20px;
+  width: 20px;
+}
+
+.avatar {
+  height: 50px;
+  width: 50px;
+}
+
+.avatar-post {
+  height: 25px;
+  width: 25px;
+  border-radius: 50%;
+}
+
+.avatar-logout {
+  height: 30px;
+  width: 30px;
+  border-radius: 50%;
+}
+
+.post {
+  width: 50%;
+}
+
+form > input.new-post {
+  min-height: 150px;
+  border: 1px solid lightgrey;
+}
+
+.user-post {
+  min-height: 100px;
+  min-width: 250px;
+  border: 1px solid lightgrey;
+}
+
+footer {
+  display: flex;
+  text-align: center;
+  align-content: center;
+  align-items: center;
+  justify-content: center;
+  bottom: 0;
+  height: 50px;
+  line-height: 50px;
+  font-family: 'Fredoka One', cursive;
+}
+
+footer a {
+  text-decoration: none;
+  color: black;
+}
+
+footer span {
+  font-family: 'Dancing Script', cursive;
+  font-size: 15px;
+}
+
+footer img {
+  height: 20px;
+  width: 20px;
+}
