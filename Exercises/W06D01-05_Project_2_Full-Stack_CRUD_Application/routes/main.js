@@ -5,12 +5,12 @@ const mainCtrl = require('../controllers/main');
 
 router.get   ('/', mainCtrl.index);
 router.post  ('/', mainCtrl.newPost);
-router.put   ('/', mainCtrl.updatePost);
-router.delete('/', mainCtrl.deletePost);
+router.put   ('/:postId', mainCtrl.updatePost);
+router.delete('/:postId', mainCtrl.deletePost);
 
-router.post  ('/comment/:id', mainCtrl.newComment);
-router.put   ('/comment/:id', mainCtrl.updateComment);
-router.delete('/comment/:id', mainCtrl.deleteComment);
+router.post  ('/comment/:postId', mainCtrl.newComment);
+router.put   ('/comment/:postId/:commentId', mainCtrl.updateComment);
+router.delete('/comment/:postId/:commentId', mainCtrl.deleteComment);
 
 router.get('/auth/google', passport.authenticate(
    'google',

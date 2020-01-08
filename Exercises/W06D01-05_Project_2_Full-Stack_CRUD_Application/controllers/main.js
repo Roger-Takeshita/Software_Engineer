@@ -4,7 +4,7 @@ const Post = require('../models/post');
 function index(req, res, next) {
    // Post.find().populate('user').populate({path:'comments.user', select: ['givenName', 'familyName']}).exec(function(err, userNameComments) {
    //    console.log(userNameComments[0].comments[0]);
-      Post.find().populate({path: 'user', select: ['givenName', 'familyName', 'post', 'adm', 'avatar', 'comments']}).populate({path:'comments.user', select: ['givenName', 'familyName']}).exec(function(err, posts) {           
+      Post.find().populate({path: 'user', select: ['givenName', 'familyName', 'post', 'adm', 'avatar', 'comments']}).populate({path:'comments.user', select: ['givenName', 'familyName']}).sort({updatedAt: -1}).exec(function(err, posts) {           
          res.render('index', {
             title: `INDEX PAGE`,
             posts,
@@ -20,18 +20,22 @@ function newPost (req, res) {
       user: req.user._id
    });
    post.save(function(err) {
-      if(err) return res.redirect('/');
+      if(err) console.log(err);
       res.redirect('/');
    });
 
 };
 
 function updatePost (req, res) {
-   
+   Post.findById({_id: req.params.postId}, function(err, post) {
+      post.post = req.body.text;
+      post.save();
+      res.redirect('/');
+   })
 };
 
 function deletePost (req, res) {
-   Post.deleteOne({'comments._id': req.params.id}, function(err, comment) {
+   Post.deleteOne({_id: req.params.postId}, function(err, comment) {
       console.log(comment);
       
       if (err) {
@@ -44,11 +48,11 @@ function deletePost (req, res) {
 };
 
 function newComment (req, res) {
-   Post.findById({path:'comments._id', }, function(err, post) {
+   Post.findById({_id: req.params.postId}, function(err, post) {
       let comment = {
          comment: req.body.text,
          user: req.user._id
-      }
+      };
       post.comments.push(comment);
       post.save(function(err) {
          res.redirect('/');
@@ -57,26 +61,25 @@ function newComment (req, res) {
 };
 
 function updateComment (req, res) {
+   console.log(req.params.postId);
+   console.log(req.params.commentId);
+   console.log("bodyyyyyyyy"+req.body.text);
    
+   Post.findById({_id: req.params.postId}, function(err, post) {
+      let comment = post.comments.id(req.params.commentId);
+      comment.comment = req.body.text;
+      post.save();
+      res.redirect('/');
+   })
 };
 
-function deleteComment (req, res) {
-   
-   // Post.find({'comments.comment._id': req.params.id}, function(err,doc) {
-   //    console.log(doc);
-      
-   // })
-   // Post.comments.remove()
-   // Post.deleteOne({'comments.comment._id': req.params.id}, function(err, comment) {
-   //    console.log( comment);
-      
-   //    if (err) {
-   //       console.log(err);
-   //    } else {
-   //       console.log('One comment was deleted: ' + comment);
-   //       res.redirect('/');
-   //    }
-   // });
+function deleteComment (req, res) {   
+   Post.findById({_id: req.params.postId}, function(err, post) {
+      let comment = post.comments.id(req.params.commentId);
+      comment.remove();
+      post.save();
+      res.redirect('/');
+   });
 };
 
 module.exports = {
