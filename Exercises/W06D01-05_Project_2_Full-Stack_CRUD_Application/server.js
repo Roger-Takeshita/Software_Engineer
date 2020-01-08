@@ -9,6 +9,8 @@ let methodOverride = require('method-override');         //! Require the method-
 
 var indexRouter = require('./routes/index');
 var userRouter = require('./routes/user');
+const apiRouter = require('./routes/api/index');
+const cors = require('cors');
 
 require('dotenv').config();                             //! Require Dotenv
 require('./config/database');                           //! Require MongoDB Database
@@ -33,6 +35,8 @@ app.use(passport.session());                            //! Passport middleware,
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(methodOverride('_method'));                     //! Method-override middleware 
 
+app.use(cors());
+app.use('/api', apiRouter);
 app.use('/', indexRouter);
 app.use('/user', userRouter);
 
