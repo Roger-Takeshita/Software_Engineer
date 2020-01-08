@@ -7,7 +7,7 @@ const passport = require('passport');                    //! Require passport pa
 var logger = require('morgan');
 let methodOverride = require('method-override');         //! Require the method-override packages
 
-var mainRouter = require('./routes/main');
+var indexRouter = require('./routes/index');
 var userRouter = require('./routes/user');
 
 require('dotenv').config();                             //! Require Dotenv
@@ -33,7 +33,7 @@ app.use(passport.session());                            //! Passport middleware,
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(methodOverride('_method'));                     //! Method-override middleware 
 
-app.use('/', mainRouter);
+app.use('/', indexRouter);
 app.use('/user', userRouter);
 
 // catch 404 and forward to error handler

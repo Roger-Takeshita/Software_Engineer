@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const passport = require('passport');                          //! Require passport package
-const mainCtrl = require('../controllers/main');
+const mainCtrl = require('../controllers/index');
 
 router.get   ('/', mainCtrl.index);
 router.post  ('/', mainCtrl.newPost);
