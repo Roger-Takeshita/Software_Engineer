@@ -2,8 +2,8 @@ const Post = require('../../models/post');
 
 //! Find All Posts
    const index = function(req, res) {
-      Post.find({}, function(err, posts) {
-         res.status(200).json(posts);
+      Post.find().populate({path: 'user', select: ['givenName', 'familyName', 'post', 'adm', 'avatar', 'comments']}).populate({path:'comments.user', select: ['givenName', 'familyName']}).exec(function(err, posts) {
+         res.json({ posts, currentUser: req.user });
       });
    };
 

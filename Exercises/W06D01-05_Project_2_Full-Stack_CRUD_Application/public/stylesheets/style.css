@@ -1,3 +1,11 @@
+.container {
+  padding-top: 100px;
+}
+
+nav {
+  position: fixed;
+  background-color: lightgrey;
+}
 
 #logo {
   height: 20px;
@@ -22,7 +30,7 @@
 }
 
 .post {
-  width: 50%;
+  width: 60%;
 }
 
 form > input.new-post {
@@ -30,14 +38,95 @@ form > input.new-post {
   border: 1px solid lightgrey;
 }
 
+.user-info {
+  padding-top: 1em;
+  padding-bottom: 5px;
+  display: flex;
+  flex-grow: 1;
+  text-align: center;
+}
+
+.user-info > a {
+  color: darkgray;
+  margin: auto 0 auto auto;
+}
+
+.dots {
+  justify-content: flex-end;
+}
+
 .user-post {
   min-height: 100px;
   min-width: 250px;
+  text-align: center;
+  justify-content: center;
   border: 1px solid lightgrey;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
 }
 
-footer {
+.user-comment {
+  min-height: 70px;
+  color: darkgrey;
+  border-bottom: 1px solid lightgrey;
+  border-left: 1px solid lightgrey;
+  border-right: 1px solid lightgrey;
+}
+
+.edit, .delete {
+  font-size: 10px;
+}
+
+.edit {
+  color: lightgreen;
+}
+
+.delete {
+  color: lightpink;
+}
+
+.user-comment > p {
+  margin-block-start: 0;
+  margin-inline-end: 0;
+}
+
+
+#comments {
+  color: black;
+  font-weight: bolder;
+  background-color: #eeeeee;
+}
+
+.comment-field {
   display: flex;
+}
+
+#input-new-comment {
+  font: 15px;
+  height: 30px;
+  border-bottom: 1px solid lightgrey;
+  border-left: 1px solid lightgrey;
+  border-right: 1px solid lightgrey;
+  border-bottom-left-radius: 5px;
+}
+
+#button-new-comment {
+  font-size: 13px;
+  width: 100px;
+  height: 31px;
+  border-bottom-right-radius: 5px;
+}
+
+.full-name-comment {
+  color: black;
+}
+
+
+
+footer {
+  position: sticky;
+  background-color:#eeeeee;
+  margin: 0 auto;
   text-align: center;
   align-content: center;
   align-items: center;

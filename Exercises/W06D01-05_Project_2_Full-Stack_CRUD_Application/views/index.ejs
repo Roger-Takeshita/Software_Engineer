@@ -1,74 +1,8 @@
 <%- include('./partials/header') %>
-  <div class="container">
-      <div id="search-row" class="row">
-        <h2 class="col s4 blue-grey-text text-darken-2"><%= title %></h2>
-      </div>
+  <div class="container body">
       <div class="row">
         <div id="users" class="col s12">
-        <% posts.forEach(function(post) { %>
-            <div class="post">
-              <div class="user-info">
-                <img src="<%= post.user.avatar %>" alt="avatar" class="avatar-post">
-                <span class="user-name"><%= post.user.givenName %> <%= post.user.familyName %></span>
-                <% if (post.user._id.equals(user && user._id)) { %>
-                  <a class="modal-trigger" href="#1st<%= post._id %>">...</a>
-                  <div id="1st<%= post._id %>" class="modal">
-                    <div class="modal-content">
-                      <h6>Edit Post - Menu</h6>
-                      <button class="modal-trigger" href="#2nd<%= post._id %>">Edit</button>
-                      <form action="/<%= post._id %>?_method=DELETE" method="POST">
-                        <button type="submit">Delete</button>
-                      </form>
-                    </div>
-                  </div>
-                  <div id="2nd<%= post._id %>" class="modal">
-                     <div class="modal-content">
-                        <h6>Edit Post</h6>
-                        <form action="/<%= post._id %>?_method=PUT" method="POST">
-                          <input type="text" name="text" class="new-post" style="border: 1px solid lightgrey;" value="<%= post.post %>">
-                          <button type="submit" class="btn white-text">Update Post</button>
-                        </form>
-                     </div>
-                  </div>
-                <% } %>
-              </div>
-              <div class="user-post">
-                <p><%= post.post %></p>
-              </div>
-              <div class="user-comment">
-                <% if (post.comments.length) { %>
-                  <% post.comments.forEach(function(comment) { %>
-                    <p>
-                      <%= comment.user.givenName %> <%= comment.user.familyName %> [<%= comment.updatedAt %>] - <%= comment.comment %>
-                      <% if (comment.user._id.equals(user && user._id)) { %>
-                        <button class="btn red-text modal-trigger" href="#1st<%= comment._id %>">Edit</button>
-                        <div id="1st<%= comment._id %>" class="modal">
-                          <div class="modal-content">
-                            <h6>Edit Comment</h6>
-                            <form action="/comment/<%= post._id %>/<%= comment._id %>?_method=PUT" method="POST">
-                              <input type="text" name="text" value="<%= comment.comment %>">
-                              <button type="submit">Update Comment</button>
-                            </form>
-                          </div>
-                        </div>
-                        <form action="/comment/<%= post._id %>/<%= comment._id %>?_method=DELETE" method="POST">
-                          <button type="submit" class="btn red-text">Del</button>
-                        </form>
-                      <% } %>
-                    </p>
-                  <% }) %>
-                <% } %>
-              </div>
-              <div class="user-new-comment">
-                <% if (user) { %>
-                  <form action="/comment/<%= post._id %>" method="POST">
-                    <input type="text" name="text">
-                    <button type="submit" class="btn white-text">Post Comment</button>
-                  </form>
-                <% } %>
-              </div>
-            </div>
-        <% }) %>
+          <div id="posts"></div>
         </div>
       </div>
   </div>
