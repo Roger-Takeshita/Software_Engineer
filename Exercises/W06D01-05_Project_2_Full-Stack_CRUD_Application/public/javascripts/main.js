@@ -52,8 +52,8 @@ $.ajax({
                      if (data.currentUser && data.currentUser._id === comment.user._id) {
                         listPostsHTML += `
                         <form id="del-form" action="/comment/${post._id}/${comment._id}?_method=DELETE" method="POST">
-                           <p><span class="full-name-comment">[${comment.user.givenName} ${comment.user.familyName}]</span> ${comment.comment}
-                           <a class="edit" class="modal-trigger" href="#1st${comment._id}">(edit)</a>
+                           <p><span class="full-name-comment">&nbsp;&nbsp;[${comment.user.givenName} ${comment.user.familyName}]</span> ${comment.comment}
+                           <a class="edit modal-trigger" href="#1st${comment._id}">(edit)</a>
                            <a class="delete" href="javascript:{}" onclick="document.getElementById('del-form').submit();">(delete)</a>
                         </form>
                               <div id="1st${comment._id}" class="modal">
@@ -69,7 +69,7 @@ $.ajax({
                         `;
                      } else {
                         listPostsHTML += `
-                           <p><span class="full-name-comment">[${comment.user.givenName} ${comment.user.familyName}]</span> ${comment.comment}</p>
+                           <p><span class="full-name-comment">&nbsp;&nbsp;[${comment.user.givenName} ${comment.user.familyName}]</span> ${comment.comment}</p>
                         `;
                      };
                   });

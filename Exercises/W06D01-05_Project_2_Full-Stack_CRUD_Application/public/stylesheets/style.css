@@ -30,7 +30,7 @@ nav {
 }
 
 .post {
-  width: 60%;
+  width: 550px;
 }
 
 form > input.new-post {
@@ -120,8 +120,6 @@ form > input.new-post {
 .full-name-comment {
   color: black;
 }
-
-
 
 footer {
   position: sticky;
