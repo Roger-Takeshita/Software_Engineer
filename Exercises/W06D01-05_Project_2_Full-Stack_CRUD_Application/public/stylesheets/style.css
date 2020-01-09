@@ -31,6 +31,7 @@ nav {
 
 .post {
   width: 550px;
+  word-break: break-all;
 }
 
 form > input.new-post {

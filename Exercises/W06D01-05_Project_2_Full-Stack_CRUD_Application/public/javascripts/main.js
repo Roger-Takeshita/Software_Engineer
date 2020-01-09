@@ -11,14 +11,13 @@ $.ajax({
    method: 'GET',
    datatype: 'json',
    success: (data) => {
-      console.log(data);
       data.posts.forEach(function(post) {
          let listPostsHTML = `
             <div class="post">
                <div class="user-info">
                   <img src="${post.user.avatar}" alt="avatar" class="avatar-post">
                   <span class="user-name">&nbsp;&nbsp;&nbsp;${post.user.givenName} ${post.user.familyName}</span>`;
-                  if (data.currentUser && data.currentUser._id === post.user._id) {
+                  if (data.currentUser && (data.currentUser._id === post.user._id || data.currentUser.adm)) {
                   listPostsHTML += `
                   <a class="modal-trigger dots" href="#1st${post._id}">[...]</a>
                   <div id="1st${post._id}" class="modal">
@@ -49,12 +48,12 @@ $.ajax({
                <div class="user-comment">
                   <p id="comments">Comments:</p>`;
                   post.comments.forEach(function(comment) {
-                     if (data.currentUser && data.currentUser._id === comment.user._id) {
+                     if (data.currentUser && (data.currentUser._id === comment.user._id || data.currentUser.adm)) {
                         listPostsHTML += `
-                        <form id="del-form" action="/comment/${post._id}/${comment._id}?_method=DELETE" method="POST">
+                        <form id="form-${comment._id}" action="/comment/${post._id}/${comment._id}?_method=DELETE" method="POST">
                            <p><span class="full-name-comment">&nbsp;&nbsp;[${comment.user.givenName} ${comment.user.familyName}]</span> ${comment.comment}
                            <a class="edit modal-trigger" href="#1st${comment._id}">(edit)</a>
-                           <a class="delete" href="javascript:{}" onclick="document.getElementById('del-form').submit();">(delete)</a>
+                           <a class="delete" href="javascript:{}" onclick="document.getElementById('form-${comment._id}').submit();">(delete)</a>
                         </form>
                               <div id="1st${comment._id}" class="modal">
                                  <div class="modal-content">

@@ -6,7 +6,7 @@ function index(req, res, next) {
    //    console.log(userNameComments[0].comments[0]);
       Post.find().populate({path: 'user', select: ['givenName', 'familyName', 'post', 'adm', 'avatar', 'comments']}).populate({path:'comments.user', select: ['givenName', 'familyName']}).sort({updatedAt: -1}).exec(function(err, posts) {           
          res.render('index', {
-            title: `INDEX PAGE`,
+            title: `iCheats`,
             posts,
             user: req.user,
          });
