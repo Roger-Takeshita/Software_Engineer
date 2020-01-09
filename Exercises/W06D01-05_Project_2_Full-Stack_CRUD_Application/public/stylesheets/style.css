@@ -1,5 +1,6 @@
 .container {
   padding-top: 100px;
+  display: flex;
 }
 
 nav {
@@ -34,9 +35,35 @@ nav {
   word-break: break-all;
 }
 
+#posts-side {
+  height: 80vh;
+  width: 390px;
+  margin-left: 560px;
+  position: fixed;
+  background-color: lightskyblue;
+  display: flex;
+  flex-direction: column;
+}
+
+#chat-msg {
+  flex-grow: 1;
+}
+
+#chat-input-button {
+  background-color: red;
+  height: 60px;
+  margin-bottom: 10px;
+  align-content: flex-end;
+  align-self: center;
+
+}
+
 form > input.new-post {
   min-height: 150px;
   border: 1px solid lightgrey;
+  overflow-wrap: break-word;
+  text-align: center;
+  justify-content: center;
 }
 
 .user-info {
@@ -120,6 +147,13 @@ form > input.new-post {
 
 .full-name-comment {
   color: black;
+}
+#chat-input {
+  width: 250px;
+}
+
+#chat-button {
+
 }
 
 footer {
