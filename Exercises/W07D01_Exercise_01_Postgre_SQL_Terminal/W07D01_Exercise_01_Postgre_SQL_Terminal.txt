@@ -1,0 +1,187 @@
+! psql
+? psql (11.5)
+? Type "help" for help.
+
+! roger-that=# help
+? You are using psql, the command-line interface to PostgreSQL.
+? Type:  \copyright for distribution terms
+?        \h for help with SQL commands
+?        \? for help with psql commands
+?        \g or terminate with semicolon to execute query
+?        \q to quit
+
+! roger-that=# \l
+?                                  List of databases
+?    Name    |   Owner    | Encoding | Collate | Ctype |       Access privileges       
+? -----------+------------+----------+---------+-------+-------------------------------
+? postgres   | roger-that | UTF8     | C       | C     | 
+? roger-that | roger-that | UTF8     | C       | C     | 
+? template0  | roger-that | UTF8     | C       | C     | =c/"roger-that"              +
+?            |            |          |         |       | "roger-that"=CTc/"roger-that"
+? template1  | roger-that | UTF8     | C       | C     | =c/"roger-that"              +
+?            |            |          |         |       | "roger-that"=CTc/"roger-that"
+? (4 rows)
+
+! roger-that=# CREATE DATABASE music;
+? CREATE DATABASE
+? roger-that=# \l
+?                                    List of databases
+?      Name    |   Owner    | Encoding | Collate | Ctype |       Access privileges       
+? -------------+------------+----------+---------+-------+-------------------------------
+?   music      | roger-that | UTF8     | C       | C     | 
+?   postgres   | roger-that | UTF8     | C       | C     | 
+?   roger-that | roger-that | UTF8     | C       | C     | 
+?   template0  | roger-that | UTF8     | C       | C     | =c/"roger-that"              +
+?              |            |          |         |       | "roger-that"=CTc/"roger-that"
+?   template1  | roger-that | UTF8     | C       | C     | =c/"roger-that"              +
+?              |            |          |         |       | "roger-that"=CTc/"roger-that"
+? (5 rows)
+
+! roger-that=# \c music
+? You are now connected to database "music" as user "roger-that".
+
++ music=# \d
+> Did not find any relations.
+
++ music-# CREATE TABLE bands (
++ music(# id serial PRIMARY KEY,
++ music(# name varchar NOT NULL,
++ music(# genre varchar
++ music(# );
+> CREATE TABLE
+
++ music=# \d
+>                List of relations
+>  Schema |     Name     |   Type   |   Owner    
+> --------+--------------+----------+------------
+>  public | bands        | table    | roger-that
+>  public | bands_id_seq | sequence | roger-that
+> (2 rows)
+
++ music=# SELECT * FROM bands;
+>  id | name | genre 
+> ----+------+-------
+> (0 rows)
+> 
+> music=# SELECT name FROM bands;
+>  name 
+> ------
+> (0 rows)
+
++ music=# INSERT INTO bands(name) VALUES ('The Smith');
+> INSERT 0 1
+
++ music=# INSERT INTO bands(name, genre) VALUES ('Rush', 'Rock');
+> INSERT 0 1
+
++ music=# SELECT * FROM bands;
+>  id |   name    | genre 
+> ----+-----------+-------
+>   1 | The Smith | 
+>   2 | Rush      | Rock
+> (2 rows)
+
++ music=# CREATE TABLE musicians (
++ music(# id serial PRIMARY KEY,
++ music(# name varchar NOT NULL,
++ music(# quote text,
++ music(# band_id integer NOT NULL REFERENCES bands (id)
++ music(# );
+> CREATE TABLE
+
++ music=# \d
+>                  List of relations
+>  Schema |       Name       |   Type   |   Owner    
+> --------+------------------+----------+------------
+>  public | bands            | table    | roger-that
+>  public | bands_id_seq     | sequence | roger-that
+>  public | musicians        | table    | roger-that
+>  public | musicians_id_seq | sequence | roger-that
+> (4 rows)
+
++ music=# \d musicians
+>                                   Table "public.musicians"
+>  Column  |       Type        | Collation | Nullable |                Default                
+> ---------+-------------------+-----------+----------+---------------------------------------
+>  id      | integer           |           | not null | nextval('musicians_id_seq'::regclass)
+>  name    | character varying |           | not null | 
+>  quote   | text              |           |          | 
+>  band_id | integer           |           | not null | 
+> Indexes:
+>     "musicians_pkey" PRIMARY KEY, btree (id)
+> Foreign-key constraints:
+>     "musicians_band_id_fkey" FOREIGN KEY (band_id) REFERENCES bands(id)
+
++ music=# INSERT INTO musicians(name, band_id) VALUES ('Geddy Lee', 999);
+> ERROR:  insert or update on table "musicians" violates foreign key constraint "musicians_band_id_fkey"
+> DETAIL:  Key (band_id)=(999) is not present in table "bands".
+      ! the id needs to exist
+
++ music=# INSERT INTO musicians(name, band_id) VALUES ('Geddy Lee', 2);
+> INSERT 0 1
+
++ music=# SELECT * FROM musicians;
+>  id |   name    | quote | band_id 
+> ----+-----------+-------+---------
+>   2 | Geddy Lee |       |       2
+> (1 row)
+
++ music=# INSERT INTO musicians (name, quote, band_id) VALUES (
++ music(# 'Neil Peart',
++ music(# 'If you''ve got a problem, take it out on a drum',
++ music(# 2
++ music(# );
+> INSERT 0 1
+
++ music=# SELECT * FROM musicians;
+>  id |    name    |                     quote                      | band_id 
+> ----+------------+------------------------------------------------+---------
+>   2 | Geddy Lee  |                                                |       2
+>   3 | Neil Peart | If you've got a problem, take it out on a drum |       2
+> (2 rows)
+
++ music=# SELECT * FROM bands JOIN musicians ON bands.id = musicians.band_id;
+>  id | name | genre | id |    name    |                     quote                      | band_id 
+> ----+------+-------+----+------------+------------------------------------------------+---------
+>   2 | Rush | Rock  |  2 | Geddy Lee  |                                                |       2
+>   2 | Rush | Rock  |  3 | Neil Peart | If you've got a problem, take it out on a drum |       2
+> (2 rows)
+
++ music=# SELECT * FROM bands WHERE genre='Rock';
+>  id | name | genre 
+> ----+------+-------
+>   2 | Rush | Rock
+> (1 row)
+
++ music=# SELECT * FROM bands WHERE  id > 1;
+>  id | name | genre 
+> ----+------+-------
+>   2 | Rush | Rock
+> (1 row)
+
++ music=# SELECT * FROM musicians WHERE name LIKE 'G%';
+>  id |   name    | quote | band_id 
+> ----+-----------+-------+---------
+>   2 | Geddy Lee |       |       2
+> (1 row)
+      ! % to match any number of characters
+      ! _ to match a single character
+
++ music=# UPDATE musicians SET quote = 'I love to write, it''s my first love.' WHERE name='Geddy Lee';
+> UPDATE 1
+
++ music=# SELECT name, quote FROM musicians;
+>     name    |                     quote                      
+> ------------+------------------------------------------------
+>  Neil Peart | If you've got a problem, take it out on a drum
+>  Geddy Lee  | I love to write, it's my first love.
+> (2 rows)
+
++ DELETE FROM bands WHERE name LIKE '%Smith';
+> DELETE 1
+
++ music=# SELECT * FROM bands;
+>  id | name | genre 
+> ----+------+-------
+>   2 | Rush | Rock
+> (1 row)
