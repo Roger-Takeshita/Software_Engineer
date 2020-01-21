@@ -10,7 +10,8 @@
 
 from django.shortcuts import render
 from django.http import HttpResponse
-from .models import Cat                   #! Import the model
+from .models import Cat                            #! Import the model
+from django.views.generic.edit import CreateView, UpdateView, DeleteView   #! 6 Import Generic Views 8- Import Update and Delete view
 
 #! 1- Defining the home view
 def home(request):
@@ -34,3 +35,18 @@ def cats_index(request):
 def cats_detail(request, cat_id):
    cat = Cat.objects.get(id=cat_id)
    return render(request, 'cats/detail.html', { 'cat': cat })
+
+#! 7- Class based views - Create cat form
+class CatCreate(CreateView):
+   model = Cat                                              #+ 7.1- Need to tell which model I want to use. We are overriding Cat model 
+   fields = ['name', 'breed', 'description', 'age']         #+ 7.2- We need to specify the fields
+
+#! 9- Class based views - Update a cat
+class CatUpdate(UpdateView):
+   model = Cat
+   fields = ['breed', 'description', 'age']                 #+ 9.1- We cannot rename a cat
+
+#! 10- Class base views -  Delete a cat
+class CatDelete(DeleteView):
+   model = Cat
+   success_url = '/cats/'
