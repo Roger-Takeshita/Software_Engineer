@@ -8,10 +8,11 @@
 #!            YM.    , YA.   ,A9   MM    MM    MM      MM     YA.   ,A9   MM    MM  YM.    ,   MM     L.   I8 
 #!             YMbmd'   `Ybmd9'  .JMML  JMML.  `Mbmo .JMML.    `Ybmd9'  .JMML..JMML. `Mbmmd' .JMML.   M9mmmP'
 
-from django.shortcuts import render
+from django.shortcuts import render, redirect                              #! 12 Import redirect
 from django.http import HttpResponse
-from .models import Cat                            #! Import the model
-from django.views.generic.edit import CreateView, UpdateView, DeleteView   #! 6 Import Generic Views 8- Import Update and Delete view
+from .models import Cat                                                    #! 1  Import the model
+from django.views.generic.edit import CreateView, UpdateView, DeleteView   #! 6  Import Generic Views 8- Import Update and Delete view
+from .forms import FeedingForm                                             #! 11 Import FeedingForm
 
 #! 1- Defining the home view
 def home(request):
@@ -34,7 +35,10 @@ def cats_index(request):
 #! 5- Get cat details
 def cats_detail(request, cat_id):
    cat = Cat.objects.get(id=cat_id)
-   return render(request, 'cats/detail.html', { 'cat': cat })
+   feeding_form = FeedingForm()                             #+ 11.1 Instanciate the form
+   return render(request, 'cats/detail.html', {             #+ 11.2 send the form to render
+     'cat': cat, 'feeding_form': feeding_form
+   })
 
 #! 7- Class based views - Create cat form
 class CatCreate(CreateView):
@@ -50,3 +54,14 @@ class CatUpdate(UpdateView):
 class CatDelete(DeleteView):
    model = Cat
    success_url = '/cats/'
+
+#! 13 - Add Feeding to a Cat (by Id)
+def add_feeding(request, cat_id):
+   form = FeedingForm(request.POST)                         #+ 13.1 create the ModelForm using the data in request.POST
+   if form.is_valid():                                      #+ 13.2 validate the form
+      new_feeding = form.save(commit=False)                 #+ 13.3 don't save the form to the db until it has the cat_id assigned. commit=Flase (if it's savable)
+                                                               #+ 13.3.1 After ensuring that the form contains valid data, we save the form with the commit=False option, 
+                                                                  #+ which returns an in-memory model so that we can assign the cat_id before actually saving to the database.
+      new_feeding.cat_id = cat_id
+      new_feeding.save()
+   return redirect('detail', cat_id=cat_id)                 #+ 13.4 Always be sure to redirect instead of render if data has been changed in the database.

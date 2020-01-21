@@ -33,3 +33,5 @@ class Feeding(models.Model):
    def __str__(self):
       return f"{self.get_meal_display()} on {self.date}"    #+ 'get_meal_display()' method Django creates to access the human-friendly value of 
                                                                #+ a Field.choice like we have on 'meal'.
+   class Meta:
+      ordering = ['-date']
