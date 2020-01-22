@@ -1,8 +1,13 @@
 from django.shortcuts import render, redirect
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.views.generic import ListView, DetailView
-from .models import Cat, Toy
+from .models import Cat, Toy, Photo
 from .forms import FeedingForm
+import boto3
+import uuid
+
+S3_BASE_URL = 'https://s3.amazonaws.com/'
+BUCKET = 'catcollector-2'
 
 class CatCreate(CreateView):
   model = Cat
@@ -58,6 +63,40 @@ def assoc_toy(request, cat_id, toy_id):
 def unassoc_toy(request, cat_id, toy_id):
   Cat.objects.get(id=cat_id).toys.remove(toy_id)
   return redirect('detail', cat_id=cat_id)
+
+# def add_photo(request, cat_id):
+#   photo_file = request.FILES.get('photo-file', None)    #+ photo-file will be the "name" attribute on the <input type="file">
+#   if photo_file:                                        #+ Check if you have a file
+#     s3 = boto3.client('s3')                               #- Instantiate boto3
+#     key = uuid.uuid4().hex[:6] + \
+#       photo_file.name[photo_file.name.rfind('.'):]        #- Need a unique "key" for s3 / needs image file extension too
+#     try:                                                #+ just in case something goes wrong
+#       s3.upload_fileobj(photo_file, BUCKET, key)          #- upload_fileobj() is a method from boto3 (file, bucket, uniuqe key)
+#       url = f"{S3_BASE_URL}{BUCKET}/{key}"                #- build the full url string
+#       photo = Photo(url=url, cat_id=cat_id)               #- We can assign to cat_id or cat (if you have a cata object)
+#       photo.save()
+#     except:
+#       print('An error occurred uploading file to S3')
+#   return redirect('detail', cat_id=cat_id)
+
+def add_photo(request, cat_id):
+    # photo-file will be the "name" attribute on the <input type="file">
+    photo_file = request.FILES.get('photo-file', None)
+    if photo_file:
+        s3 = boto3.client('s3')
+        # need a unique "key" for S3 / needs image file extension too
+        key = uuid.uuid4().hex[:6] + photo_file.name[photo_file.name.rfind('.'):]
+        # just in case something goes wrong
+        try:
+            s3.upload_fileobj(photo_file, BUCKET, key)
+            # build the full url string
+            url = f"{S3_BASE_URL}{BUCKET}/{key}"
+            # we can assign to cat_id or cat (if you have a cat object)
+            photo = Photo(url=url, cat_id=cat_id)
+            photo.save()
+        except:
+            print('An error occurred uploading file to S3')
+    return redirect('detail', cat_id=cat_id)
 
 class ToyList(ListView):
   model = Toy

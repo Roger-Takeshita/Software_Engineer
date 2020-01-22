@@ -10,9 +10,15 @@
 
 from django.shortcuts import render,redirect       #! 1- Import render   13- Import redirect
 from django.http import HttpResponse               #! 2- Import the HttpResponse function. HttpResponse is the simplest way to send something back in response to a request
-from .models import Dog, Toy                       #! 5- Import Dog model
-from django.views.generic.edit import CreateView, UpdateView, DeleteView   #! 8- Import Generic Views
+from .models import Dog, Toy, Photo                #! 5- Import Dog model     #! 16- Import Photo (amazon s3)
+from django.views.generic.edit import CreateView, UpdateView, DeleteView      #! 8- Import Generic Views
 from .forms import FeedingForm                     #! 12- Import forms
+import uuid                                        #! 17- Import uuid (amazon s3)
+import boto3                                       #! 18- Import boto3 (amazon s3)
+
+#+ 19- Endpoint for the region
+S3_BASE_URL = 'https://s3.amazonaws.com/'
+BUCKET = 'catcollector-2'
 
 #+ 3- Home view
 def home(request):
@@ -66,5 +72,21 @@ def add_feeding(request, dog_id):
 
 #+ 15 - Associate the dog with the toy
 def assoc_toy(request, dog_id, toy_id):
-   Dog.objects.get(id=dog_id).toys.add(toy_id)  #+ Note that you can pass a toy's id instead of the whole object
+   Dog.objects.get(id=dog_id).toys.add(toy_id)           #+ Note that you can pass a toy's id instead of the whole object
+   return redirect('detail', dog_id=dog_id)
+
+#+ 20- Add Photo
+def add_photo(request, dog_id):
+   photo_file = request.FILES.get('photo-file', None)    #+ photo-file will be the "name" attribute on the <input type="file">
+   if photo_file:                                        #+ Check if you have a file
+      s3 = boto3.client('s3')                               #- Instantiate boto3
+      key = uuid.uuid4().hex[:6] + \
+         photo_file.name[photo_file.name.rfind('.'):]       #- Need a unique "key" for s3 / needs image file extension too
+      try:                                                #+ just in case something goes wrong
+         s3.upload_fileobj(photo_file, BUCKET, key)          #- upload_fileobj() is a method from boto3 (file, bucket, uniuqe key)
+         url = f"{S3_BASE_URL}{BUCKET}/{key}"                #- build the full url string
+         photo = Photo(url=url, dog_id=dog_id)               #- We can assign to dog_id or cat (if you have a cata object)
+         photo.save()
+      except:
+         print('An error occurred uploading file to S3')
    return redirect('detail', dog_id=dog_id)
