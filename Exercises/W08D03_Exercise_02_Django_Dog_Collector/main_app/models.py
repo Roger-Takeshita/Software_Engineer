@@ -7,12 +7,25 @@ MEALS = (
    ('L', 'Lunch'),
    ('D', 'Dinner')
 )
+
+#+ 3- Create Toy Schema
+class Toy(models.Model):
+   name = models.CharField(max_length=50)
+   color = models.CharField(max_length=20)
+
+   def __str__(self):
+      return self.name
+
+   def get_absolute_url(self):
+      return reverse('toys_detail', kwargs={'pk': self.id})
+
 #+ Create Dog Schema
 class Dog(models.Model):
    name = models.CharField(max_length=100)
    breed = models.CharField(max_length=100)
    description = models.TextField(max_length=250)
    age = models.IntegerField()
+   toys = models.ManyToManyField(Toy)                 #+ 4- Add many to many relationship
 
    def __str__(self):
       return self.name

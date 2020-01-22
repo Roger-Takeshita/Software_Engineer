@@ -10,7 +10,7 @@
 
 from django.shortcuts import render,redirect       #! 1- Import render   13- Import redirect
 from django.http import HttpResponse               #! 2- Import the HttpResponse function. HttpResponse is the simplest way to send something back in response to a request
-from .models import Dog                            #! 5- Import Dog model
+from .models import Dog, Toy                       #! 5- Import Dog model
 from django.views.generic.edit import CreateView, UpdateView, DeleteView   #! 8- Import Generic Views
 from .forms import FeedingForm                     #! 12- Import forms
 
@@ -30,10 +30,12 @@ def dogs_index(request):
 #+ 7- Details views
 def dogs_detail(request, dog_id):
    dog = Dog.objects.get(id=dog_id)
+   toys_dog_doesnt_have = Toy.objects.exclude(id__in = dog.toys.all().values_list('id')) #+ 14- Get all the toys from this dog
    feeding_form = FeedingForm()           #+ 12.1 Instantiate FeedingForm to be rendered in the template
    return render(request, 'dogs/detail.html', { 
       'dog': dog,
-      'feeding_form': feeding_form
+      'feeding_form': feeding_form,
+      'toys': toys_dog_doesnt_have
    })
 
 #+ 9- Class Based View - Create Dog
@@ -45,6 +47,7 @@ class DogCreate(CreateView):
 #+ 10 - Class Based View - Update Dog
 class DogUpdate(UpdateView):
    model = Dog
+   # fields = '__all__'
    fields = ['name', 'breed', 'description', 'age']
 
 #+ 11 - Class Based View - Delete Dog
@@ -59,4 +62,9 @@ def add_feeding(request, dog_id):
       new_feeding = form.save(commit=False)
       new_feeding.dog_id = dog_id
       new_feeding.save()
+   return redirect('detail', dog_id=dog_id)
+
+#+ 15 - Associate the dog with the toy
+def assoc_toy(request, dog_id, toy_id):
+   Dog.objects.get(id=dog_id).toys.add(toy_id)  #+ Note that you can pass a toy's id instead of the whole object
    return redirect('detail', dog_id=dog_id)
