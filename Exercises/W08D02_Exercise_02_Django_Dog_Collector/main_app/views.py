@@ -8,9 +8,12 @@
 #!            YM.    , YA.   ,A9   MM    MM    MM      MM     YA.   ,A9   MM    MM  YM.    ,   MM     L.   I8 
 #!             YMbmd'   `Ybmd9'  .JMML  JMML.  `Mbmo .JMML.    `Ybmd9'  .JMML..JMML. `Mbmmd' .JMML.   M9mmmP'
 
-from django.shortcuts import render                #! 1- Import render
+from django.shortcuts import render,redirect       #! 1- Import render   13- Import redirect
 from django.http import HttpResponse               #! 2- Import the HttpResponse function. HttpResponse is the simplest way to send something back in response to a request
 from .models import Dog                            #! 5- Import Dog model
+from django.views.generic.edit import CreateView, UpdateView, DeleteView   #! 8- Import Generic Views
+from .forms import FeedingForm                     #! 12- Import forms
+
 #+ 3- Home view
 def home(request):
    return HttpResponse('<h1>Home of Dog Collector</h1>')
@@ -27,4 +30,33 @@ def dogs_index(request):
 #+ 7- Details views
 def dogs_detail(request, dog_id):
    dog = Dog.objects.get(id=dog_id)
-   return render(request, 'dogs/detail.html', { 'dog': dog })
+   feeding_form = FeedingForm()           #+ 12.1 Instantiate FeedingForm to be rendered in the template
+   return render(request, 'dogs/detail.html', { 
+      'dog': dog,
+      'feeding_form': feeding_form
+   })
+
+#+ 9- Class Based View - Create Dog
+class DogCreate(CreateView):
+   model = Dog
+   fields = ['name', 'breed', 'description', 'age']
+   success_url = '/dogs/'
+
+#+ 10 - Class Based View - Update Dog
+class DogUpdate(UpdateView):
+   model = Dog
+   fields = ['name', 'breed', 'description', 'age']
+
+#+ 11 - Class Based View - Delete Dog
+class DogDelete(DeleteView):
+   model = Dog
+   success_url = '/dogs/'
+
+#+ 13.1- Add a new feeding
+def add_feeding(request, dog_id):
+   form = FeedingForm(request.POST)
+   if form.is_valid():
+      new_feeding = form.save(commit=False)
+      new_feeding.dog_id = dog_id
+      new_feeding.save()
+   return redirect('detail', dog_id=dog_id)

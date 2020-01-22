@@ -13,16 +13,19 @@ main {
 }
 
 footer {
-  position: sticky;
+  position: static;
   margin: 0 auto;
+  padding-bottom: 64px;
   text-align: center;
   align-content: center;
   align-items: center;
   justify-content: center;
   bottom: 0;
-  height: 50px;
-  line-height: 50px;
+  height: 30px;
+  width: 100vw;
+  line-height: 30px;
   font-family: 'Fredoka One', cursive;
+  background-color: #1565c0;
 }
 
 footer a {
