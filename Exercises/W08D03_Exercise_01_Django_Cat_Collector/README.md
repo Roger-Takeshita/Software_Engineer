@@ -57,3 +57,31 @@ Out[15]: <QuerySet [<Cat: Rubber Biscuit>]>
 In [16]: c.id
 
 Out[16]: 1
+
+
+
+
+
+
+# Add Toys
+
+In [1]: from main_app.models import *
+
+In [2]: cat = Cat.objects.get(name='a')
+
+In [3]: first_toy = Toy.objects.first()
+
+
+In [8]: Toy(name='lol', color='white').save()
+
+In [9]: first_toy = Toy.objects.first()
+
+In [10]: first_toy
+Out[10]: <Toy: lol>
+
+In [11]: Toy(name='dildo', color='black').save()
+
+In [12]: Cat.objects.last().toys.add(Toy.objects.first(), Toy.objects.last())
+
+In [13]: Cat.objects.last().toys.all()
+Out[13]: <QuerySet [<Toy: lol>, <Toy: dildo>]>

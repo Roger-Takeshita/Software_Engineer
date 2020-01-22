@@ -10,7 +10,7 @@
 
 from django.shortcuts import render, redirect                              #! 12 Import redirect
 from django.http import HttpResponse
-from .models import Cat                                                    #! 1  Import the model
+from .models import Cat, Toy                                               #! 1  Import the model
 from django.views.generic.edit import CreateView, UpdateView, DeleteView   #! 6  Import Generic Views 8- Import Update and Delete view
 from .forms import FeedingForm                                             #! 11 Import FeedingForm
 
@@ -35,10 +35,17 @@ def cats_index(request):
 #! 5- Get cat details
 def cats_detail(request, cat_id):
    cat = Cat.objects.get(id=cat_id)
+   toys_cat_doesnt_have = Toy.objects.exclude(id__in = cat.toys.all().values_list('id'))
    feeding_form = FeedingForm()                             #+ 11.1 Instanciate the form
    return render(request, 'cats/detail.html', {             #+ 11.2 send the form to render
-     'cat': cat, 'feeding_form': feeding_form
+     'cat': cat, 'feeding_form': feeding_form,
+     'toys': toys_cat_doesnt_have
    })
+
+def assoc_toy(request, cat_id, toy_id):
+   # Note that you can pass a toy's id instead of the whole object
+   Cat.objects.get(id=cat_id).toys.add(toy_id)
+   return redirect('detail', cat_id=cat_id)
 
 #! 7- Class based views - Create cat form
 class CatCreate(CreateView):
@@ -48,7 +55,7 @@ class CatCreate(CreateView):
 #! 9- Class based views - Update a cat
 class CatUpdate(UpdateView):
    model = Cat
-   fields = ['breed', 'description', 'age']                 #+ 9.1- We cannot rename a cat
+   fields = '__all__'                                       #+ 9.1- We cannot rename a cat
 
 #! 10- Class base views -  Delete a cat
 class CatDelete(DeleteView):
