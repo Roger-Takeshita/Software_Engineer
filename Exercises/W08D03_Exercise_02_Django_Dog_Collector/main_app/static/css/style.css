@@ -12,8 +12,38 @@ main {
   flex: 1 0 auto;
 }
 
+.card-content {
+  display: flex;
+}
+
+.dog-info {
+  flex-grow: 1;
+}
+
+.dog-pic {
+  /* min-width: 140px; */
+  width: 140px;
+  text-align: center;
+  justify-content: center;
+}
+
+.dog-detail {
+  display: flex;
+  flex-direction: column;
+}
+
+.dog-pic-detail {
+  max-width: 100%;
+  border-radius: 20px;
+}
+
+.profile {
+  width: 120px;
+  border-radius: 15px;
+}
+
 footer {
-  position: static;
+  position: sticky;
   margin: 0 auto;
   padding-bottom: 64px;
   text-align: center;

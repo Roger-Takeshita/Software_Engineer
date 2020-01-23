@@ -4,7 +4,10 @@
   <div class="row">
     <div class="col s6">
       <div class="card">
-        <div class="card-content">
+        <div class="card-content dog-detail">
+          {% if dog.photo_set.first %}
+            <img class="dog-pic-detail" src="{{dog.photo_set.first.url}}">
+          {% endif %}
           <span class="card-title">{{ dog.name }}</span>
           <p>Breed: {{ dog.breed }}</p>
           <p>Description: {{ dog.description }}</p>
@@ -19,11 +22,13 @@
           <a href="{% url 'dogs_delete' dog.id %}">Delete</a>
         </div>
       </div>
-      {% for photo in dog.photo_set.all %}
-        <img class="responsive-img card-panel" src="{{photo.url}}">
-      {% empty %}
-        <div class="card-panel teal-text center-align">No Photos Uploaded</div>
-      {% endfor %}
+      {% if dog.photo_set.all.count > 1 %}
+        {% for photo in dog.photo_set.all %}
+          <img class="responsive-img card-panel" src="{{photo.url}}">
+        {% empty %}
+          <div class="card-panel teal-text center-align">No Photos Uploaded</div>
+        {% endfor %}
+      {% endif %}
       <form action="{% url 'add_photo' dog.id %}" enctype="multipart/form-data" method="POST" class="card-panel">
           {% csrf_token %}
           <input type="file" name="photo-file">
