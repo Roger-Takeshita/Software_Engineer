@@ -23,9 +23,18 @@ Including another URLconf
    2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path, include       #! include allow us to include all files in our project
+from django.urls import path, include                       #! 1- include allow us to include all files in our project
 
 urlpatterns = [
    path('admin/', admin.site.urls),
-   path('', include('main_app.urls')),     #! We are mounting the main page on the root of the website
+   path('', include('main_app.urls')),                         #+ 1.1- We are mounting the main page on the root of the website
+   path('accounts/', include('django.contrib.auth.urls')),  #! 2- `django.contrib.auth module` contains predefined URLS, we just need to map them
+                                                               #+ 2.1- accounts/login/ [name='login']
+                                                               #+ 2.1- accounts/logout/ [name='logout']
+                                                               #+ 2.1- accounts/password_change/ [name='password_change']
+                                                               #+ 2.1- accounts/password_change/done/ [name='password_change_done']
+                                                               #+ 2.1- accounts/password_reset/ [name='password_reset']
+                                                               #+ 2.1- accounts/password_reset/done/ [name='password_reset_done']
+                                                               #+ 2.1- accounts/reset/<uidb64>/<token>/ [name='password_reset_confirm']
+                                                               #+ 2.1- accounts/reset/done/ [name='password_reset_complete']
 ]
