@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% block content %}
+    <h1>{{ title }}</h1>
+    {% if widget_list|length == 0 %}
+        <h3 id="msg">No Widgets Exist</h3>
+    {% endif %}
+    <hr />
+    <div id="form">
+        <h4>Add Wideget</h4>
+        <form action="{% url 'add_widget' %}" method="post">
+            {% csrf_token %}
+            <table>
+                {{ widget_form.as_table }}
+            </table>
+            <input type="submit" value="ADD WIDGET"class="btn">
+        </form>
+    </div>
+    <hr>
+    <table>
+        <tr>
+            <th>Description</th>
+            <th>Quantity</th>
+            <th>Delete</th>
+        </tr>
+    {% for widget in widget_list %}
+        <tr>
+            <td>{{widget.description}}</td>
+            <td>{{widget.quantity}}</td>
+            <td>
+                <form action="{% url 'delete' widget.id %}" method="POST">
+                   {% csrf_token %}
+                   <input type="submit" value="X" class="btn">
+                </form>
+            </td>
+        </tr>
+    {% endfor %}
+        <tr>
+            <td>Total Quantity</td>
+            <td>{{ total }}</td>
+            <td></td>
+        </tr>
+    </table>
+{% endblock %}
