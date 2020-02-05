@@ -1,26 +1,34 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { Component } from 'react';
 import './App.css';
+import Bath  from './components/Bath/Bath';
+import Bedroom  from './components/Bedroom/Bedroom';
+import Kitchen  from './components/Kitchen/Kitchen';
+import LivingRoom from './components/LivingRoom/LivingRoom';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class App extends Component {
+  render() {
+    return(
+      <div className="App">
+        <div className="bedroom" id="bedroom-1">
+          <Bedroom description={1}/>
+        </div>
+        <Kitchen />
+        <div className="bath" id="bath-1">
+          <Bath description={'Full'}/>
+        </div>
+        <div className="bedroom" id="bedroom-2">
+          <Bedroom description={2}/>
+        </div>
+          <LivingRoom />
+        <div className="bath" id="bath-2">
+          <Bath description={'Half'}/>
+        </div>
+        <div className="bedroom" id="bedroom-3">
+          <Bedroom description={3}/>
+        </div>
+      </div>
+    )
+  }
 }
 
 export default App;
