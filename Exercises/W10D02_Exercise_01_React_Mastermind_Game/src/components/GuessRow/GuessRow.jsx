@@ -3,14 +3,18 @@ import GuessPegs from '../GuessPegs/GuessPegs';
 import GuessScore from '../GuessScore/GuessScore';
 import ScoreButton from '../ScoreButton/ScoreButton';
 
-const GuessRow = ({rowIdx, colors, guess, currentGuess}) => (
+const GuessRow = (props) => (
   <div className='flex-h'>
-    <div>{rowIdx + 1}</div>
+    <div>{props.rowIdx + 1}</div>
     <GuessPegs
-      colors={colors}
-      code={guess.code}
+      colors={props.colors}
+      code={props.guess.code}
     />
-    { currentGuess ? <ScoreButton /> : <GuessScore /> }
+    {
+      props.currentGuess ?
+        <ScoreButton /> :
+        <GuessScore score={props.guess.score} />
+    }
   </div>
 );
 

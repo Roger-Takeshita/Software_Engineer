@@ -1,19 +1,17 @@
 import React from 'react';
 import GuessRow from '../GuessRow/GuessRow';
 
-const GameBoard = ({guesses, colors}) => (
+const GameBoard = (props) => (
   <div>
-    {guesses.map((guess, idx) => {
-      return(
-        <GuessRow 
-          guess={guess} 
-          colors={colors} 
-          key={idx} 
-          rowIdx={idx}
-          currentGuess={idx === guesses.length - 1} 
-        />
-      )
-    })}
+    {props.guesses.map((guess, idx) =>
+      <GuessRow
+        guess={guess}
+        colors={props.colors}
+        rowIdx={idx}
+        currentGuess={idx === (props.guesses.length - 1)}
+        key={idx}
+      />
+    )}
   </div>
 );
 

@@ -18,3 +18,10 @@ code {
   justify-content: center;
 }
 
+button:focus, .btn:focus {
+  outline: none;
+}
+
+.btn .bn-default {
+  border: 1px solid;
+}
