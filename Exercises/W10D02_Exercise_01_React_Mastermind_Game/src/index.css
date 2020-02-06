@@ -16,12 +16,14 @@ code {
 .flex-h {
   display: flex;
   justify-content: center;
+  align-items: center;
+}
+
+.align-flex-end {
+  align-items: flex-end;
 }
 
 button:focus, .btn:focus {
   outline: none;
 }
 
-.btn .bn-default {
-  border: 1px solid;
-}

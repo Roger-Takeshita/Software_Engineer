@@ -1,6 +1,10 @@
-.GuessPegs {
+.GuessRow {
   display: flex;
   flex-flow: row nowrap;
   align-items: center;
-  margin: 0 20px;
+}
+
+.rowNum {
+  font-size: 20px;
+  font-weight: bold;
 }
