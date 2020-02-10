@@ -7,13 +7,23 @@
   position: fixed;
   top: 0;
   left: 0;
-  width: 100%;
+  right: 0;
   padding: 2vmin;
   background-color: var(--primary-color);
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
   font-size: 5vmin;
   color: var(--text-color);
   opacity: 0.85;
+}
+
+.App-header div {
+  color: white;
+  font-size: 8vmin;
+  font-weight: bold;
+}
+
+.App-header img {
+  height: 15vmin;
 }
