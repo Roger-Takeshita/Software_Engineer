@@ -15,7 +15,7 @@ const StarshipPage = (props) => {
                         key={starship.name}
                         className={`${styles.StarshipListButton} btn btn-default`}
                     >
-                        {starship.name}
+                        {starship.name} {starship.pilots}
                     </Link>
                 )
             })}

@@ -29,7 +29,7 @@ class App extends Component {
                   <StarshipList {...props} starships={this.state.data}/>
               )}/>
               <Route exact path='/starships/:idx' render={(props) =>(
-                  <Starship {...props} starships={this.state.data}/>
+                  <Starship {...props} starships={this.state.data} />
               )}/>
               <Route render={() => <Redirect to={{ pathname: '/' }} />} />
             </Switch>
