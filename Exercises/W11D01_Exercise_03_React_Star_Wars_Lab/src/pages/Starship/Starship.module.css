@@ -1,0 +1,42 @@
+.StarshipDiv {
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.Starship {
+    display: flex;
+    width: 400px;
+    height: 200px;
+    margin: 10px;
+    padding: 10px;
+    font-size: 25px;
+    flex-wrap: wrap;
+    margin: auto;
+    align-items: center;
+    justify-content: center;
+    background-color: #2e4f4f;
+    color: white;
+    border-radius: 5px;
+}
+
+.StarshipLink {
+    text-decoration: none;
+    color: white;
+    font-size: 25px;
+}
+
+div > div > ul > li {
+    list-style-type: none;
+}
+
+.StarshipLink > li {
+    text-decoration: none;
+}
+
+.StarshipLink:hover {
+    color: white;
+    font-size: 25px;
+    text-decoration: underline;
+}

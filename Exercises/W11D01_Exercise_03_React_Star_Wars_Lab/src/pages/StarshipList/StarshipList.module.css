@@ -1,0 +1,20 @@
+.StarshipList {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.StarshipListButton {
+    width: 300px;
+    height: 150px;
+    margin: 10px;
+    padding: 10px;
+    font-size: 25px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    background-color: #2e4f4f;
+    color: white;
+    border-radius: 5px;
+    white-space: pre-line;
+}
