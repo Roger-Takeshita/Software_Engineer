@@ -1,1 +1,1 @@
-npm i redux react-redux redux-logger
+npm i redux react-redux redux-logger redux-thunk
