@@ -122,7 +122,10 @@
         import { createStore } from 'redux';
         import orderReducer from './reducers/order';
 
-        export default createStore(orderReducer);
+        export default createStore(
+            orderReducer,
+            window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+        );
     ```
 
   * We import the `createStore` function from `redux` and our `orderReducer` then invoke the `createStore` function, passing in our reducer function. This is a way to pass in more than one reducer.
