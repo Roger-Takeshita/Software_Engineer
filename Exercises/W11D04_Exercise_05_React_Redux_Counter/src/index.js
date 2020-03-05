@@ -4,8 +4,15 @@ import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 import { createStore } from 'redux'; //! 1st
+import rootReducer from './reducers/'; //! 2nd
+import { Provider } from 'react-redux'; //! 3rd - connect react to store
 
-//! Step 1 - Constants
+const store = createStore(
+    rootReducer,
+    window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+);
+
+/* //! Step 1 - Constants
 const INCREMENT = 'INCREMENT';
 const DECREMENT = 'DECREMENT';
 
@@ -43,8 +50,13 @@ store.subscribe(() => {
 });
 
 //! Dispatch - Execute the action
-store.dispatch(increment());
+store.dispatch(increment()); */
 
-ReactDOM.render(<App />, document.getElementById('root'));
+ReactDOM.render(
+    <Provider store={store}>
+        <App />
+    </Provider>,
+    document.getElementById('root')
+);
 
 serviceWorker.unregister();
