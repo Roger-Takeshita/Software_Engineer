@@ -1,6 +1,6 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { toggleLogged } from '../actions/index';
+import { toggleLogged } from '../redux/counter';
 
 function AnotherComponent(props) {
     const isLogged = useSelector(state => state.isLogged);

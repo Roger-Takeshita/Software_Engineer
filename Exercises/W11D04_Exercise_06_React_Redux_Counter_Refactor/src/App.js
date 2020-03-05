@@ -1,7 +1,7 @@
 import React from 'react';
 import './App.css';
 import { useSelector, useDispatch } from 'react-redux';
-import { increment, decrement } from './actions';
+import { increment, decrement } from './redux/counter';
 import AnotherComponent from './components/AnotherComponent';
 
 function App() {
@@ -12,7 +12,7 @@ function App() {
         <div className="App">
             <h1>Counter {counter}</h1>
             <button onClick={() => dispatch(increment(5))}>+</button>
-            <button onClick={() => dispatch(decrement())}>+</button>
+            <button onClick={() => dispatch(decrement(5))}>-</button>
             <AnotherComponent />
             {isLogged ? (
                 <h3>Valuable Information That Only Logged Users Should see</h3>
