@@ -6,14 +6,14 @@ const DECREMENT = 'DECREMENT';
 const SIGN_IN = 'SIGN_IN';
 
 //! Step 2 - Actions
-export const increment = number => {
+export const increment = (number) => {
     return {
         type: INCREMENT,
         payload: number
     };
 };
 
-export const decrement = number => {
+export const decrement = (number) => {
     return {
         type: DECREMENT,
         payload: number
@@ -22,7 +22,7 @@ export const decrement = number => {
 
 export const toggleLogged = () => {
     return {
-        type: 'SIGN_IN'
+        type: SIGN_IN
     };
 };
 

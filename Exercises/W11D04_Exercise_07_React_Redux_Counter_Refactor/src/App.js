@@ -1,20 +1,28 @@
 import React from 'react';
 import './App.css';
-import { useSelector, useDispatch } from 'react-redux';
-import { increment, decrement } from './redux/counter';
+import { connect } from 'react-redux';
 import AnotherComponent from './components/AnotherComponent';
 
-function App() {
-    const counter = useSelector(state => state.counter);
-    const isLogged = useSelector(state => state.isLogged);
-    const dispatch = useDispatch();
+function App(props) {
     return (
         <div className="App">
-            <h1>Counter {counter}</h1>
-            <button onClick={() => dispatch(increment(5))}>+</button>
-            <button onClick={() => dispatch(decrement(5))}>-</button>
+            <h1>Counter {props.counter}</h1>
+            <button
+                onClick={() =>
+                    props.dispatch({ type: 'INCREMENT', payload: 5 })
+                }
+            >
+                +
+            </button>
+            <button
+                onClick={() =>
+                    props.dispatch({ type: 'DECREMENT', payload: 5 })
+                }
+            >
+                -
+            </button>
             <AnotherComponent />
-            {isLogged ? (
+            {props.isLogged ? (
                 <h3>Valuable Information That Only Logged Users Should see</h3>
             ) : (
                 ''
@@ -23,4 +31,9 @@ function App() {
     );
 }
 
-export default App;
+const mapStateToProps = (state) => ({
+    counter: state.counter,
+    isLogged: state.isLogged
+});
+
+export default connect(mapStateToProps)(App);
