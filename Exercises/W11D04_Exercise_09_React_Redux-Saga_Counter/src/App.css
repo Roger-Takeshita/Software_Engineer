@@ -1,0 +1,19 @@
+body {
+  text-align: center;
+  height: 100vh;
+  display: flex;
+  justify-content: center; 
+  align-items: center; 
+}
+
+.App > div:first-child {
+  font-size: 100px;
+}
+
+.App button {
+  width: 100px;
+  height: 60px;
+  font-size: 30px;
+  margin: 10px;
+  border-radius: 15px;
+}
