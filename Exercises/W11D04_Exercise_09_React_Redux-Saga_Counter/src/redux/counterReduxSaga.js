@@ -12,12 +12,12 @@
 import { takeEvery, takeLatest, put, delay } from 'redux-saga/effects';
 
 //! 2nd we release it
-function* counterUpAsync() {
+function* counterUpAsync(action) {
     //- helper function to simulate a setTimeOut
     yield delay(2000);
     //- put (dispatch) another action
     //? the type has to be different (cannot be the same as 'AGE_UP') other wise you will have an infinity loop
-    yield put({ type: 'INCREMENT_ASYNC', payload: 1 });
+    yield put({ type: 'INCREMENT_ASYNC', payload: action.payload });
 }
 
 //! 1st we catch it
