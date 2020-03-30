@@ -1,4 +1,29 @@
-<h1 id='Example - Simple Warehouse Inventory - Redux'></h1>
+<h1 id='summary'>Summary</h1>
+
+* [Links](#links)
+* [Example - Simple Warehouse Inventory - Redux](#example)
+  * [Installation](#installation)
+  * [Create a New Order](#neworder)
+  * [Removing an Order](#removing)
+  * [Updating an Order](#updating)
+  * [Connecting Redux and React](#connecting)
+    * [Import Provider Component to Our Project](#importprovider)
+    * [Creating New Orders](#creatingneworders)
+    * [Passing State from Redudx as Props](#passingstate)
+    * [Passing Dispatch Methods](#passingdispatch)
+
+<h1 id='links'>Links</h1>
+
+[Go Back to Summary](#summary)
+
+* [Updating state without mutating it (immutability)](https://redux.js.org/docs/recipes/reducers/ImmutableUpdatePatterns.html)
+* [Using Redux with React Router](https://redux.js.org/docs/advanced/UsageWithReactRouter.html)
+* [Working with asynchronous actions](https://redux.js.org/docs/advanced/AsyncActions.html)
+* [Using `combineReducers`](https://redux.js.org/docs/recipes/reducers/UsingCombineReducers.html)
+* [Reducing boilerplate](https://redux.js.org/docs/recipes/ReducingBoilerplate.html)
+* [Structuring reducers](https://redux.js.org/docs/recipes/StructuringReducers.html)
+
+<h1 id='example'>Example - Simple Warehouse Inventory - Redux</h1>
 
 <h2 id='installation'>Installation</h2>
 
@@ -9,8 +34,8 @@
     ```Bash
         npx create-react-app react-redux-exercise
         npm install redux
-        npm install react-redux
-        npm install --save-dev redux-devtools
+        npm install react-redux --save
+        npm install redux-devtools --save-dev
     ```
 
 * inside the `src` folder
@@ -133,7 +158,6 @@
     ```
 
   * We import the `createStore` function from `redux` and our `orderReducer` then invoke the `createStore` function, passing in our reducer function. This is a way to pass in more than one reducer.
-
 
 * **Step 5** Our store is all set up an ready to manage state for our application. For now, we'll just `console.log` state updates from `index.js`
 
@@ -382,3 +406,160 @@
 
         serviceWorker.unregister();
     ```
+
+<h2 id='connecting'>Connecting Redux and React</h2>
+
+[Go Back to Summary](#summary)
+
+* We will need some way of accesing our Redux store from inside our React components. The simplest way to do this could be to pass it around through the props, but one of the key benefits of Redux is to avoid having to pass state as props to deeply neested components.
+* Redux give us a React component, called `<Provider />` that we can pass our store to as a prop. The `Provider` component will then use some [magic](https://reactjs.org/docs/context.html) to make our store available to use throughout our component tree.
+
+<h3 id='importprovider'>Import Provider Component to Our Project</h3>
+
+[Go Back to Summary](#summary)
+
+* We can import the `Provider` component from `react-redux` and then pass our `App` component as a child to the `Provider` component.
+* In `index.js`:
+
+    ```JavaScript
+        import React from 'react';
+        import ReactDOM from 'react-dom';
+        import './index.css';
+        import App from './App';
+        import * as serviceWorker from './serviceWorker';
+        import store from './store';
+        import { Provider } from 'react-redux';
+
+        ReactDOM.render(
+            <Provider store={store}>
+                <App />
+            </Provider>,
+            document.getElementById('root')
+        );
+
+        serviceWorker.unregister();
+    ```
+
+<h3 id='creatingneworders'>Creating New Orders</h3>
+
+[Go Back to Summary](#summary)
+
+* As we've been learning React, we've stressed the difference between **presentational** and **container components**. That distinction is especially important when working with Redux: we want to keep our containers and our view components separate. If our application state is complex enough that it warrants using Redux, then we likely have either a lot of state we're trying to manage, state that is in a somewhat complex structure to manage or both. Therefore, the distinction between components that affect state and those that just present it is all the more important.
+
+* **Presentational components** are concerned with the look, container components are concerned with making things work:
+
+    ```JavaScript
+        const Users = props => (
+        <ul>
+            {props.users.map(user => (
+                <li>{user}</li>
+            ))}
+        </ul>
+        )
+    ```
+
+* **Container component**. It manages and stores its own data, and uses the presentational component to display it.
+
+    ```JavaScript
+        class UsersContainer extends React.Component {
+            constructor() {
+                this.state = {
+                    users: []
+                }
+            }
+
+            componentDidMount() {
+                axios.get('/users').then(users =>
+                    this.setState({ users: users }))
+                )
+            }
+
+            render() {
+                return <Users users={this.state.users} />
+            }
+        }
+    ```
+
+* The `OrderForm` component is **presential**. We need to build out the corresponding container component using Redux, which we'll do in the `NewOrderForm` component. We're going to build out this container component in the `src/containers/` directory.
+* When we want to create a new order using just Redux, we did so with this line of code:
+
+    ```JavaScript
+        store.dispatch(createNewOrder('Reputation', 1))
+    ```
+
+* We want to do something very similar, this time from within a React component. We need a way of accessing the store's `dispatch()` method, which we can do with the `connect()` method provided by `react-redux`.
+  * `connect()` takes a React component and wraps it by returning a new component class connected to Redux. `connect()` takes two arguments (that we will dive in to later) and returns the wrapper for our component. For now, we just need get our wrapper and then pass our component to the wrapper.
+
+    ```JavaScript
+        import { connect } from 'react-redux'
+        import OrderForm from "../components/OrderForm";
+
+        // const wrapperFunction = connect()
+        // const NewOrderForm = wrapperFunction(OrderForm)
+
+        // the above is often shortened to:
+        const NewOrderForm = connect()(OrderForm)
+
+        export default NewOrderForm
+    ```
+
+* We need to update our `App` component so that it's rendering our `NewOrderForm` component. If we go and look at our React app in the browser, it won't seem as though anything has changed. But calling the wrapper function around our `OrderForm` component does something important: it passes `dispatch()` in to our compnent as a prop. If we add the follwing line to the `render()` function of our `OrderForm` component, we'll see `dipatch()` included in the object that is printed to the console.
+
+    ```JavaScript
+        console.log(props)
+
+        // If everything is working, you should see something like this in the console:
+        // {dispatch: f}
+    ```
+
+* We now have `dispatch()` in the props of our component! That means we can now use it to send actions to the store and update our state!
+
+* The form submission is handled by the `handleSubmit()` method. We need to import the action creator for the action we want to dispatch (`createNewOrder()`). Then, if we add the following line to the `handleSubmit()` method, we will be dispatching our action to the store to update our application's state:
+
+    ```JavaScript
+        this.props.dispatch(createNewOrder(productName, quantity));
+    ```
+
+<h3 id='passingstate'>Passing State from Redudx as Props</h3>
+
+[Go Back to Summary](#summary)
+
+* Now that we can update our state from within our components, it would be nice to read that state and pass it to our presentational components. Outside of React, we used the `getState()` method to read our state; however, the `connect()` method abstracts this away for us.
+* We'll be working on the `OrderTable` component from now on. We want to pass in our state so that we can render a table of all the outstanding orders. Each row will represent a single order. Each row will also include a button for deleting that order, an input for updating the quantity needed for that order, and a dropdown for changing the order status.
+* The first argument you can pass in to the `connect()` method is typically called `mapStateToProps`. It's a way of taking the entire state object and returning some subset of it, specifically the part(s) of state that the presentational component will display and nothing more. `mapStateToProps` is a callback that must return an object. A simple version would look something like this:
+
+    ```JavaScript
+        const mapStateToProps = state => ({
+        orders: state.orders
+        })
+    ```
+* Then if we call `connect()` with our `Orders` component, we can get something like this:
+
+    ```JavaScript
+        const OrderTable = connect(mapStateToProps)(Orders)
+    ```
+
+    * If we add a `console.log` to our `Orders` component, we'll see the orders property containing each of the orders we've added to our store. We can then output these into a table using the `<Table />` and `<TableRow />` components.
+
+<h3 id='passingdispatch'>Passing Dispatch Methods</h3>
+
+[Go Back to Summary](#summary)
+
+* We could at this point make our state updates using `dispatch()` like we did with our form. But `connect()` takes a second argument: `mapDispatchToProps`. It can be either an object or a function.
+* If it is an object, each property must be an action creator and `connect()` will wrap each function into a call to `dispatch()`.
+* More often, you'll see `mapDispatchToProps` defined as a function that returns an object. In that case, the `mapDispatchToProps` function receives `dispatch()` as an argument and each property of the returned object should be a function that calls `dispatch()`, passing in some object creator.
+* We can use `mapDispatchToProps` to add our remove button to each order table row. If we import the `removeOrder` action creator, we can then create a simple `mapDispatchToProps()` signature that looks like this:
+
+    ```JavaScript
+        const mapDispatchToProps = dispatch => ({
+        onRemove: id => dispatch(removeOrder(id))
+        })
+    ```
+
+* Then we update our `connect()` call to look like this:
+
+    ```JavaScript
+        const OrderTable = connect(mapStateToProps, mapDispatchToProps)(Orders);
+    ```
+
+  * Now we'll have an `onRemove()` method passed into our `Orders` component as a prop and we can use this in the `onClick` handler for our button to remove an order.
